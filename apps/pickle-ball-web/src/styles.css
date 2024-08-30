@@ -1,0 +1,35 @@
+/* You can add global styles to this file, and also import other style files */
+:root {
+  --bs-nav-pills-link-active-color: #fff;
+  --bs-nav-pills-link-active-bg: #007bff;
+  --bs-nav-custom-link-active-color: #0b132b;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+ 
+}
+body {
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+}
+
+html {
+  height: -webkit-fill-available;
+}
+
+.nav-link svg.icon-menu {
+    width: 24px;
+    height: 24px;
+    color: #0b132b;
+}
+.nav-pills .nav-link.active{
+    color: var(--bs-nav-pills-link-active-color);
+    background-color: var(--bs-nav-custom-link-active-color);
+}
+.nav-pills .nav-link.active svg.icon-menu {
+    color: var(--bs-nav-pills-link-active-color);
+}
