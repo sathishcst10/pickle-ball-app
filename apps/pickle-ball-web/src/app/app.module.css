@@ -1,8 +1,10 @@
 /* Your styles goes here. */
-main {
-    height: 100vh;
-   
-    max-height: 100vh;
-    overflow-x: auto;
-    overflow-y: hidden;
+
+  body {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    color: rgb(var(--bs-tertiary-color-rgb));
   }
+ 
+/* rtl:end:remove */
+
