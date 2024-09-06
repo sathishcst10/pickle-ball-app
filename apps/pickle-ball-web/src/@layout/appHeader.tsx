@@ -1,10 +1,14 @@
+import { Link, NavLink } from "react-router-dom";
+import { App_logo_svg } from "../@components/_icons/app_logo";
+
 export function AppHeader() {
   return (
     <header data-bs-theme="dark">
       <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark app-dark-bg-color">
         <div className="container-fluid">
           <a className="navbar-brand" href="#">
-            Ace Pickl
+            {/* <App_logo_svg/> */}
+            <img src="./Logo-Black-Trans.png" width={120} alt="app_logo"  className="d-inline-block align-text-top" />
           </a>
           <button
             className="navbar-toggler"
@@ -20,42 +24,42 @@ export function AppHeader() {
           <div className="collapse navbar-collapse" id="navbarCollapse">
             <ul className="navbar-nav mx-auto mb-2 mb-md-0">
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="#">
+                <NavLink className="nav-link active" aria-current="page" to={"/landing"}>
                   Home
-                </a>
+                </NavLink>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">
+                <NavLink className="nav-link" to={"/groups"}>
                   Club League
-                </a>
+                </NavLink>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">
+                <NavLink className="nav-link" to={"/tournaments"}>
                   Tournament
-                </a>
+                </NavLink>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">
+                <NavLink className="nav-link" to={"/meetGreet"}>
                   Meet & Greet
-                </a>
+                </NavLink>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">
+                <NavLink className="nav-link" to={"/ace-ranking"}>
                   ACE PKL Ranking
-                </a>
+                </NavLink>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">
+                <NavLink className="nav-link" to={"/resources"}>
                   Resources
-                </a>
+                </NavLink>
               </li>
             </ul>
-            <button className="btn btn-primary me-2" type="submit">
+            <Link to={'/login'} className="btn btn-primary me-2" type="submit">
                 Sign In
-            </button>
-            <button className="btn btn-success" type="submit">
+            </Link>
+            <Link to={'/register'} className="btn btn-success" type="submit">
                 Sign Up
-            </button>
+            </Link>
           </div>
         </div>
       </nav>

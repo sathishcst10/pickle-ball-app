@@ -1,10 +1,12 @@
+import { CreateGroupModal } from "../@components/widgets/CreateGroupModal";
+
 export const Groups: React.FC = () => {
   return (
     <div className="w-100 p-3" style={{overflow:"auto"}}>
       
       <div className="d-flex justify-content-between p-2">
         <h4>Groups</h4>
-        <button className="btn btn-primary ml-auto">Create Group</button>
+        <button className="btn btn-primary ml-auto" data-bs-toggle="modal" data-bs-target="#CreateGroupModal">Create Group</button>
       </div>
 
       <div className="container-fluid">
@@ -61,6 +63,7 @@ export const Groups: React.FC = () => {
           
         </div>
       </div>
+      <CreateGroupModal/>
     </div>
   );
 };
