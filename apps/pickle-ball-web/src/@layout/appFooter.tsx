@@ -152,12 +152,12 @@ export function Footer() {
           <ul className="list-unstyled d-flex">
             <li className="ms-3">
               <a className="link-body-emphasis" href="#">
-                <img src="./google-play-store.svg" alt="Play store icon" style={{width:"190px"}}/>
+                <img src="./google-play-store.svg" alt="Play store icon" style={{width:"145px"}}/>
               </a>
             </li>
             <li className="ms-3">
               <a className="link-body-emphasis" href="#">
-              <img src="./app-store.svg" alt="Play store icon" style={{width:"190px"}}/>
+              <img src="./app-store.svg" alt="Play store icon" style={{width:"145px"}}/>
               </a>
             </li>           
           </ul>
