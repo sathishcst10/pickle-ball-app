@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export function Landing() {
   return (
     <main>
@@ -43,9 +45,9 @@ export function Landing() {
                   the carousel.
                 </p>
                 <p>
-                  <a className="btn btn-lg btn-primary" href="#">
+                  <Link className="btn btn-lg btn-primary" to={'/register'}>
                     Sign up today
-                  </a>
+                  </Link>
                 </p>
               </div>
             </div>
@@ -128,7 +130,7 @@ export function Landing() {
                 width={140}
                 height={140}
             />
-            <h2 className="fw-normal">Community building</h2>
+            <h2 className="fw-normal">Club League</h2>
             <p>
                 It fosters a sense of community and camaraderie as players interact and compete regularly.
             </p>
@@ -145,7 +147,7 @@ export function Landing() {
                 width={140}
                 height={140}
            />
-            <h2 className="fw-normal">Encourages Regular Play</h2>
+            <h2 className="fw-normal">Tournament</h2>
             <p>
                 Players are motivated to play frequently to maintain or improve their ranking.
             </p>
@@ -163,7 +165,7 @@ export function Landing() {
             width={140}
             height={140}
           />
-            <h2 className="fw-normal">Skill development</h2>
+            <h2 className="fw-normal">Meet & Greet</h2>
             <p>
             The format encourages players to compete against opponents of varying skill levels, which helps in improving their game.
             </p>
@@ -188,16 +190,16 @@ export function Landing() {
           </div>
           <div className="col-md-5">
             <img src="https://images.unsplash.com/photo-1642104798671-01a4129f4fdc?q=80&w=2117&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" 
-                className="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto"
+                className="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto rounded-4"
                 width={500}
                 height={500}
             />            
           </div>
         </div>
 
-        <hr className="featurette-divider" />
+        {/* <hr className="featurette-divider" /> */}
 
-        <div className="row featurette">
+        <div className="row featurette d-none">
           <div className="col-md-7 order-md-2">
             <h2 className="featurette-heading fw-normal lh-1">
               Oh yeah, it's that good.{' '}
@@ -229,9 +231,9 @@ export function Landing() {
           </div>
         </div>
 
-        <hr className="featurette-divider" />
+        {/* <hr className="featurette-divider" /> */}
 
-        <div className="row featurette">
+        <div className="row featurette d-none">
           <div className="col-md-7">
             <h2 className="featurette-heading fw-normal lh-1">
               And lastly, this one.{' '}
@@ -266,16 +268,6 @@ export function Landing() {
 
         <hr className="featurette-divider" />
       </div>
-
-      <footer className="container">
-        <p className="float-end">
-          <a href="#">Back to top</a>
-        </p>
-        <p>
-          &copy; ACE Pickl - 2024 &middot; <a href="#">Privacy</a>{' '}
-          &middot; <a href="#">Terms</a>
-        </p>
-      </footer>
     </main>
   );
 }

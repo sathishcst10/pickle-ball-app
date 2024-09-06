@@ -1,6 +1,7 @@
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { AppHeader } from "./appHeader";
 import { useEffect } from "react";
+import { Footer } from "./appFooter";
 
 export function MasterLayout() {
 
@@ -13,6 +14,7 @@ export function MasterLayout() {
         <>
             <AppHeader/>
             <Outlet/>
+            <Footer/>
         </>
     )
 }

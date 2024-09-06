@@ -5,6 +5,7 @@ import { Register } from "../@pages/_auth_pages/register";
 import { MasterLayout } from "../@layout/masterLayout";
 import path from "path";
 import { Groups } from "../@pages/groups";
+import { PageNotFound } from "../@components/pageNotFound";
 
 export const routes = createBrowserRouter([
     {
@@ -17,6 +18,10 @@ export const routes = createBrowserRouter([
             {
                 path: "/groups",
                 element : <Groups/>
+            },
+            {
+                path : "*",
+                element : <PageNotFound/>
             }
         ],
         element: <MasterLayout/>,
