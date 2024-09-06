@@ -15,7 +15,7 @@ export function Register() {
         <div className="d-flex align-items-center py-4 bg-body-tertiary h-100 login-backdrop">
         <main className="form-signin w-100 m-auto bg-white rounded-4 position-relative">
         <Link
-          className="btn btn-sm btn-outline-danger rounded-circle"
+          className="btn-close"
           to={'/landing'}
           style={{
             width: '32px',
@@ -27,22 +27,7 @@ export function Register() {
             padding: '3px'
           }}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            width={24}
-            height={24}
-            color={'currentColor'}
-            fill={'none'}
-          >
-            <path
-              d="M18 6L12 12M12 12L6 18M12 12L18 18M12 12L6 6"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+         
         </Link>
           <form action="#">
             <img
@@ -65,6 +50,10 @@ export function Register() {
                 <div className="col-12">
                     <label htmlFor="inputEmail" className="form-label">E-mail address</label>
                     <input type="email" className="form-control" id="inputEmail"/>
+                </div>
+                <div className="col-12">
+                    <label htmlFor="inputPhone" className="form-label">Phone number</label>
+                    <input type="phone" className="form-control" id="inputPhone"/>
                 </div>
                 <div className="col-12">
                     <label htmlFor="inputPassword" className="form-label">Password</label>

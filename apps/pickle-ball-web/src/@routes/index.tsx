@@ -6,6 +6,7 @@ import { MasterLayout } from "../@layout/masterLayout";
 import path from "path";
 import { Groups } from "../@pages/groups";
 import { PageNotFound } from "../@components/pageNotFound";
+import AceCourts from "../@pages/courts";
 
 export const routes = createBrowserRouter([
     {
@@ -18,6 +19,10 @@ export const routes = createBrowserRouter([
             {
                 path: "/groups",
                 element : <Groups/>
+            },
+            {
+                path : "/courts",
+                element : <AceCourts/>
             },
             {
                 path : "*",

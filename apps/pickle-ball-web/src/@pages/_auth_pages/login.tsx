@@ -14,7 +14,7 @@ export function Login() {
     <div className="d-flex align-items-center py-4 bg-body-tertiary h-100 login-backdrop">
       <main className="form-signin w-100 m-auto bg-white rounded-4 position-relative">
         <Link
-          className="btn btn-sm btn-outline-danger rounded-circle"
+          className="btn-close"
           to={'/landing'}
           style={{
             width: '32px',
@@ -25,23 +25,7 @@ export function Login() {
             top: '10px',
             padding: '3px'
           }}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            width={24}
-            height={24}
-            color={'currentColor'}
-            fill={'none'}
-          >
-            <path
-              d="M18 6L12 12M12 12L6 18M12 12L18 18M12 12L6 6"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+        >          
         </Link>
 
         <form action="#" onSubmit={() => redirect('/groups')}>
@@ -59,7 +43,7 @@ export function Login() {
               id="floatingInput"
               placeholder="name@example.com"
             />
-            <label htmlFor="floatingInput">Email address</label>
+            <label htmlFor="floatingInput">Email address/Phone number</label>
           </div>
           <div className="form-floating">
             <input
