@@ -1,11 +1,36 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, Navigate, NavigateProps, redirect } from 'react-router-dom';
 
 export function Login() {
+    const [userRequest, setUserRequest] = useState({        
+        "user_authcode" : 1,
+        "user_authparameter" : "",
+        "user_password" : ""          
+    });
+
+    const appLogin = async () => {
+        const response = await fetch('https://acepicklapi.raganindustries.com/api_user_login.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userRequest)
+        });
+        const data = await response.json();
+        if(data.status === "STATUS OK") {
+            console.log("Login Successful");
+            localStorage.setItem('user', JSON.stringify(data));
+            localStorage.setItem('isLoggedIn', 'true');
+            window.location.href = '/groups';
+            //redirect('/groups');
+        }
+        console.log(data);
+    }
+
   useEffect(() => {
     document.title = 'Login | ACEPickl';
     document.getElementsByTagName('body')[0].classList.add('loginLayout');
-
+    
     return () => {
       document.getElementsByTagName('body')[0].classList.remove('loginLayout');
     };
@@ -28,7 +53,7 @@ export function Login() {
         >          
         </Link>
 
-        <form action="#" onSubmit={() => redirect('/groups')}>
+        <form action="#" onSubmit={(e) => { e.preventDefault(); appLogin()}}>
           <img
             className="mb-4"
             src="./Logo-Green-Trans.png"
@@ -42,6 +67,8 @@ export function Login() {
               className="form-control"
               id="floatingInput"
               placeholder="name@example.com"
+              value={userRequest.user_authparameter}
+              onChange={(e) => setUserRequest({...userRequest, user_authparameter: e.target.value})}
             />
             <label htmlFor="floatingInput">Email address/Phone number</label>
           </div>
@@ -51,6 +78,8 @@ export function Login() {
               className="form-control"
               id="floatingPassword"
               placeholder="Password"
+              value={userRequest.user_password}
+              onChange={(e) => setUserRequest({...userRequest, user_password: e.target.value})}
             />
             <label htmlFor="floatingPassword">Password</label>
           </div>

@@ -13,7 +13,7 @@ export const Groups: React.FC = () => {
         <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             {
                [1,2,3].map((i) => {
-                return <div className="col">
+                return <div className="col" key={i}>
                 <div className="card shadow-sm">
                   <svg
                     className="bd-placeholder-img card-img-top"
