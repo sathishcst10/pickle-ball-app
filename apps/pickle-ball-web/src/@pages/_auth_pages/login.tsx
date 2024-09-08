@@ -23,6 +23,8 @@ export function Login() {
             localStorage.setItem('isLoggedIn', 'true');
             window.location.href = '/groups';
             //redirect('/groups');
+        }else{
+          alert(data.status +" : "+ data.description);
         }
         console.log(data);
     }
@@ -71,6 +73,12 @@ export function Login() {
               onChange={(e) => setUserRequest({...userRequest, user_authparameter: e.target.value})}
             />
             <label htmlFor="floatingInput">Email address/Phone number</label>
+            {
+              userRequest.user_authparameter.length > 0 && !userRequest.user_authparameter.includes('@') &&
+              <div className="text-danger" >
+                Please enter a valid email address or phone number.
+              </div>
+            }
           </div>
           <div className="form-floating">
             <input
@@ -82,6 +90,12 @@ export function Login() {
               onChange={(e) => setUserRequest({...userRequest, user_password: e.target.value})}
             />
             <label htmlFor="floatingPassword">Password</label>
+            {
+              userRequest.user_password.length > 0 && userRequest.user_password.length < 6 &&
+              <div className="text-danger" >
+                Please enter  a valid password.
+              </div>
+            }
           </div>
           <div className="form-check text-start my-3">
             <input
