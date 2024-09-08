@@ -13,7 +13,7 @@ export default function AceCourts() {
             <StepperPanel header="Header I">
                 <div className="d-flex flex-column h-12rem">
                     <div className="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
-                        <img src="./Court_01.png" alt="Court 1" style={{width:"100%"}}/>
+                        <img src="./Court_01.png" alt="Court 1" style={{width:"60%"}}/>
                     </div>
                 </div>
                 <div className="d-flex pt-4 justify-content-end">

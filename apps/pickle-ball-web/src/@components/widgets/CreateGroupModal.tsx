@@ -5,6 +5,7 @@ import { useRef } from 'react';
 import { MultiSelect } from 'primereact/multiselect';
 import { Link } from 'react-router-dom';
 import { CreateCourt } from './CreateCourt';
+import { CreateCourtV2 } from './CreateCourtOffCanvas';
 
 export const CreateGroupModal: React.FC = () => {
   const stepperRef: any = useRef(null);
@@ -114,7 +115,7 @@ export const CreateGroupModal: React.FC = () => {
                       </select>
                     </div>
                     <p className="text-muted">
-                      Don't see your court? <Link data-bs-toggle="modal" data-bs-target="#createCourtModal" to={'/courts'}>Add court</Link>
+                      Don't see your court? <Link data-bs-toggle="offcanvas" to={"#createCourtOffCanvas"} role="button">Add court</Link>
                     </p>
                   </div>
                 </div>
@@ -316,6 +317,7 @@ export const CreateGroupModal: React.FC = () => {
       </div>
     </div>
     <CreateCourt/>
+    <CreateCourtV2/>
     </>
 
   );
