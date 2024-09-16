@@ -1,6 +1,31 @@
+import Swal from "sweetalert2";
+import { AddPlayerToGroup } from "../@components/widgets/addPlayerToGroup";
 import { CreateGroupModal } from "../@components/widgets/CreateGroupModal";
+import { ScheduleModal } from "../@components/widgets/scheduleModal";
 
 export const Groups: React.FC = () => {
+
+
+  const deleteGroup = (id:any) => {
+    console.log(id);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Deleted!",
+          text: "Selected group has been deleted.",
+          icon: "success"
+        });
+      }
+    });
+  }
   return (
     <div className="w-100 p-3 mb-5" style={{overflow:"auto"}}>
       
@@ -43,14 +68,17 @@ export const Groups: React.FC = () => {
                         <button
                           type="button"
                           className="btn btn-sm btn-outline-dark"
-                          title="View group"
+                          title="Edit/View Group"                         
                         >
                           View
                         </button>
                         <button
                           type="button"
                           className="btn btn-sm btn-outline-dark"
-                          title="View players">
+                          title="Add/View players"
+                           data-bs-toggle="modal" 
+                          data-bs-target="#addPlayerModal"
+                          >
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"currentColor"} fill={"none"}>
                                 <path d="M20.7739 18C21.5232 18 22.1192 17.5285 22.6543 16.8691C23.7498 15.5194 21.9512 14.4408 21.2652 13.9126C20.5679 13.3756 19.7893 13.0714 18.9999 13M17.9999 11C19.3806 11 20.4999 9.88071 20.4999 8.5C20.4999 7.11929 19.3806 6 17.9999 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                                 <path d="M3.2259 18C2.47659 18 1.88061 17.5285 1.34548 16.8691C0.250028 15.5194 2.04861 14.4408 2.73458 13.9126C3.43191 13.3756 4.21052 13.0714 4.99994 13M5.49994 11C4.11923 11 2.99994 9.88071 2.99994 8.5C2.99994 7.11929 4.11923 6 5.49994 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -68,8 +96,9 @@ export const Groups: React.FC = () => {
                         </button>
                         <button
                           type="button"
-                          className="btn btn-sm btn-outline-danger"
+                          className="btn btn-sm btn-outline-dark"
                           title="Delete group"
+                          onClick={(e) => deleteGroup(i)}
                         >
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"currentColor"} fill={"none"}>
                             <path d="M19.5 5.5L18.8803 15.5251C18.7219 18.0864 18.6428 19.3671 18.0008 20.2879C17.6833 20.7431 17.2747 21.1273 16.8007 21.416C15.8421 22 14.559 22 11.9927 22C9.42312 22 8.1383 22 7.17905 21.4149C6.7048 21.1257 6.296 20.7408 5.97868 20.2848C5.33688 19.3626 5.25945 18.0801 5.10461 15.5152L4.5 5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -77,6 +106,15 @@ export const Groups: React.FC = () => {
                             <path d="M9.5 16.5L9.5 10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                             <path d="M14.5 16.5L14.5 10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                           </svg>
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-outline-dark"
+                          title="Schedule"
+                          data-bs-toggle="modal"
+                          data-bs-target="#scheduleModal"
+                        >
+                          Schedule
                         </button>
                       </div>
                       <small className="text-body-secondary">9 mins</small>
@@ -90,6 +128,8 @@ export const Groups: React.FC = () => {
         </div>
       </div>
       <CreateGroupModal/>
+      <AddPlayerToGroup />
+      <ScheduleModal/>
     </div>
   );
 };

@@ -118,7 +118,7 @@ body {
 }
 
 body:not(.loginLayout) {
-  padding-top: 102px;
+  padding-top: 91px;
 }
 ul.p-stepper-nav {
   display: none;

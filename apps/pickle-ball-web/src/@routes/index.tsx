@@ -7,6 +7,7 @@ import path from "path";
 import { Groups } from "../@pages/groups";
 import { PageNotFound } from "../@components/pageNotFound";
 import AceCourts from "../@pages/courts";
+import { Schedule } from "../@pages/schedules";
 
 export const routes = createBrowserRouter([
     {
@@ -23,6 +24,10 @@ export const routes = createBrowserRouter([
             {
                 path : "/courts",
                 element : <AceCourts/>
+            },
+            {
+                path : "/schedule",
+                element : <Schedule/>
             },
             {
                 path : "*",

@@ -2,11 +2,12 @@ import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 
 import { PrimeReactProvider } from 'primereact/api';
-
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min';
 import 'primereact/resources/primereact.css';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap';
+
+
 import './styles.css';
 
 import App from './app/app';

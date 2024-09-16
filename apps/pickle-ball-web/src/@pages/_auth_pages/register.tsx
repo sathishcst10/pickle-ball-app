@@ -1,45 +1,59 @@
-import { Link } from "react-router-dom";
-import { countries } from "../../@helpers/constant_data";
-import { useEffect, useState } from "react";
-
+import { Link } from 'react-router-dom';
+import { countries, ratingInfo } from '../../@helpers/constant_data';
+import { useEffect, useState } from 'react';
+import { InfoIcon } from '../../@components/_icons/menu_icons';
+import * as bootstrap from 'bootstrap';
 export function Register() {
-    const [password, setPassword] = useState("");
-    const [userRequest, setUserRequest] = useState({
-        "user_email" : "",
-        "user_phone" : "",
-        "user_name" : "",
-        "user_password" : ""
-    })
+  const [password, setPassword] = useState('');
+  const [userRequest, setUserRequest] = useState({
+    user_email: '',
+    user_phone: '',
+    user_fname: '',
+    user_lname: '',
+    user_country: '',
+    user_password: '',
+  });
 
-    const registerUser = async () => {
-        const response = await fetch('https://acepicklapi.raganindustries.com/api_user_signin.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(userRequest)
-        });
-        const data = await response.json();
-        if(data.status === "STATUS OK") {
-            console.log("Register Successful");
-            window.location.href = '/login';
-        }else{
-          alert(data.status +" : "+ data.description);
-        }
-        console.log(data);        
+  const registerUser = async () => {
+    const response = await fetch(
+      'https://acepicklapi.raganindustries.com/api_user_signin.php',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userRequest),
+      }
+    );
+    const data = await response.json();
+    if (data.status === 'STATUS OK') {
+      console.log('Register Successful');
+      window.location.href = '/login';
+    } else {
+      alert(data.status + ' : ' + data.description);
+    }
+    console.log(data);
+  };
+
+  useEffect(() => {
+    document.title = 'Login | ACEPickl';
+    document.getElementsByTagName('body')[0].classList.add('loginLayout');
+
+    const popoverTriggerList = document.querySelectorAll(
+      '[data-bs-toggle="popover"]'
+    );
+    for (let i = 0; i < popoverTriggerList.length; i++) {
+      const popoverTriggerEl = popoverTriggerList[i];
+      new bootstrap.Popover(popoverTriggerEl);
     }
 
-    useEffect(() => {
-        document.title = "Login | ACEPickl";
-        document.getElementsByTagName("body")[0].classList.add("loginLayout");
-
-        return () => {
-            document.getElementsByTagName("body")[0].classList.remove("loginLayout");
-        }
-    });
-    return (
-        <div className="d-flex align-items-center py-4 bg-body-tertiary h-100 login-backdrop">
-        <main className="form-signin w-100 m-auto bg-white rounded-4 position-relative">
+    return () => {
+      document.getElementsByTagName('body')[0].classList.remove('loginLayout');
+    };
+  });
+  return (
+    <div className="d-flex align-items-center py-4 bg-body-tertiary h-100 login-backdrop">
+      <main className="form-signin w-100 m-auto bg-white rounded-4 position-relative">
         <Link
           className="btn-close"
           to={'/landing'}
@@ -50,95 +64,211 @@ export function Register() {
             position: 'absolute',
             right: '10px',
             top: '10px',
-            padding: '3px'
+            padding: '3px',
+          }}
+        ></Link>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            registerUser();
           }}
         >
-         
-        </Link>
-          <form  onSubmit={(e)=>{e.preventDefault(); registerUser()}}>
-            <img
-              className="mb-4"
-              src="./Logo-Green-Trans.png"
-              alt="Ace Pickl Logo"
-              width={180}
-            />
-            <h1 className="h3 mb-3 fw-bold">Welcome to ACEPickl</h1>
+          <img
+            className="mb-4"
+            src="./Logo-Green-Trans.png"
+            alt="Ace Pickl Logo"
+            width={180}
+          />
+          <h1 className="h3 mb-3 fw-bold">Welcome to ACEPickl</h1>
 
-            <div className="row g-3">
-                <div className="col-12">
-                    <label htmlFor="inputFirst" className="form-label">Full name</label>
-                    <input type="text" className="form-control" id="inputFirst" value={ userRequest.user_name }
-                    onChange={(e) => setUserRequest({...userRequest, user_name: e.target.value})}
-                    onBlur={(e) => e.target.value === "" ? e.target.classList.add('is-invalid') : e.target.classList.remove('is-invalid')}
-                    />
-                </div>
-               
-                <div className="col-12">
-                    <label htmlFor="inputEmail" className="form-label">E-mail address</label>
-                    <input type="email" className="form-control" id="inputEmail" 
-                    value={ userRequest.user_email }
-                    onChange={(e) => setUserRequest({...userRequest, user_email: e.target.value})}
-                    onBlur={(e) => (e.target.value === "" || !e.target.value.includes('@')) ? e.target.classList.add('is-invalid') : e.target.classList.remove('is-invalid')}
-                    />
-                </div>
-                <div className="col-12">
-                    <label htmlFor="inputPhone" className="form-label">Phone number</label>
-                    <input type="phone" className="form-control" id="inputPhone"
-                    value={ userRequest.user_phone }
-                    onChange={(e) => setUserRequest({...userRequest, user_phone: e.target.value})}
-                    onBlur={(e) => e.target.value === "" ? e.target.classList.add('is-invalid') : e.target.classList.remove('is-invalid')}   
-                    />
-                </div>
-                <div className="col-12">
-                    <label htmlFor="inputPassword" className="form-label">Password</label>
-                    <input type="password" className="form-control" id="inputPassword"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        onBlur={(e) => e.target.value === ""  ? e.target.classList.add('is-invalid') : e.target.classList.remove('is-invalid')}
-                    />
-                </div>
-                <div className="col-12">
-                    <label htmlFor="inputRepeatPassword" className="form-label">Repeat password</label>
-                    <input type="password" className="form-control" id="inputRepeatPassword"
-                        value={ userRequest.user_password }
-                        onChange={(e) => setUserRequest({...userRequest, user_password: e.target.value})}
-                        onBlur={(e) => e.target.value === "" ? e.target.classList.add('is-invalid') : e.target.classList.remove('is-invalid')}
-                    />
-                    {
-                        userRequest.user_password !== password ?
-                        <div className="text-danger" >
-                            Passwords do not match.
-                        </div>
-                        :
-                        <div className="text-success" >
-                            Passwords match.
-                        </div>
-                    }
-                </div>
-                <div className="col-12">
-                    <label htmlFor="inputLast" className="form-label">Country of residents</label>
-                    <select className="form-select" id="inputCountry">
-                        <option value={''}>Choose...</option>
-                        {
-                            countries.map((country, index) => 
-                                <option key={index} value={country.code}>{country.name}</option>
-                            )                            
-                        }
-                    </select>
-                </div>
+          <div className="row g-3">
+            <div className="col-6">
+              <label htmlFor="inputFirst" className="form-label">
+                Full name
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="inputFirst"
+                value={userRequest.user_fname}
+                onChange={(e) =>
+                  setUserRequest({ ...userRequest, user_fname: e.target.value })
+                }
+                onBlur={(e) =>
+                  e.target.value === ''
+                    ? e.target.classList.add('is-invalid')
+                    : e.target.classList.remove('is-invalid')
+                }
+              />
             </div>
-            
-            <button className="btn btn-dark w-100 py-2 mt-2" type="submit">
-              Register
-            </button>
-            <p className="mt-2 mb-3 text-body-secondary text-center">
-                If you already have an account, please 
-                <Link to={'/login'} className="ms-1">login</Link>
-            </p>
-            
+            <div className="col-6">
+              <label htmlFor="inputLast" className="form-label">
+                Last name
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="inputLast"
+                value={userRequest.user_lname}
+                onChange={(e) =>
+                  setUserRequest({ ...userRequest, user_lname: e.target.value })
+                }
+                onBlur={(e) =>
+                  e.target.value === ''
+                    ? e.target.classList.add('is-invalid')
+                    : e.target.classList.remove('is-invalid')
+                }
+              />
+            </div>
 
-          </form>
-        </main>
+            <div className="col-12">
+              <label htmlFor="inputEmail" className="form-label">
+                E-mail address
+              </label>
+              <input
+                type="email"
+                className="form-control"
+                id="inputEmail"
+                value={userRequest.user_email}
+                onChange={(e) =>
+                  setUserRequest({ ...userRequest, user_email: e.target.value })
+                }
+                onBlur={(e) =>
+                  e.target.value === '' || !e.target.value.includes('@')
+                    ? e.target.classList.add('is-invalid')
+                    : e.target.classList.remove('is-invalid')
+                }
+              />
+            </div>
+            <div className="col-12">
+              <label htmlFor="inputPhone" className="form-label">
+                Phone number
+              </label>
+              <input
+                type="phone"
+                className="form-control"
+                id="inputPhone"
+                value={userRequest.user_phone}
+                onChange={(e) =>
+                  setUserRequest({ ...userRequest, user_phone: e.target.value })
+                }
+                onBlur={(e) =>
+                  e.target.value === ''
+                    ? e.target.classList.add('is-invalid')
+                    : e.target.classList.remove('is-invalid')
+                }
+              />
+            </div>
+            <div className="col-12">
+              <label htmlFor="inputPassword" className="form-label">
+                Password
+              </label>
+              <input
+                type="password"
+                className="form-control"
+                id="inputPassword"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                onBlur={(e) =>
+                  e.target.value === ''
+                    ? e.target.classList.add('is-invalid')
+                    : e.target.classList.remove('is-invalid')
+                }
+              />
+            </div>
+            <div className="col-12">
+              <label htmlFor="inputRepeatPassword" className="form-label">
+                Repeat password
+              </label>
+              <input
+                type="password"
+                className="form-control"
+                id="inputRepeatPassword"
+                value={userRequest.user_password}
+                onChange={(e) =>
+                  setUserRequest({
+                    ...userRequest,
+                    user_password: e.target.value,
+                  })
+                }
+                onBlur={(e) =>
+                  e.target.value === ''
+                    ? e.target.classList.add('is-invalid')
+                    : e.target.classList.remove('is-invalid')
+                }
+              />
+              {userRequest.user_password !== password ? (
+                <div className="text-danger">Passwords do not match.</div>
+              ) : (
+                <div className="text-success">Passwords match.</div>
+              )}
+            </div>
+            <div className="col-12">
+              <label htmlFor="inputCountry" className="form-label">
+                Country of residents
+              </label>
+              <select
+                className="form-select"
+                id="inputCountry"
+                value={userRequest.user_country}
+                onChange={(e) =>
+                  setUserRequest({
+                    ...userRequest,
+                    user_country: e.target.value,
+                  })
+                }
+              >
+                <option value={''}>Choose...</option>
+                {countries.map((country, index) => (
+                  <option key={index} value={country.name}>
+                    {country.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="col-12">
+              <label htmlFor="inputRating" className="form-label">
+                Player rating(Self rating)
+              </label>
+              <div className="input-group">
+                <select
+                  className="form-select"
+                  id="inputRating"
+                  aria-label="Select rating"
+                >
+                  <option value={''}>Choose...</option>
+                  {[1, 2, 3, 4, 5, 6].map((rating, index) => (
+                    <option key={index} value={rating}>
+                      {rating}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  className="btn btn-outline-secondary text-center"
+                  type="button"
+                  title="Player Rating (self-rated)"
+                  data-bs-container="body"
+                  data-bs-toggle="popover"
+                  data-bs-placement="top"
+                  data-bs-content={ratingInfo}
+                >
+                  <InfoIcon />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button className="btn btn-dark w-100 py-2 mt-2" type="submit">
+            Register
+          </button>
+          <p className="mt-2 mb-3 text-body-secondary text-center">
+            If you already have an account, please
+            <Link to={'/login'} className="ms-1">
+              login
+            </Link>
+          </p>
+        </form>
+      </main>
     </div>
-    )
+  );
 }

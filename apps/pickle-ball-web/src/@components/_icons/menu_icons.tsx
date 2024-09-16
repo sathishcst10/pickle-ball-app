@@ -190,5 +190,36 @@ function SettingIcon() {
   );
 }
 
+const InfoIcon = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      className=""
+      color={'currentColor'}
+      fill={'none'}
+      width={18}
+      height={18}
+    >
+      <path
+        d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+      />
+      <path
+        d="M12 7V12"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M12 16H12.01"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
 
-export { DashboardIcon, GroupsIcon, TournamentIcon, ChatIcon, SettingIcon };
+export { DashboardIcon, GroupsIcon, TournamentIcon, ChatIcon, SettingIcon, InfoIcon };

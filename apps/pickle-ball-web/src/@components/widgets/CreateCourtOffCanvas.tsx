@@ -181,7 +181,7 @@ export function CreateCourtV2() {
                       'Saturday',
                       'Sunday',
                     ].map((day, index) => (
-                      <tr key={index}>
+                      <tr key={day}>
                         <td>
                           <div className="form-check">
                             <input

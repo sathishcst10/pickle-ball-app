@@ -1,15 +1,40 @@
 import { Link, NavLink } from 'react-router-dom';
 import { App_logo_svg } from '../@components/_icons/app_logo';
+import { useEffect } from 'react';
 
 export function AppHeader() {
+  // useEffect(() => {
+  //   require('bootstrap/dist/js/bootstrap.bundle.min.js');
+  // }, []);
+
+  const doLogout = (e:any) => {
+    e.preventDefault();
+    fetch('https://acepicklapi.raganindustries.com/api_user_logout.php', {
+      method: 'get',
+      headers: {
+        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('user') as string).access_token,        
+      },
+      
+    }).then(
+      (response) => {
+        if (response.status === 200) {
+          localStorage.clear();
+          window.location.href = '/landing';
+        }
+      }
+    ).catch((error) => {
+      console.error('Error:', error);
+    });
+  }
+
   return (
-    <header data-bs-theme="dark">
-      <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark app-dark-bg-color">
+    <header data-bs-theme="light">
+      <nav className="navbar navbar-expand-md navbar-light fixed-top bg-light">
         <div className="container-fluid">
           <a className="navbar-brand" href="#">
             {/* <App_logo_svg/> */}
             <img
-              src="./Logo-Black-Trans.png"
+              src="./Logo-Green-Trans.png"
               width={120}
               alt="app_logo"
               className="d-inline-block align-text-top"
@@ -37,20 +62,35 @@ export function AppHeader() {
                   Home
                 </NavLink>
               </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to={'/groups'}>
+              <li className="nav-item dropdown">
+                <NavLink className="nav-link dropdown-toggle" to={'#'} role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Club League
                 </NavLink>
+                <ul className="dropdown-menu">
+                  <li><NavLink className="dropdown-item" to={'/groups'}>Group</NavLink></li>
+                  <li><NavLink className="dropdown-item" to={'/schedule'}>Schedule</NavLink></li>                  
+                  <li><NavLink className="dropdown-item" to={'/courts'}>Court</NavLink></li>
+                </ul>
               </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to={'/tournaments'}>
+              <li className="nav-item dropdown">
+                <NavLink className="nav-link dropdown-toggle" to={'#'} role='button' data-bs-toggle="dropdown" aria-expanded="false">
                   Tournament
                 </NavLink>
+                <ul className="dropdown-menu">
+                  <li><NavLink className="dropdown-item disabled" to={'#'}>Group</NavLink></li>
+                  <li><NavLink className="dropdown-item disabled" to={'#'}>Schedule</NavLink></li>
+                  <li><NavLink className="dropdown-item disabled" to={'#'}>Court</NavLink></li>
+                </ul>
               </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to={'/meetGreet'}>
+              <li className="nav-item dropdown">
+                <NavLink className="nav-link dropdown-toggle" to={'#'} role='button' data-bs-toggle="dropdown" aria-expanded="false">
                   Meet & Greet
                 </NavLink>
+                <ul className="dropdown-menu">
+                  <li><NavLink className="dropdown-item disabled" to={'#'}>Group</NavLink></li>
+                  <li><NavLink className="dropdown-item disabled" to={'#'}>Schedule</NavLink></li>
+                  <li><NavLink className="dropdown-item disabled" to={'#'}>Court</NavLink></li>
+                </ul>
               </li>
               <li className="nav-item">
                 <NavLink className="nav-link" to={'/ace-ranking'}>
@@ -61,12 +101,27 @@ export function AppHeader() {
                 <NavLink className="nav-link" to={'/resources'}>
                   Resources
                 </NavLink>
-              </li>
+              </li>             
             </ul>
             {localStorage.getItem('isLoggedIn') === 'true' ? (
-              <button className="btn btn-danger" onClick={()=>{localStorage.clear(); window.location.reload()}} >
-                Logout
-              </button>
+              
+              <ul className='navbar-nav '>
+                <li className="nav-item dropdown">
+                    <NavLink className="nav-link dropdown-toggle" to={"#"} role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      <span>
+                        {
+                          JSON.parse(localStorage.getItem('user') as string).user_fname + ' ' + JSON.parse(localStorage.getItem('user') as string).user_lname
+                        }
+                      </span>
+                    </NavLink>
+                    <ul className="dropdown-menu dropdown-menu-end">
+                      <li><Link className="dropdown-item" to={"#"}>Profile</Link></li>
+                      <li><Link className="dropdown-item" to={"#"}>Change password</Link></li>
+                      <li><hr className="dropdown-divider" /></li>
+                      <li><Link className="dropdown-item" to={"#"} onClick={(e)=>doLogout(e)}>Logout</Link></li>
+                    </ul>
+                  </li>          
+              </ul>
             ) : (
               <>
                 <Link
