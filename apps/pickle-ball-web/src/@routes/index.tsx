@@ -10,6 +10,7 @@ import AceCourts from "../@pages/courts";
 import { Schedule } from "../@pages/schedules";
 import { DashboardLayout } from "../@layout/dashboardLayout";
 import BasicLogin from "../@pages/_auth_pages/formikLogin";
+import UserRegistration from "../@pages/_auth_pages/register.v2";
 
 export const routes = createBrowserRouter([
     {
@@ -68,6 +69,6 @@ export const routes = createBrowserRouter([
     },
     {
         path : "/register",
-        element: <Register/>
+        element: <UserRegistration/>
     }
 ]);
