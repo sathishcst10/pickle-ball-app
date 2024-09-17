@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { countries, ratingInfo } from '../../@helpers/constant_data';
 import { useEffect, useState } from 'react';
 import { InfoIcon } from '../../@components/_icons/menu_icons';
@@ -13,7 +13,7 @@ export function Register() {
     user_country: '',
     user_password: '',
   });
-
+  const navigate = useNavigate();
   const registerUser = async () => {
     const response = await fetch(
       'https://acepicklapi.raganindustries.com/api_user_signin.php',
@@ -36,6 +36,9 @@ export function Register() {
   };
 
   useEffect(() => {
+    if(localStorage.getItem('isLoggedIn')){
+      navigate('/ap/groups');
+    }
     document.title = 'Login | ACEPickl';
     document.getElementsByTagName('body')[0].classList.add('loginLayout');
 
@@ -159,7 +162,7 @@ export function Register() {
                 }
               />
             </div>
-            <div className="col-12">
+            <div className="col-6">
               <label htmlFor="inputPassword" className="form-label">
                 Password
               </label>
@@ -176,7 +179,7 @@ export function Register() {
                 }
               />
             </div>
-            <div className="col-12">
+            <div className="col-6">
               <label htmlFor="inputRepeatPassword" className="form-label">
                 Repeat password
               </label>
@@ -197,11 +200,13 @@ export function Register() {
                     : e.target.classList.remove('is-invalid')
                 }
               />
-              {userRequest.user_password !== password ? (
-                <div className="text-danger">Passwords do not match.</div>
-              ) : (
-                <div className="text-success">Passwords match.</div>
-              )}
+              {userRequest.user_password !== '' && password !== '' ? (
+                userRequest.user_password !== password ? (
+                  <div className="text-danger">Passwords do not match.</div>
+                ) : (
+                  <div className="text-success">Passwords match.</div>
+                )
+              ) : null}
             </div>
             <div className="col-12">
               <label htmlFor="inputCountry" className="form-label">
@@ -257,10 +262,34 @@ export function Register() {
               </div>
             </div>
           </div>
-
-          <button className="btn btn-dark w-100 py-2 mt-2" type="submit">
-            Register
-          </button>
+          {
+            userRequest.user_email === '' && userRequest.user_email.includes('@')||
+            userRequest.user_phone === '' ||
+            userRequest.user_fname === '' ||
+            userRequest.user_lname === '' ||
+            userRequest.user_country === '' ||
+            userRequest.user_password === '' ||
+            userRequest.user_password !== password ? (
+              <>
+                <div className="alert alert-danger mt-2" role="alert">
+                  Please fill all the fields and make sure passwords match.
+                </div>
+                <button className="btn btn-dark w-100 py-2 mt-2 disabled" type="submit">
+                  Register
+                </button>
+              </>
+            ) : (
+              <>
+              <div className="alert alert-success mt-2" role="alert">
+                All fields are filled and passwords match.
+              </div>
+              <button className="btn btn-dark w-100 py-2 mt-2" type="submit">
+                  Register
+                </button>
+              </>
+            )
+          }
+          
           <p className="mt-2 mb-3 text-body-secondary text-center">
             If you already have an account, please
             <Link to={'/login'} className="ms-1">

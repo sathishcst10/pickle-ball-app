@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Link, Navigate, NavigateProps, redirect } from 'react-router-dom';
+import { Link, Navigate, NavigateProps, redirect, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 export function Login() {
     const [userRequest, setUserRequest] = useState({        
@@ -8,7 +9,11 @@ export function Login() {
         "user_password" : ""          
     });
 
+    const navigate = useNavigate();
+
     const appLogin = async () => {
+
+        
         const response = await fetch('https://acepicklapi.raganindustries.com/api_user_login.php', {
             method: 'POST',
             headers: {
@@ -18,10 +23,10 @@ export function Login() {
         });
         const data = await response.json();
         if(data.status === "STATUS OK") {
-            console.log("Login Successful");
             localStorage.setItem('user', JSON.stringify(data));
             localStorage.setItem('isLoggedIn', 'true');
-            window.location.href = '/groups';
+            //window.location.href = '/ap/groups';
+            navigate('/ap/groups');
             //redirect('/groups');
         }else{
           alert(data.status +" : "+ data.description);
@@ -30,8 +35,13 @@ export function Login() {
     }
 
   useEffect(() => {
+    if(localStorage.getItem('isLoggedIn')){
+      navigate('/ap/groups');
+    }
     document.title = 'Login | ACEPickl';
     document.getElementsByTagName('body')[0].classList.add('loginLayout');
+
+    
     
     return () => {
       document.getElementsByTagName('body')[0].classList.remove('loginLayout');
@@ -71,8 +81,7 @@ export function Login() {
             <div className="form-check form-check-inline">
               <input className="form-check-input" type="radio" name="userType" id="userTYpe1" value="player"/>
               <label className="form-check-label" htmlFor="userType1">Player</label>
-            </div>
-            
+            </div>            
           </div>
           <div className="form-floating mb-3">
             <input
@@ -124,9 +133,24 @@ export function Login() {
               Forgot password?
             </a>
           </div>
-          <button className="btn btn-dark w-100 py-2 mb-3" type="submit">
-            Sign in
-          </button>
+          {
+            userRequest.user_authparameter.length > 0 && userRequest.user_password.length > 0 ?
+            <button className="btn btn-dark w-100 py-2 mb-3" type="submit">
+              Sign in
+            </button>
+
+            :
+
+            <>
+              <div className="alert alert-danger" role='alert'>
+                Please enter valid email address or phone number and password.
+              </div>
+              <button className="btn btn-dark w-100 py-2 mb-3 disabled" type="submit">
+                Sign in
+              </button>
+            </>
+          }
+          
           {/* <p className="mt-5 mb-3 text-body-secondary">© 2017–2024</p> */}
           <p className="mb-3 text-body-secondary text-center">
             Don't have an account?

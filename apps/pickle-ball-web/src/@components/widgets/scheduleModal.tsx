@@ -4,6 +4,7 @@ export const ScheduleModal = () => {
 
     const [scheduleRequest, setScheduleRequest] = useState(
         {
+            "schedule_name": "",
             "schedule_description": "",
             "schedule_starttime": "",
             "schedule_endtime": "",
@@ -107,7 +108,10 @@ export const ScheduleModal = () => {
                             <form className="row">
                                 <div className="col-12 mb-3">
                                     <label htmlFor="inputScheduleName" className="form-label">Schedule Name</label>
-                                    <input type="text" className="form-control" id="inputScheduleName" placeholder="Schedule Name"/>
+                                    <input type="text" className="form-control" id="inputScheduleName" placeholder="Schedule Name" 
+                                        value={scheduleRequest.schedule_name}
+                                        onChange={(e) => setScheduleRequest({...scheduleRequest, schedule_name: e.target.value})}
+                                    />
                                 </div>
                                 <div className="col-12 mb-3">
                                     <label htmlFor="inputDescription" className="form-label">Description</label>
@@ -131,7 +135,7 @@ export const ScheduleModal = () => {
                                 </div>
                                 <div className="col-12 mb-3">
                                 <div className="form-check form-switch">
-                                    <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" 
+                                    <input className="form-check-input" type="checkbox" name="flexSwitchCheckChecked" role="switch" id="flexSwitchCheckChecked" 
                                     checked={scheduleRequest.schedule_repeat}
                                     onChange={(e) => setScheduleRequest({...scheduleRequest, schedule_repeat: e.target.checked})}
                                     />

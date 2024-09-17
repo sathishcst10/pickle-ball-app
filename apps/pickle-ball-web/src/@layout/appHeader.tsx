@@ -7,25 +7,7 @@ export function AppHeader() {
   //   require('bootstrap/dist/js/bootstrap.bundle.min.js');
   // }, []);
 
-  const doLogout = (e:any) => {
-    e.preventDefault();
-    fetch('https://acepicklapi.raganindustries.com/api_user_logout.php', {
-      method: 'get',
-      headers: {
-        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('user') as string).access_token,        
-      },
-      
-    }).then(
-      (response) => {
-        if (response.status === 200) {
-          localStorage.clear();
-          window.location.href = '/landing';
-        }
-      }
-    ).catch((error) => {
-      console.error('Error:', error);
-    });
-  }
+  
 
   return (
     <header data-bs-theme="light">
@@ -52,7 +34,7 @@ export function AppHeader() {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarCollapse">
-            <ul className="navbar-nav mx-auto mb-2 mb-md-0">
+            <ul className="navbar-nav mx-auto mb-2 mb-md-0 d-none">
               <li className="nav-item">
                 <NavLink
                   className="nav-link"
@@ -103,43 +85,24 @@ export function AppHeader() {
                 </NavLink>
               </li>             
             </ul>
-            {localStorage.getItem('isLoggedIn') === 'true' ? (
+           
+                <div className='ms-auto'>
+                  <Link
+                    to={'/login'}
+                    className="btn btn-primary me-2"
+                    type="submit"
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    to={'/register'}
+                    className="btn btn-success"
+                    type="submit"
+                  >
+                    Sign Up
+                  </Link>
+                </div>
               
-              <ul className='navbar-nav '>
-                <li className="nav-item dropdown">
-                    <NavLink className="nav-link dropdown-toggle" to={"#"} role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      <span>
-                        {
-                          JSON.parse(localStorage.getItem('user') as string).user_fname + ' ' + JSON.parse(localStorage.getItem('user') as string).user_lname
-                        }
-                      </span>
-                    </NavLink>
-                    <ul className="dropdown-menu dropdown-menu-end">
-                      <li><Link className="dropdown-item" to={"#"}>Profile</Link></li>
-                      <li><Link className="dropdown-item" to={"#"}>Change password</Link></li>
-                      <li><hr className="dropdown-divider" /></li>
-                      <li><Link className="dropdown-item" to={"#"} onClick={(e)=>doLogout(e)}>Logout</Link></li>
-                    </ul>
-                  </li>          
-              </ul>
-            ) : (
-              <>
-                <Link
-                  to={'/login'}
-                  className="btn btn-primary me-2"
-                  type="submit"
-                >
-                  Sign In
-                </Link>
-                <Link
-                  to={'/register'}
-                  className="btn btn-success"
-                  type="submit"
-                >
-                  Sign Up
-                </Link>
-              </>
-            )}
           </div>
         </div>
       </nav>

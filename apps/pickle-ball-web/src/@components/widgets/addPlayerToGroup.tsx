@@ -10,7 +10,7 @@ interface Player {
 
 export function AddPlayerToGroup() {
   const [selectedPlayers, setSelectedPlayers] = useState([]);
-  const players : Player[] = [];
+  const [players, setPlayers] = useState([])
 
   const get_user_list = () => {
     fetch('https://acepicklapi.raganindustries.com/api_select_userlist.php', {
@@ -22,7 +22,7 @@ export function AddPlayerToGroup() {
     }).then(res=>res.json())
     .then(
       (response) => {
-        console.log(response);
+        setPlayers(response);
       }
     ).catch((error) => {
       console.error('Error:', error);
@@ -41,8 +41,8 @@ export function AddPlayerToGroup() {
 const playerViewTemplate = (option:any) => {
   return (
     <div className="flex align-items-center">
-        <h6 className='mb-0'>{option.name}</h6>
-        <small className='text-secondary'>{option.email} | {option.phone}</small>
+        <h6 className='mb-0'>{option.user_fname} {option.user_lname}</h6>
+        <small className='text-secondary'>{option.user_email} | {option.user_phone}</small>
     </div>
 );
 }
@@ -82,15 +82,16 @@ useEffect(() => {
                   value={selectedPlayers}
                   onChange={(e: MultiSelectChangeEvent) => setSelectedPlayers(e.value)}
                   options={players}
-                  optionLabel="name"
+                  optionLabel="user_fname"
                   display="chip"
                   placeholder="Select players"
                   maxSelectedLabels={4}
                   className="w-100"
                   filter
-                  filterBy='name,email,phone'                  
+                  filterBy='user_fname,user_email,user_phone,user_lname'                  
                   itemTemplate={playerViewTemplate}
                   panelFooterTemplate={panelFooterTemplate}
+                  
                 />
               </div>
             </form>

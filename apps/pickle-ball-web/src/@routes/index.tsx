@@ -8,37 +8,63 @@ import { Groups } from "../@pages/groups";
 import { PageNotFound } from "../@components/pageNotFound";
 import AceCourts from "../@pages/courts";
 import { Schedule } from "../@pages/schedules";
+import { DashboardLayout } from "../@layout/dashboardLayout";
+import BasicLogin from "../@pages/_auth_pages/formikLogin";
 
 export const routes = createBrowserRouter([
     {
-        path: "/",
         children: [
             {
-                path : "/landing",
+                path : "/",
                 element: <Landing/>
             },
+            // {
+            //     path: "/groups",
+            //     element : <Groups/>
+            // },
+            // {
+            //     path : "/courts",
+            //     element : <AceCourts/>
+            // },
+            // {
+            //     path : "/schedule",
+            //     element : <Schedule/>
+            // },
+            // {
+            //     path : "*",
+            //     element : <PageNotFound/>
+            // }
+        ],
+        element: <MasterLayout/>,
+    },
+    {
+        element : <DashboardLayout/>, 
+        children : [
             {
-                path: "/groups",
+                path : "/ap/groups",
                 element : <Groups/>
             },
             {
-                path : "/courts",
+                path : "/ap/courts",
                 element : <AceCourts/>
             },
             {
-                path : "/schedule",
+                path : "/ap/schedule",
                 element : <Schedule/>
             },
             {
                 path : "*",
                 element : <PageNotFound/>
             }
-        ],
-        element: <MasterLayout/>,
+        ]
     },
     {
         path: "/login",
         element: <Login/>,
+    },
+    {
+        path : "/basicLogin",
+        element : <BasicLogin/> 
     },
     {
         path : "/register",
