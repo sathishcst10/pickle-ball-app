@@ -45,7 +45,6 @@ export const CreateGroupModal: React.FC = () => {
   });
 
   const saveGroup = () => {
-    debugger;
     fetch('https://acepicklapi.raganindustries.com/api_create_group.php', {
       method: 'POST',
       headers: {
@@ -96,7 +95,7 @@ export const CreateGroupModal: React.FC = () => {
             </div>
             <div className="modal-body">
               <Stepper ref={stepperRef}>
-                <StepperPanel header="null">
+                <StepperPanel header="1">
                   <div className="flex flex-column h-12rem">
                     <div className="">
                       <div className="mb-3">

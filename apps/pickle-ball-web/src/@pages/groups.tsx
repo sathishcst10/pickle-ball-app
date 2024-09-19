@@ -2,6 +2,8 @@ import Swal from 'sweetalert2';
 import { AddPlayerToGroup } from '../@components/widgets/addPlayerToGroup';
 import { CreateGroupModal } from '../@components/widgets/CreateGroupModal';
 import { ScheduleModal } from '../@components/widgets/scheduleModal';
+import { useEffect, useState } from 'react';
+import { MultiSelect, MultiSelectChangeEvent } from 'primereact/multiselect';
 
 export const Groups: React.FC = () => {
   const deleteGroup = (id: any) => {
@@ -24,6 +26,7 @@ export const Groups: React.FC = () => {
       }
     });
   };
+
   return (
     <>
       <div className="container-fluid">
@@ -31,6 +34,7 @@ export const Groups: React.FC = () => {
           <div className="col-12 mt-3">
             <div className="d-flex justify-content-between align-items-center mb-3">
               <h4>Groups</h4>
+              
               <button
                 className="btn btn-primary ml-auto"
                 data-bs-toggle="modal"

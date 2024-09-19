@@ -33,7 +33,7 @@ export function CreateCourtV2() {
       </div>
       <div className="offcanvas-body">
         <Stepper ref={stepperRef}>
-          <StepperPanel header="null">
+          <StepperPanel header="1">
             <div className="d-flex flex-column">
               <div className="mb-3">
                 <label htmlFor="formGroupExampleInput" className="form-label">
@@ -163,7 +163,7 @@ export function CreateCourtV2() {
               </button>
             </div>
           </StepperPanel>
-          <StepperPanel header="null">
+          <StepperPanel header="2">
             <div className="d-flex">
               <div className="mb-3">
                 <label htmlFor="formGroupExampleInput2" className="form-label">
@@ -230,7 +230,7 @@ export function CreateCourtV2() {
               </button>
             </div>
           </StepperPanel>
-          <StepperPanel header="null">
+          <StepperPanel header="3">
                 <div className="d-flex flex-column">
                     <h4>Reservations & Access</h4>
                     <div className="mb-3">
@@ -277,7 +277,7 @@ export function CreateCourtV2() {
                     </button>
                 </div>
           </StepperPanel>
-          <StepperPanel header="null">
+          <StepperPanel header="4">
                 <div className='d-flex flex-column'>
                     <div className="mb-3">
                         <label htmlFor="formGroupExampleInput2" className="form-label">Upload Court Image</label>

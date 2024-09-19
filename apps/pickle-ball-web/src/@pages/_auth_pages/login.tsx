@@ -52,7 +52,7 @@ export function Login() {
       <main className="form-signin w-100 m-auto bg-white rounded-4 position-relative">
         <Link
           className="btn-close"
-          to={'/landing'}
+          to={'/'}
           style={{
             width: '32px',
             height: '32px',
