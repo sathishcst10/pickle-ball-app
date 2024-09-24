@@ -73,9 +73,9 @@ export function Login() {
             width={180}
           />
           <h1 className="h3 mb-3 fw-bold">Welcome to ACEPickl</h1>
-          <div className="mb-3">
+          <div className="mb-3 d-none">
           <div className="form-check form-check-inline">
-              <input className="form-check-input" type="radio" name="userType" id="userTYpe2" value="admin" checked/>
+              <input className="form-check-input" type="radio" name="userType" id="userTYpe2" value="admin"/>
               <label className="form-check-label" htmlFor="userType2">Admin</label>
             </div>
             <div className="form-check form-check-inline">

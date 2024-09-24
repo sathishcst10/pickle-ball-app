@@ -45,7 +45,7 @@ export const DashboardHeader = () => {
           id="navbarsExample11"
         >
           <Link className="navbar-brand col-lg-3 me-0" to={'#'}>
-            ACE Pickl
+            <img src="Logo-Green-Trans.png" alt="Logo" style={{width : "150px"}}/>
           </Link>
           <ul className="navbar-nav col-lg-6 justify-content-lg-center">
             

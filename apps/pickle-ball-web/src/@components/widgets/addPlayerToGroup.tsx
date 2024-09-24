@@ -77,13 +77,13 @@ export function AddPlayerToGroup() {
       }      
     )
     .then(
-      (response) => {
+      (response ) => {
         if(response === 'ACCESS TOKEN ERROR'){
           console.log('Unauthorized');
           localStorage.clear();
           navigate('/login');
         }else{
-          setPlayers(response);
+            Array.isArray(response) ? setPlayers(response) :  setPlayers([])
         }
         
       }

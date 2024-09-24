@@ -15,7 +15,7 @@ export const ScheduleModal = () => {
     schedule_repeat_day: '',
     schedule_repeat_till: '',
     schedule_visibility: 0,
-    schedule_skilllevel: '',
+    schedule_skilllevel: 0,
     schedule_rating: '',
     schedule_format: '',
     schedule_cost: '',
@@ -32,16 +32,44 @@ export const ScheduleModal = () => {
     { label: 'Court 1', value: '1' },
     { label: 'Court 2', value: '2' },
     { label: 'Court 3', value: '3' },
-  ]
+  ];
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const stepOneValidation = () => {
+    if (
+      scheduleRequest.schedule_name !== '' &&
+      scheduleRequest.schedule_description !== '' &&
+      scheduleRequest.schedule_starttime !== '' &&
+      scheduleRequest.schedule_endtime !== '' &&
+      scheduleRequest.schedule_repeat_day !== '' &&
+      scheduleRequest.schedule_repeat_till !== '' &&
+      scheduleRequest.schedule_skilllevel !== 0 &&
+      scheduleRequest.schedule_rating !== ''
+    ) {
+      return true;
+    }else{
+      return false;
+    }    
+  };
 
-  const createSchedule = async (e : any) => {
-
-    const request = {
-        ...scheduleRequest,
-        schedule_courts : JSON.stringify({...scheduleRequest.schedule_courts}) 
+  const stepTwoValidation = () => {
+    if (
+      scheduleRequest.schedule_format !== '' &&
+      scheduleRequest.schedule_cost !== '' &&
+      scheduleRequest.schedule_courts.length !== 0 &&
+      scheduleRequest.schedule_note_player !== '' &&
+      scheduleRequest.schedule_note_reviewer !== ''
+    ) {
+      return true;
+    }else{
+      return false;
     }
+  }
+  const createSchedule = async (e: any) => {
+    const request = {
+      ...scheduleRequest,
+      schedule_courts: JSON.stringify({ ...scheduleRequest.schedule_courts }),
+    };
 
     e.preventDefault();
     const response = await fetch(
@@ -50,21 +78,23 @@ export const ScheduleModal = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('user') as string).access_token,
+          Authorization:
+            'Bearer ' +
+            JSON.parse(localStorage.getItem('user') as string).access_token,
         },
         body: JSON.stringify(request),
       }
     );
     const data = await response.json();
-    if (data === 'STATUS OK') {      
-       Swal({
+    if (data === 'STATUS OK') {
+      Swal.fire({
         title: 'Success',
         text: 'Schedule created successfully',
         icon: 'success',
-       }) 
-    } else if( data === 'ACCESS TOKEN ERROR'){
-        localStorage.clear();
-        navigate('/login');
+      });
+    } else if (data === 'ACCESS TOKEN ERROR') {
+      localStorage.clear();
+      navigate('/login');
     }
     console.log(data);
   };
@@ -95,55 +125,7 @@ export const ScheduleModal = () => {
           <div className="modal-body">
             <div className="container-fluid g-1">
               <div className="row g-1">
-                <div className="col-3">
-                  <h6>Schedules</h6>
-                  <ul className="list-group">
-                    {[1, 2, 3].map((i) => {
-                      return (
-                        <li className="list-group-item" key={i}>
-                          <span>Schedule {i}</span>
-                          <div className="btn-group d-none">
-                            <button
-                              type="button"
-                              className="btn btn-danger dropdown-toggle"
-                              data-bs-toggle="dropdown"
-                              aria-expanded="false"
-                            >
-                              Action
-                            </button>
-                            <ul className="dropdown-menu">
-                              <li>
-                                <a className="dropdown-item" href="#">
-                                  Action
-                                </a>
-                              </li>
-                              <li>
-                                <a className="dropdown-item" href="#">
-                                  Another action
-                                </a>
-                              </li>
-                              <li>
-                                <a className="dropdown-item" href="#">
-                                  Something else here
-                                </a>
-                              </li>
-                              <li>
-                                <hr className="dropdown-divider" />
-                              </li>
-                              <li>
-                                <a className="dropdown-item" href="#">
-                                  Separated link
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                      );
-                    })}
-                    <li className="list-group-item">Schedule 1</li>
-                  </ul>
-                </div>
-                <div className="col-9 border-start">
+                <div className="col-12">
                   <div className="p-2">
                     <form className="row" onSubmit={(e) => createSchedule(e)}>
                       <Stepper ref={stepperRef}>
@@ -238,7 +220,11 @@ export const ScheduleModal = () => {
                                   name="flexSwitchCheckChecked"
                                   role="switch"
                                   id="flexSwitchCheckChecked"
-                                  checked={scheduleRequest.schedule_repeat === 1 ? true : false}
+                                  checked={
+                                    scheduleRequest.schedule_repeat === 1
+                                      ? true
+                                      : false
+                                  }
                                   onChange={(e) =>
                                     setScheduleRequest({
                                       ...scheduleRequest,
@@ -308,11 +294,11 @@ export const ScheduleModal = () => {
                                 onChange={(e) =>
                                   setScheduleRequest({
                                     ...scheduleRequest,
-                                    schedule_skilllevel: e.target.value,
+                                    schedule_skilllevel: Number(e.target.value),
                                   })
                                 }
                               >
-                                <option selected>Choose...</option>
+                                <option value={0}>Choose...</option>
                                 <option value="1">Beginner</option>
                                 <option value="2">Intermediate</option>
                                 <option value="3">Advanced</option>
@@ -323,7 +309,7 @@ export const ScheduleModal = () => {
                                 htmlFor="inputRating"
                                 className="form-label"
                               >
-                                Skill level
+                                Player rating
                               </label>
                               <input
                                 type="text"
@@ -353,11 +339,15 @@ export const ScheduleModal = () => {
                                   name="inlineRadioOptions"
                                   id="inlineRadioPublic"
                                   value={0}
-                                  checked = {scheduleRequest.schedule_visibility === 0}
+                                  checked={
+                                    scheduleRequest.schedule_visibility === 0
+                                  }
                                   onChange={(e) =>
                                     setScheduleRequest({
                                       ...scheduleRequest,
-                                      schedule_visibility:  parseInt(e.target.value),
+                                      schedule_visibility: parseInt(
+                                        e.target.value
+                                      ),
                                     })
                                   }
                                 />
@@ -375,11 +365,15 @@ export const ScheduleModal = () => {
                                   name="inlineRadioOptions"
                                   id="inlineRadioPrivate"
                                   value={1}
-                                  checked = {scheduleRequest.schedule_visibility === 0}
+                                  checked={
+                                    scheduleRequest.schedule_visibility === 0
+                                  }
                                   onChange={(e) =>
                                     setScheduleRequest({
                                       ...scheduleRequest,
-                                      schedule_visibility: parseInt(e.target.value),
+                                      schedule_visibility: parseInt(
+                                        e.target.value
+                                      ),
                                     })
                                   }
                                 />
@@ -399,11 +393,17 @@ export const ScheduleModal = () => {
                                   role="switch"
                                   id="flexSwitchCheckChecked1"
                                   value={scheduleRequest.schedule_auto_email}
-                                  checked={scheduleRequest.schedule_auto_email === 1 ? true : false}
+                                  checked={
+                                    scheduleRequest.schedule_auto_email === 1
+                                      ? true
+                                      : false
+                                  }
                                   onChange={(e) =>
                                     setScheduleRequest({
                                       ...scheduleRequest,
-                                      schedule_auto_email: e.target.checked ? 1 : 0,
+                                      schedule_auto_email: e.target.checked
+                                        ? 1
+                                        : 0,
                                     })
                                   }
                                 />
@@ -418,7 +418,7 @@ export const ScheduleModal = () => {
                           </div>
                           <div className="d-flex pt-4 justify-content-end">
                             <button
-                              className="btn btn-primary"
+                              className={`btn btn-primary ${stepOneValidation() ? '' : 'disabled'}`}
                               onClick={() => stepperRef.current.nextCallback()}
                             >
                               Next
@@ -438,10 +438,12 @@ export const ScheduleModal = () => {
                                 id="inputFormat"
                                 className="form-select"
                                 value={scheduleRequest.schedule_format}
-                                onChange={(e) =>setScheduleRequest({
+                                onChange={(e) =>
+                                  setScheduleRequest({
                                     ...scheduleRequest,
                                     schedule_format: e.target.value,
-                                })}
+                                  })
+                                }
                               >
                                 <option value={-1}>Choose...</option>
                                 <option value="1">Singles</option>
@@ -492,32 +494,40 @@ export const ScheduleModal = () => {
                               </select>
                             </div>
                             <div className="col-6 mb-3">
-                                <label htmlFor="inputCourt" className="form-label">
-                                    Court
-                                </label>
-                                <MultiSelect
-                                    id="inputCourt"
-                                    value={scheduleRequest.schedule_courts}
-                                    options={courtList}
-                                    className="w-100"
-                                    onChange={(e : MultiSelectChangeEvent) => {
-                                        const selectedCourts = e.value;
-                                
-                                        // Append selected values to the existing array
-                                        setScheduleRequest((prevState : any) => {
-                                            // Create a new array with the previous values and new selected ones (without duplicates)
-                                            const updatedCourts = [...new Set([...prevState.schedule_courts,  ...selectedCourts])];
-                                          
-                                            return {
-                                                ...prevState,
-                                                schedule_courts: updatedCourts, // Update state with new array
-                                            };
-                                        });
-                                    }}
-                                    optionLabel="label"
-                                    display="chip"
-                                    filter
-                                />
+                              <label
+                                htmlFor="inputCourt"
+                                className="form-label"
+                              >
+                                Court
+                              </label>
+                              <MultiSelect
+                                id="inputCourt"
+                                value={scheduleRequest.schedule_courts}
+                                options={courtList}
+                                className="w-100"
+                                onChange={(e: MultiSelectChangeEvent) => {
+                                  const selectedCourts = e.value;
+
+                                  // Append selected values to the existing array
+                                  setScheduleRequest((prevState: any) => {
+                                    // Create a new array with the previous values and new selected ones (without duplicates)
+                                    const updatedCourts = [
+                                      ...new Set([
+                                        ...prevState.schedule_courts,
+                                        ...selectedCourts,
+                                      ]),
+                                    ];
+
+                                    return {
+                                      ...prevState,
+                                      schedule_courts: updatedCourts, // Update state with new array
+                                    };
+                                  });
+                                }}
+                                optionLabel="label"
+                                display="chip"
+                                filter
+                              />
                             </div>
                             <div className="col-12 mb-3">
                               <label
@@ -570,10 +580,7 @@ export const ScheduleModal = () => {
                             >
                               Back
                             </button>
-                            <button
-                                type='submit'
-                              className="btn btn-primary"                              
-                            >
+                            <button type="submit" className={`btn btn-primary ${stepTwoValidation() ? '' : 'disabled'}`}>
                               Create schedule
                             </button>
                           </div>
@@ -593,11 +600,7 @@ export const ScheduleModal = () => {
             >
               Close
             </button>
-            <button
-              type="button"
-              className="btn btn-primary"
-            
-            >
+            <button type="button" className="btn btn-primary">
               Create schedule
             </button>
           </div>

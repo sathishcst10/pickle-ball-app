@@ -4,8 +4,47 @@ import { CreateGroupModal } from '../@components/widgets/CreateGroupModal';
 import { ScheduleModal } from '../@components/widgets/scheduleModal';
 import { useEffect, useState } from 'react';
 import { MultiSelect, MultiSelectChangeEvent } from 'primereact/multiselect';
+import { Link, useNavigate } from 'react-router-dom';
 
 export const Groups: React.FC = () => {
+  const [groupLists, setGroupLists] = useState([]);
+  const navigate = useNavigate();
+  const userGroupsByUserId = (id: any = 1) => {
+    fetch('https://acepicklapi.raganindustries.com/api_select_user_groups.php', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('user') as string).access_token,
+      },
+      body: JSON.stringify({ user_id: id }),
+  }).then(res=>res.json())
+  .then(
+    (response) => {
+      if(response === 'ACCESS TOKEN ERROR'){
+        console.log('Unauthorized');
+        localStorage.clear();
+        navigate('/login');
+      }else{
+        console.log(response);
+        const res_ : any = response !== undefined ? (Object.keys(response).map((key : any)=>response[key])) : [];
+        setGroupLists(
+          res_
+        );
+      }
+    }
+  ).catch((error) => {
+    console.log(error);
+  });
+  }
+
+
+
+  
+  useEffect(() => {
+    userGroupsByUserId(JSON.parse(localStorage.getItem('user')!).user_id && 1);
+  }, []);
+
+
   const deleteGroup = (id: any) => {
     console.log(id);
     Swal.fire({
@@ -46,9 +85,9 @@ export const Groups: React.FC = () => {
           </div>
         </div>
         <div className="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
-          {[1, 2, 3].map((i) => {
+          {groupLists.map((group : any, index:number) => {
             return (
-              <div className="col" key={i}>
+              <div className="col" key={index}>
                 <div className="card shadow-sm">
                   <svg
                     className="bd-placeholder-img card-img-top"
@@ -67,11 +106,9 @@ export const Groups: React.FC = () => {
                     </text>
                   </svg>
                   <div className="card-body">
-                    <h5 className="card-title">Group {i}</h5>
+                    <h5 className="card-title">{group.group_name}</h5>
                     <p className="card-text">
-                      This is a wider card with supporting text below as a
-                      natural lead-in to additional content. This content is a
-                      little bit longer.
+                     {group.group_description}
                     </p>
                     <div className="d-flex justify-content-between align-items-center">
                       <div className="btn-group">
@@ -135,7 +172,7 @@ export const Groups: React.FC = () => {
                           type="button"
                           className="btn btn-sm btn-outline-dark"
                           title="Delete group"
-                          onClick={(e) => deleteGroup(i)}
+                          onClick={(e) => deleteGroup(group.group_id)}
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -171,15 +208,15 @@ export const Groups: React.FC = () => {
                             />
                           </svg>
                         </button>
-                        <button
-                          type="button"
+                        <Link
+                          role="button"
                           className="btn btn-sm btn-outline-dark"
                           title="Schedule"
-                          data-bs-toggle="modal"
-                          data-bs-target="#scheduleModal"
+                          to={'/ap/schedule'}
+                          state = {{group_id: group.group_id}}
                         >
                           Schedule
-                        </button>
+                        </Link>
                       </div>
                       <small className="text-body-secondary">9 mins</small>
                     </div>
@@ -192,7 +229,7 @@ export const Groups: React.FC = () => {
       </div>
       <CreateGroupModal />
       <AddPlayerToGroup />
-      <ScheduleModal />
+      
     </>
   );
 };

@@ -1,11 +1,14 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { DashboardHeader } from './dashboardHeader';
 import { useEffect } from 'react';
 
 export const DashboardLayout = ({ children }: any) => {
+  const navigate = useNavigate();
 useEffect   (() => {
     document.getElementsByTagName('body')[0].classList.add('dashboardLayout');
-    
+    if(!localStorage.getItem('user')){
+      navigate('/login');
+    }
     return () => {
       document.getElementsByTagName('body')[0].classList.remove('dashboardLayout');
     };
