@@ -1,26 +1,26 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink } from 'react-router-dom';
 
 export const DashboardHeader = () => {
-
-  const doLogout = (e:any) => {
+  const doLogout = (e: any) => {
     e.preventDefault();
     fetch('https://acepicklapi.raganindustries.com/api_user_logout.php', {
       method: 'get',
       headers: {
-        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('user') as string).access_token,        
+        Authorization:
+          'Bearer ' +
+          JSON.parse(localStorage.getItem('user') as string).access_token,
       },
-      
-    }).then(
-      (response) => {
+    })
+      .then((response) => {
         if (response.status === 200) {
           localStorage.clear();
           window.location.href = '/';
         }
-      }
-    ).catch((error) => {
-      console.error('Error:', error);
-    });
-  }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  };
   return (
     // <header className="navbar sticky-top bg-light flex-md-nowrap p-0 shadow">
     <nav
@@ -45,10 +45,13 @@ export const DashboardHeader = () => {
           id="navbarsExample11"
         >
           <Link className="navbar-brand col-lg-3 me-0" to={'#'}>
-            <img src="Logo-Green-Trans.png" alt="Logo" style={{width : "150px"}}/>
+            <img
+              src="Logo-Green-Trans.png"
+              alt="Logo"
+              style={{ width: '150px' }}
+            />
           </Link>
           <ul className="navbar-nav col-lg-6 justify-content-lg-center">
-            
             <li className="nav-item dropdown">
               <NavLink
                 className="nav-link dropdown-toggle"
@@ -131,18 +134,12 @@ export const DashboardHeader = () => {
               </ul>
             </li>
             <li className="nav-item">
-              <NavLink
-                className="nav-link disabled"
-                to={'#'}            
-              >
+              <NavLink className="nav-link disabled" to={'#'}>
                 ACE Pickl Ranking
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink
-                className="nav-link disabled"
-                to={'#'}            
-              >
+              <NavLink className="nav-link disabled" to={'#'}>
                 Resources
               </NavLink>
             </li>
@@ -158,22 +155,40 @@ export const DashboardHeader = () => {
                 aria-expanded="false"
               >
                 <label htmlFor="">
-                    <p className="mb-0 fw-bold" style={{textTransform : "capitalize"}}>
-                        {
-                            JSON.parse(localStorage.getItem('user')!).user_fname + " " + JSON.parse(localStorage.getItem('user')!).user_lname
-
-                        }
-                    </p>
-                    <small className="text-muted">
-                        Last login: { JSON.parse(localStorage.getItem('user')!).user_lasllogin }
-                    </small>
+                  <p
+                    className="mb-0 fw-bold"
+                    style={{ textTransform: 'capitalize' }}
+                  >
+                    {JSON.parse(localStorage.getItem('user')!).user_fname +
+                      ' ' +
+                      JSON.parse(localStorage.getItem('user')!).user_lname}
+                  </p>
+                  <small className="text-muted">
+                    Last login:{' '}
+                    {JSON.parse(localStorage.getItem('user')!).user_lasllogin}
+                  </small>
                 </label>
-                <img src="avatar.svg" alt="userAvatar" className="ms-2" style={{width:"48px", height:"48", verticalAlign:"bottom"}}/>
+                <img
+                  src="avatar.svg"
+                  alt="userAvatar"
+                  className="ms-2"
+                  style={{
+                    width: '48px',
+                    height: '48',
+                    verticalAlign: 'bottom',
+                  }}
+                />
               </Link>
 
               <ul className="dropdown-menu dropdown-menu-end">
                 <li>
-                  <Link className="dropdown-item" to={'#'}>
+                  <Link
+                    className="dropdown-item"
+                    data-bs-toggle="offcanvas"
+                    to={'#userProfileCanvas'}
+                    role="button"
+                    aria-controls="userProfileCanvas"
+                  >
                     Profile
                   </Link>
                 </li>
@@ -183,7 +198,11 @@ export const DashboardHeader = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link className="dropdown-item" to={'#'} onClick={(e)=>doLogout(e)}>
+                  <Link
+                    className="dropdown-item"
+                    to={'#'}
+                    onClick={(e) => doLogout(e)}
+                  >
                     Logout
                   </Link>
                 </li>

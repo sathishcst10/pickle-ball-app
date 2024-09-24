@@ -141,11 +141,23 @@ export function Schedule() {
                         {data.schedule_format}
                       </td>
                       <td className="text-end">
-                        <button className="btn btn-primary me-2">Edit</button>
-                        <button className="btn btn-dark me-2">
-                          Add scores
-                        </button>
-                        <button className="btn btn-danger">Delete</button>
+                        <div className='d-flex justify-content-end'>
+                          <button className='btn btn-success me-2'>Accept</button>
+                          <button className='btn btn-danger me-2'>Reject</button>
+                          <div className="dropdown">
+                            <button className="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              Action
+                            </button>
+                            <ul className="dropdown-menu dropdown-menu-end">
+                              <li><button className="dropdown-item" type="button">Edit</button></li>
+                              <li><button className="dropdown-item" type="button">Add/update score</button></li>
+                              <li><button className="dropdown-item" type="button">Player summary</button></li>
+                              <li><button className="dropdown-item" type="button">Team details</button></li>
+                              <li><hr className="dropdown-divider"/></li>
+                              <li><button className="dropdown-item text-danger" type="button">Delete</button></li>
+                            </ul>
+                          </div>
+                        </div>
                       </td>
                     </tr>
                   );
