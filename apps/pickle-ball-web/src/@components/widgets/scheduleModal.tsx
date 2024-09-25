@@ -1,9 +1,10 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Stepper } from 'primereact/stepper';
 import { StepperPanel } from 'primereact/stepperpanel';
 import { MultiSelect, MultiSelectChangeEvent } from 'primereact/multiselect';
 import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { group } from 'console';
 export const ScheduleModal = () => {
   const stepperRef: any = useRef(null);
   const [scheduleRequest, setScheduleRequest] = useState({
@@ -25,16 +26,45 @@ export const ScheduleModal = () => {
     schedule_auto_email: 0,
     schedule_created_on: '',
     schedule_courts: [],
-    schedule_group_id: 2,
+    schedule_group_id: null,
   });
-
-  const courtList = [
-    { label: 'Court 1', value: '1' },
-    { label: 'Court 2', value: '2' },
-    { label: 'Court 3', value: '3' },
-  ];
+  const location = useLocation();
+  const [courtLists, setCourtLists] = useState([])
 
   const navigate = useNavigate();
+
+  const getCourtLists = () => {
+    fetch('https://acepicklapi.raganindustries.com/api_select_all_courts.php', {
+      method: 'get',
+      headers: {
+        Authorization:
+          'Bearer ' +
+          JSON.parse(localStorage.getItem('user') as string).access_token,
+      },
+    })
+      .then((res) => {
+        if (res.status === 401) {
+          console.log('Unauthorized');
+        }
+        return res.json();
+      })
+      .then((response) => {
+        if (response === 'ACCESS TOKEN ERROR') {
+          console.log('Unauthorized');
+          localStorage.clear();
+          navigate('/login');
+        } else {
+          const lists: any =
+            response !== undefined
+              ? Object.keys(response).map((key) => response[key])
+              : [];
+          setCourtLists(lists);
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  };
   const stepOneValidation = () => {
     if (
       scheduleRequest.schedule_name !== '' &&
@@ -68,7 +98,8 @@ export const ScheduleModal = () => {
   const createSchedule = async (e: any) => {
     const request = {
       ...scheduleRequest,
-      schedule_courts: JSON.stringify({ ...scheduleRequest.schedule_courts }),
+      schedule_courts: { ...scheduleRequest.schedule_courts },
+      schedule_group_id: location.state !== null ? location.state.group_id : null,
     };
 
     e.preventDefault();
@@ -99,6 +130,10 @@ export const ScheduleModal = () => {
     console.log(data);
   };
 
+  useEffect(() => {
+    getCourtLists();
+  }, []);
+  
   return (
     <div
       className="modal fade"
@@ -503,7 +538,7 @@ export const ScheduleModal = () => {
                               <MultiSelect
                                 id="inputCourt"
                                 value={scheduleRequest.schedule_courts}
-                                options={courtList}
+                                options={courtLists}
                                 className="w-100"
                                 onChange={(e: MultiSelectChangeEvent) => {
                                   const selectedCourts = e.value;
@@ -524,7 +559,7 @@ export const ScheduleModal = () => {
                                     };
                                   });
                                 }}
-                                optionLabel="label"
+                                optionLabel="court_name"
                                 display="chip"
                                 filter
                               />

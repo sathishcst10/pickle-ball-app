@@ -109,12 +109,13 @@ export function Schedule() {
             <table className="table table-bordered">
               <thead className="table-dark">
                 <tr>
-                  <th scope="col">Schedule name</th>
+                  <th>Group name</th>
+                  <th>Court name</th>
+                  <th>Schedule name</th>                  
                   <th scope="col">Scheduled date</th>
                   <th scope="col">Start date time</th>
-                  <th scope="col">End date time</th>
-                  <th scope="col">Repeat till</th>
-                  <th scope='col'>Scheduled format</th>
+                  <th scope="col">End date time</th>                  
+                  <th scope='col'>User Status</th>
                   <th scope="col">Action</th>
                 </tr>
               </thead>
@@ -123,7 +124,14 @@ export function Schedule() {
                   return (
                     <tr>
                       <td>
+                        {data.schedule_group_name || 'NA'}
+                      </td>
+
+                      <td>
                         { data.court_name }
+                      </td>
+                      <td>
+                        {data.schedule_name || 'NA'}
                       </td>
                       <td>
                         {data.schedule_date}
@@ -133,17 +141,23 @@ export function Schedule() {
                       </td>
                       <td>
                         {data.schedule_endtime}
-                      </td>
+                      </td>                                      
                       <td>
-                        {data.schedule_repeat_till}
-                      </td>
-                      <td>
-                        {data.schedule_format}
+                      <div className="dropdown">
+                            <button className="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              User status
+                            </button>
+                            <ul className="dropdown-menu dropdown-menu-end">
+                              <li><button className="dropdown-item" type="button">Accept</button></li>
+                              <li><button className="dropdown-item" type="button">Reject</button></li>                              
+
+                              <li><hr className="dropdown-divider"/></li>
+                              <li><button className="dropdown-item text-danger" type="button">Cancel</button></li>
+                            </ul>
+                          </div>
                       </td>
                       <td className="text-end">
-                        <div className='d-flex justify-content-end'>
-                          <button className='btn btn-success me-2'>Accept</button>
-                          <button className='btn btn-danger me-2'>Reject</button>
+                        <div className='d-flex justify-content-end'>                          
                           <div className="dropdown">
                             <button className="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                               Action

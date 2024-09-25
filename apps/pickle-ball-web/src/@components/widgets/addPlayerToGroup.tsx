@@ -64,10 +64,13 @@ export function AddPlayerToGroup() {
 
   const get_user_list = () => {
     fetch('https://acepicklapi.raganindustries.com/api_select_userlist.php', {
-      method: 'get',
+      method: 'post',
       headers: {
         'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('user') as string).access_token,        
       },
+      body: JSON.stringify({ 
+        selection_code : 0
+      }),
       
     }).then((res)=>{
         if(res.status === 401){
