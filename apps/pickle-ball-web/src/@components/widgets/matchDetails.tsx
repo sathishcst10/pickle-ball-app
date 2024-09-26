@@ -27,11 +27,11 @@ export const MatchDetails = () => {
                 <table className="table table-bordered">
                   <thead className="table-dark">
                     <tr>
-                      <th>Court name</th>
+                      <th>Court Name</th>
                       <th>Match</th>
                       <th>Team 1</th>
                       <th>Team 2</th>
-                      <th>Scheduled By</th>                      
+                      <th>By</th>                      
                     </tr>
                   </thead>
                 </table>

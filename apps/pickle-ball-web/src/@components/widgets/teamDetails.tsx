@@ -27,12 +27,12 @@ export const TeamDetails = () => {
               <table className="table table-bordered">
                 <thead className="table-dark">
                   <tr>
-                    <th>Player name</th>
+                    <th>Player Name</th>
                     <th>Email ID</th>
-                    <th>Phone number</th>
+                    <th>Phone Number</th>
                     <th>Response</th>
-                    <th>Responded by</th>
-                    <th>Responded on</th>
+                    <th>Responded By</th>
+                    <th>Responded On</th>
                     <th>Comments</th>
                   </tr>
                 </thead>

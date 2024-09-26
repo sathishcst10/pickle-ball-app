@@ -41,7 +41,7 @@ export const PlayerSummary = () => {
                     <td>0</td>
                   </tr>
                   <tr>
-                    <td>Not responded</td>
+                    <td>Not Responded</td>
                     <td>0</td>
                   </tr>
                   <tr>

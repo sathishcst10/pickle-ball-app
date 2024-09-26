@@ -116,9 +116,9 @@ export function Schedule() {
                   <th>Group name</th>
                   <th>Court name</th>
                   <th>Schedule name</th>                  
-                  <th scope="col">Scheduled date</th>
-                  <th scope="col">Start date time</th>
-                  <th scope="col">End date time</th>                  
+                  <th scope="col">Scheduled Date</th>
+                  <th scope="col">Start Date Time</th>
+                  <th scope="col">End Date Time</th>                  
                   <th scope='col'>User Status</th>
                   <th scope='col'>Match Details</th>
                   <th scope="col">Action</th>
@@ -172,9 +172,9 @@ export function Schedule() {
                             </button>
                             <ul className="dropdown-menu dropdown-menu-end">
                               <li><button className="dropdown-item" type="button">Edit</button></li>
-                              <li><button className="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#updateScoreModal">Update score</button></li>
-                              <li><button className="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#playerSummaryModal">Player summary</button></li>
-                              <li><button className="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#teamDetailsModal">Team details</button></li>
+                              <li><button className="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#updateScoreModal">Update Score</button></li>
+                              <li><button className="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#playerSummaryModal">Player Summary</button></li>
+                              <li><button className="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#teamDetailsModal">Team Details</button></li>
                               <li><hr className="dropdown-divider"/></li>
                               <li><button className="dropdown-item text-danger" type="button">Delete</button></li>
                             </ul>

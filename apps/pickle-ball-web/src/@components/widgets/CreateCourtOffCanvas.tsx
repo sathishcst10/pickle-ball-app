@@ -292,7 +292,7 @@ export function CreateCourtV2() {
                       htmlFor="formGroupExampleInput2"
                       className="form-label"
                     >
-                      Court Latitude
+                      Court Location
                     </label>
                     <input
                       type="text"
@@ -308,7 +308,7 @@ export function CreateCourtV2() {
                       }
                     />
                   </div>
-                  <div className="mb-3">
+                  <div className="mb-3 d-none">
                     <label
                       htmlFor="formGroupExampleInput2"
                       className="form-label"
