@@ -8,42 +8,75 @@ import { Link, useNavigate } from 'react-router-dom';
 
 export const Groups: React.FC = () => {
   const [groupLists, setGroupLists] = useState([]);
+  const [groupDetails, setGroupDetails]: any = useState({});
   const navigate = useNavigate();
   const userGroupsByUserId = (id: any = 1) => {
-    fetch('https://acepicklapi.raganindustries.com/api_select_user_groups.php', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('user') as string).access_token,
-      },
-      body: JSON.stringify({ user_id: id }),
-  }).then(res=>res.json())
-  .then(
-    (response) => {
-      if(response === 'ACCESS TOKEN ERROR'){
-        console.log('Unauthorized');
-        localStorage.clear();
-        navigate('/login');
-      }else{
-        console.log(response);
-        const res_ : any = response !== undefined ? (Object.keys(response).map((key : any)=>response[key])) : [];
-        setGroupLists(
-          res_
-        );
+    fetch(
+      'https://acepicklapi.raganindustries.com/api_select_user_groups.php',
+      {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization:
+            'Bearer ' +
+            JSON.parse(localStorage.getItem('user') as string).access_token,
+        },
+        body: JSON.stringify({ user_id: id }),
       }
-    }
-  ).catch((error) => {
-    console.log(error);
-  });
-  }
+    )
+      .then((res) => res.json())
+      .then((response) => {
+        if (response === 'ACCESS TOKEN ERROR') {
+          console.log('Unauthorized');
+          localStorage.clear();
+          navigate('/login');
+        } else {
+          console.log(response);
+          const res_: any =
+            response !== undefined
+              ? Object.keys(response).map((key: any) => response[key])
+              : [];
+          setGroupLists(res_);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
-
-
-  
   useEffect(() => {
     userGroupsByUserId(JSON.parse(localStorage.getItem('user')!).user_id && 1);
   }, []);
 
+  const getGroupDetails = (id: any) => {
+    fetch(
+      'https://acepicklapi.raganindustries.com/api_select_group_details.php',
+      {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization:
+            'Bearer ' +
+            JSON.parse(localStorage.getItem('user') as string).access_token,
+        },
+        body: JSON.stringify({ group_id: id }),
+      }
+    )
+      .then((res) => res.json())
+      .then((response) => {
+        if (response === 'ACCESS TOKEN ERROR') {
+          console.log('Unauthorized');
+          localStorage.clear();
+          navigate('/login');
+        } else {
+          console.log(response);
+          setGroupDetails(response['1']);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const deleteGroup = (id: any) => {
     console.log(id);
@@ -73,7 +106,7 @@ export const Groups: React.FC = () => {
           <div className="col-12 mt-3">
             <div className="d-flex justify-content-between align-items-center mb-3">
               <h4>Groups</h4>
-              
+
               <button
                 className="btn btn-primary ml-auto"
                 data-bs-toggle="modal"
@@ -85,7 +118,7 @@ export const Groups: React.FC = () => {
           </div>
         </div>
         <div className="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
-          {groupLists.map((group : any, index:number) => {
+          {groupLists.map((group: any, index: number) => {
             return (
               <div className="col" key={index}>
                 <div className="card shadow-sm">
@@ -107,15 +140,16 @@ export const Groups: React.FC = () => {
                   </svg>
                   <div className="card-body">
                     <h5 className="card-title">{group.group_name}</h5>
-                    <p className="card-text">
-                     {group.group_description}
-                    </p>
+                    <p className="card-text">{group.group_description}</p>
                     <div className="d-flex justify-content-between align-items-center">
                       <div className="btn-group">
                         <button
                           type="button"
                           className="btn btn-sm btn-outline-dark"
                           title="Edit/View Group"
+                          data-bs-toggle="modal"
+                          data-bs-target="#viewGroupModal"
+                          onClick={(e) => getGroupDetails(group.group_id)}
                         >
                           View
                         </button>
@@ -168,6 +202,16 @@ export const Groups: React.FC = () => {
                         >
                           Edit
                         </button>
+
+                        <Link
+                          role="button"
+                          className="btn btn-sm btn-outline-dark"
+                          title="Schedule"
+                          to={'/ap/schedule'}
+                          state={{ group_id: group.group_id }}
+                        >
+                          Schedule
+                        </Link>
                         <button
                           type="button"
                           className="btn btn-sm btn-outline-dark"
@@ -208,17 +252,10 @@ export const Groups: React.FC = () => {
                             />
                           </svg>
                         </button>
-                        <Link
-                          role="button"
-                          className="btn btn-sm btn-outline-dark"
-                          title="Schedule"
-                          to={'/ap/schedule'}
-                          state = {{group_id: group.group_id}}
-                        >
-                          Schedule
-                        </Link>
                       </div>
-                      <small className="text-body-secondary">9 mins</small>
+                      <small className="text-body-secondary d-none">
+                        9 mins
+                      </small>
                     </div>
                   </div>
                 </div>
@@ -229,7 +266,62 @@ export const Groups: React.FC = () => {
       </div>
       <CreateGroupModal />
       <AddPlayerToGroup />
-      
+      <div
+        className="modal fade"
+        id="viewGroupModal"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabIndex={-1}
+        aria-labelledby="viewGroupModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered modal-xl">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h1 className="modal-title fs-5" id="viewGroupModalLabel">
+                Group - {groupDetails.group_name}
+              </h1>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              <div className="card mb-3">
+                <img
+                  src={groupDetails.group_photo_id}
+                  className="card-img-top"
+                  alt="..."
+                  height={360}
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.onerror = null;
+                    target.src =
+                      'https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg';
+                  }}
+                  
+                />
+                <div className="card-body">
+                  <h5 className="card-title">{groupDetails.group_name}</h5>
+                  <p className="card-text">{groupDetails.group_description}</p>
+                  {/* <p className="card-text"><small className="text-body-secondary">Last updated 3 mins ago</small></p> */}
+                </div>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 };

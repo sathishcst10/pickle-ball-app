@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 import { ScheduleModal } from '../@components/widgets/scheduleModal';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { UpdateScore } from '../@components/widgets/updateScore';
+import { PlayerSummary } from '../@components/widgets/playerSummary';
+import { TeamDetails } from '../@components/widgets/teamDetails';
+import { MatchDetails } from '../@components/widgets/matchDetails';
 
 export function Schedule() {
   const [groupLists, setGroupLists] = useState([]);
@@ -116,6 +120,7 @@ export function Schedule() {
                   <th scope="col">Start date time</th>
                   <th scope="col">End date time</th>                  
                   <th scope='col'>User Status</th>
+                  <th scope='col'>Match Details</th>
                   <th scope="col">Action</th>
                 </tr>
               </thead>
@@ -156,6 +161,9 @@ export function Schedule() {
                             </ul>
                           </div>
                       </td>
+                      <td>
+                        <button className="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#matchDetailsModal">Match Details</button>
+                      </td>
                       <td className="text-end">
                         <div className='d-flex justify-content-end'>                          
                           <div className="dropdown">
@@ -164,9 +172,9 @@ export function Schedule() {
                             </button>
                             <ul className="dropdown-menu dropdown-menu-end">
                               <li><button className="dropdown-item" type="button">Edit</button></li>
-                              <li><button className="dropdown-item" type="button">Add/update score</button></li>
-                              <li><button className="dropdown-item" type="button">Player summary</button></li>
-                              <li><button className="dropdown-item" type="button">Team details</button></li>
+                              <li><button className="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#updateScoreModal">Update score</button></li>
+                              <li><button className="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#playerSummaryModal">Player summary</button></li>
+                              <li><button className="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#teamDetailsModal">Team details</button></li>
                               <li><hr className="dropdown-divider"/></li>
                               <li><button className="dropdown-item text-danger" type="button">Delete</button></li>
                             </ul>
@@ -181,7 +189,11 @@ export function Schedule() {
           </div>
         </div>
       </div>
-      <ScheduleModal />
+      <ScheduleModal/>
+      <UpdateScore/>
+      <PlayerSummary/>
+      <TeamDetails/>
+      <MatchDetails/>
     </>
   );
 }
