@@ -147,7 +147,7 @@ const getScores = () => {
                           onChange={(e) => { handleScoreChange(index, 'score', e.target.value) }}
                         />
                       </td>
-                      <td>
+                      <td className='d-none'>
                         <div className="d-flex">
                           <button
                             className="btn btn-sm btn-dark text-center rounded-3 me-2"

@@ -7,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { CreateCourt } from './CreateCourt';
 import { CreateCourtV2 } from './CreateCourtOffCanvas';
 import { create } from 'domain';
+import Swal from 'sweetalert2';
 
 interface CreateGroup {
   group_name: string;
@@ -92,9 +93,18 @@ export const CreateGroupModal: React.FC = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.status === 'STATUS OK') {
-          console.log('Group created successfully');
-          window.location.href = '/groups';
+        if (data === 'STATUS OK') {
+            console.log('Group created successfully');
+            Swal.fire({
+              title: 'Group created successfully',
+              icon: 'success',
+              confirmButtonText: 'Ok',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            })
+          
         } else {
           alert(data.status + ' : ' + data.description);
         }

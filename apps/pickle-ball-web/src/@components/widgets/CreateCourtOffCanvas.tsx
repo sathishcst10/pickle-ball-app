@@ -2,10 +2,16 @@ import { MultiSelect } from 'primereact/multiselect';
 import { Stepper } from 'primereact/stepper';
 import { StepperPanel } from 'primereact/stepperpanel';
 import { useRef, useState } from 'react';
+import Swal from 'sweetalert2';
+
+interface SURFACE {
+  id : number,
+  name : string
+}
 
 export function CreateCourtV2() {
   const stepperRef: any = useRef(null);
-  const [surfaces, setSurfaces] = useState<any[]>([
+  const [surfaces, setSurfaces] = useState<SURFACE[]>([
     { id: 1, name: 'Hard' },
     { id: 2, name: 'Clay' },
     { id: 3, name: 'Grass' },
@@ -13,8 +19,10 @@ export function CreateCourtV2() {
     { id: 5, name: 'Acrylic' },
   ]);
 
-  const [selectedSurfaces, setSelectedSurfaces] = useState([]);
-  const [selectedAmities, setSelectedAmities] = useState([]);
+  const [selectedSurfaces, setSelectedSurfaces] = useState<SURFACE[]>([]);
+  const [selectedAmities, setSelectedAmities] = useState<SURFACE[]>([]);
+
+  const [formData, setFormData] = useState();
 
   const [courtRequest, setCourtRequest] = useState({
     court_name: '',
@@ -25,92 +33,99 @@ export function CreateCourtV2() {
     court_outdoor_count: 0,
     court_description: '',
     court_note: '',
-    court_surface_ids: {},
-    court_aminity_ids: {},
-    court_avail_ids: {},
-  });
-  const [formData, setFormData] = useState({
-    // Initialize the state with default values for each iterated element
-    Monday: {
-      isChecked: false,
-      startTime: '',
-      endTime: '',
-      amPmStart: 'AM',
-      amPmEnd: 'AM',
-    },
-    Tuesday: {
-      isChecked: false,
-      startTime: '',
-      endTime: '',
-      amPmStart: 'AM',
-      amPmEnd: 'AM',
-    },
-    Wednesday: {
-      isChecked: false,
-      startTime: '',
-      endTime: '',
-      amPmStart: 'AM',
-      amPmEnd: 'AM',
-    },
-    Thursday: {
-      isChecked: false,
-      startTime: '',
-      endTime: '',
-      amPmStart: 'AM',
-      amPmEnd: 'AM',
-    },
-    Friday: {
-      isChecked: false,
-      startTime: '',
-      endTime: '',
-      amPmStart: 'AM',
-      amPmEnd: 'AM',
-    },
-    Saturday: {
-      isChecked: false,
-      startTime: '',
-      endTime: '',
-      amPmStart: 'AM',
-      amPmEnd: 'AM',
-    },
-    Sunday: {
-      isChecked: false,
-      startTime: '',
-      endTime: '',
-      amPmStart: 'AM',
-      amPmEnd: 'AM',
-    },
-    // ... similar objects for other days
-  });
-
-  const handleCheckboxChange = (day: any) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [day]: {
-        ...prevData[day],
-        isChecked: !prevData[day].isChecked,
+    court_surface_ids: [],
+    court_aminity_ids: [],
+    court_avail_ids: [      
+      {
+        name : 'Sunday',
+        day : 0,
+        isChecked: false,
+        startTime: '00:00',
+        endTime: '23:59',
+        amPmStart: 'AM',
+        amPmEnd: 'AM',
       },
-    }));
+      {
+        name : 'Monday',
+        day : 1,
+        isChecked: false,
+        startTime: '00:00',
+        endTime: '23:59',
+        amPmStart: 'AM',
+        amPmEnd: 'AM',
+      },
+      {
+        name : 'Tuesday',
+        day : 2,
+        isChecked: false,
+        startTime: '00:00',
+        endTime: '23:59',
+        amPmStart: 'AM',
+        amPmEnd: 'AM',
+      },
+      {
+        name : 'Wednesday',
+        day : 3,
+        isChecked: false,
+        startTime: '00:00',
+        endTime: '23:59',
+        amPmStart: 'AM',
+        amPmEnd: 'AM',
+      },
+      {
+        name : 'Thursday',
+        day : 4,
+        isChecked: false,
+        startTime: '00:00',
+        endTime: '23:59',
+        amPmStart: 'AM',
+        amPmEnd: 'AM',
+      },
+      {
+        name : 'Friday',
+        day : 5,
+        isChecked: false,
+        startTime: '00:00',
+        endTime: '23:59',
+        amPmStart: 'AM',
+        amPmEnd: 'AM',
+      },
+      {
+        name : 'Saturday',
+        day : 6,
+        isChecked: false,
+        startTime: '00:00',
+        endTime: '23:59',
+        amPmStart: 'AM',
+        amPmEnd: 'AM',
+      }
+    ],
+  });
+  const handleCheckboxChange = (dayIndex : number) => {
+    setFormData(prevData => {
+      return prevData.map((day, index) => {
+        if (index === dayIndex) {
+          return { ...day, isChecked: !day.isChecked };
+        }
+        return day;
+      });
+    });
   };
 
-  const handleTimeChange = (day, field, value) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [day]: {
-        ...prevData[day],
-        [field]: value,
-      },
-    }));
+  const handleTimeChange = (dayIndex : number, field : any, value : any) => {
+    setFormData((prevData) => {
+      const updatedData : any = [...prevData];
+      updatedData[dayIndex][field] = value;
+      return updatedData;
+    });
   };
 
-  const handleAmPmChange = (day, field, value) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [day]: {
-        ...prevData[day],
-        [field]: value,
-      },
-    }));
+  const handleAmPmChange = (dayIndex :any, field : any, value : any) => {
+    setFormData((prevData) => {
+      const updatedData : any = [...prevData];
+      updatedData[dayIndex][field] = value;
+      return updatedData;
+    });
   };
 
   const stepOneValidation = () => {
@@ -118,29 +133,21 @@ export function CreateCourtV2() {
       courtRequest.court_name.length > 0 &&
       courtRequest.court_address.length > 0 &&
       courtRequest.court_indoor_count > 0 &&
-      courtRequest.court_outdoor_count > 0 &&
-      courtRequest.court_map_latitude.length > 0 &&
-      courtRequest.court_map_longitude.length > 0
+      courtRequest.court_outdoor_count > 0 
     ) {
       return true;
     }
     return false;
   };
   const stepTwoValidation = () => {
-    if (selectedSurfaces.length > 0 && selectedAmities.length > 0) {
+    if (courtRequest.court_aminity_ids.length > 0 && courtRequest.court_surface_ids.length > 0) {
       return true;
     }
     return false;
   };
   const stepThreeValidation = () => {
     if (
-      formData.Monday.isChecked ||
-      formData.Tuesday.isChecked ||
-      formData.Wednesday.isChecked ||
-      formData.Thursday.isChecked ||
-      formData.Friday.isChecked ||
-      formData.Saturday.isChecked ||
-      formData.Sunday.isChecked
+     formData.some((day) => day.isChecked)
     ) {
       return true;
     }
@@ -154,53 +161,20 @@ export function CreateCourtV2() {
     return false;
   };
 
-  const convertFormData = (inputData : any) => {
-    const outputData : any = {};
-
-    let counter = 1;
-    for (const day in inputData) {
-      const dayData = inputData[day];
-
-      if (dayData.isChecked) {
-        const startTime = parseInt(dayData.startTime.split(':')[0]);
-        const endTime = parseInt(dayData.endTime.split(':')[0]);
-        const amPmStart = dayData.amPmStart;
-        const amPmEnd = dayData.amPmEnd;
-
-        // Adjust start and end times based on AM/PM
-        let adjustedStartTime = startTime;
-        let adjustedEndTime = endTime;
-        if (amPmStart === 'PM') {
-          adjustedStartTime += 12;
-        }
-        if (amPmEnd === 'PM') {
-          adjustedEndTime += 12;
-        }
-
-        outputData[counter] = {
-          start: adjustedStartTime.toString().padStart(2, '0'),
-          end: adjustedEndTime.toString().padStart(2, '0'),
-        };
-        counter++;
-      }
-    }
-
-    return outputData;
-  };
-
+ 
   const create_courts = () => {
-    console.log('courtRequest', courtRequest);
-    console.log('selectedSurfaces', selectedSurfaces);
-    console.log('selectedAmities', selectedAmities);
-    console.log('formData', formData);
-    const times : any = convertFormData(formData); 
-    setCourtRequest({
-      ...courtRequest,
-      court_surface_ids: { ...selectedAmities.map((items: any) => items.id) },
-      court_aminity_ids: { ...selectedSurfaces.map((items: any) => items.id) },
-      court_avail_ids:  times,
-    });
-
+   setCourtRequest({
+      ...courtRequest,      
+      court_avail_ids: formData
+        .filter((day) => day.isChecked)
+        .map((day) => {
+          return {
+            day: day.day,
+            startTime: day.startTime,
+            endTime: day.endTime,
+          };
+        })
+    })
 
     fetch('https://acepicklapi.raganindustries.com/api_create_court.php',{
       method : "POST",
@@ -213,6 +187,24 @@ export function CreateCourtV2() {
     ).then(res=>res.json())
     .then((response)=>{
       console.log(response)
+      if(response === 'ACCESS TOKEN ERROR'){
+        console.log('Unauthorized')
+        localStorage.clear()
+        // navigate('/login')
+      }else if(response === 'STATUS OK'){
+        console.log('Court created successfully')
+        Swal.fire({
+          icon: 'success',
+          title: 'Court created successfully',
+          showConfirmButton: false,
+          timer: 2000          
+        })
+        setTimeout(() => {
+          window.location.reload()
+        }, 3000);
+      }
+
+
     }).catch((error)=>{
       console.error(error)
     })
@@ -288,17 +280,17 @@ export function CreateCourtV2() {
                     />
                   </div>
                   <div className="mb-3">
-                    <label
+                    <label 
                       htmlFor="formGroupExampleInput2"
                       className="form-label"
                     >
-                      Court Location
+                      Court Location <small>(Google Maps Link)</small>
                     </label>
                     <input
                       type="text"
                       className="form-control"
                       id="formGroupExampleInput2"
-                      placeholder="Court Latitude"
+                      placeholder="Court Location"
                       value={courtRequest.court_map_latitude}
                       onChange={(e) =>
                         setCourtRequest({
@@ -426,9 +418,9 @@ export function CreateCourtV2() {
                       optionLabel="name"
                       placeholder="Select Surface(s)"
                       maxSelectedLabels={3}
-                      onChange={(e) => setSelectedSurfaces(e.value)}
+                      onChange={(e) => setCourtRequest({ ...courtRequest, court_surface_ids: e.value })}
                       display="chip"
-                      value={selectedSurfaces}
+                      value={courtRequest.court_surface_ids}
                     />
                   </div>
 
@@ -442,9 +434,9 @@ export function CreateCourtV2() {
                       optionLabel="name"
                       placeholder="Select Amenities"
                       maxSelectedLabels={3}
-                      onChange={(e) => setSelectedAmities(e.value)}
+                      onChange={(e) => setCourtRequest({ ...courtRequest, court_aminity_ids: e.value })}
                       display="chip"
-                      value={selectedAmities}
+                      value={courtRequest.court_aminity_ids}
                     />
                   </div>
                   <div className="mb-3">
@@ -483,30 +475,22 @@ export function CreateCourtV2() {
 
                     <table className="table table-bordered">
                       <tbody>
-                        {[
-                          'Monday',
-                          'Tuesday',
-                          'Wednesday',
-                          'Thursday',
-                          'Friday',
-                          'Saturday',
-                          'Sunday',
-                        ].map((day, index) => (
-                          <tr key={day}>
+                        {formData.map((day, index) => (
+                          <tr key={index}>
                             <td>
                               <div className="form-check">
                                 <input
                                   className="form-check-input"
                                   type="checkbox"
-                                  checked={formData[day].isChecked}
-                                  onChange={() => handleCheckboxChange(day)}
+                                  checked={day.isChecked}
+                                  onChange={() => handleCheckboxChange(index)}
                                   id={'flexCheckDefault' + index}
                                 />
                                 <label
                                   className="form-check-label"
                                   htmlFor={'flexCheckDefault' + index}
                                 >
-                                  {day}
+                                  {day.name}
                                 </label>
                               </div>
                             </td>
@@ -515,10 +499,10 @@ export function CreateCourtV2() {
                                 <input
                                   type="time"
                                   className="form-control me-2"
-                                  value={formData[day].startTime}
+                                  value={day.startTime}
                                   onChange={(e) =>
                                     handleTimeChange(
-                                      day,
+                                      index,
                                       'startTime',
                                       e.target.value
                                     )
@@ -532,14 +516,14 @@ export function CreateCourtV2() {
                                   <input
                                     type="radio"
                                     className="btn-check"
-                                    name={'btnradio' + day}
-                                    id={'btnRadio-start' + day + index + '-am'}
+                                    name={'btnradio' + day.name}
+                                    id={'btnRadio-start' + day.name + index + '-am'}
                                     autoComplete="off"
                                   />
                                   <label
                                     className="btn btn-outline-dark"
                                     htmlFor={
-                                      'btnRadio-start' + day + index + '-am'
+                                      'btnRadio-start' + day.name + index + '-am'
                                     }
                                   >
                                     AM
@@ -547,14 +531,14 @@ export function CreateCourtV2() {
                                   <input
                                     type="radio"
                                     className="btn-check"
-                                    name={'btnradio' + day}
-                                    id={'btnRadio-start' + day + index + '-pm'}
+                                    name={'btnradio' + day.name}
+                                    id={'btnRadio-start' + day.name + index + '-pm'}
                                     autoComplete="off"
                                   />
                                   <label
                                     className="btn btn-outline-dark"
                                     htmlFor={
-                                      'btnRadio-start' + day + index + '-pm'
+                                      'btnRadio-start' + day.name + index + '-pm'
                                     }
                                   >
                                     PM
@@ -572,10 +556,10 @@ export function CreateCourtV2() {
                                 <input
                                   type="time"
                                   className="form-control me-2"
-                                  value={formData[day].endTime}
+                                  value={day.endTime}
                                   onChange={(e) =>
                                     handleTimeChange(
-                                      day,
+                                      index,
                                       'endTime',
                                       e.target.value
                                     )
@@ -589,14 +573,14 @@ export function CreateCourtV2() {
                                   <input
                                     type="radio"
                                     className="btn-check"
-                                    name={'btnradioend' + day}
-                                    id={'btnRadio-end' + day + index + '-am'}
+                                    name={'btnradioend' + day.name}
+                                    id={'btnRadio-end' + day.name + index + '-am'}
                                     autoComplete="off"
                                   />
                                   <label
                                     className="btn btn-outline-dark"
                                     htmlFor={
-                                      'btnRadio-end' + day + index + '-am'
+                                      'btnRadio-end' + day.name + index + '-am'
                                     }
                                   >
                                     AM
@@ -604,14 +588,14 @@ export function CreateCourtV2() {
                                   <input
                                     type="radio"
                                     className="btn-check"
-                                    name={'btnradioend' + day}
-                                    id={'btnRadio-end' + day + index + '-pm'}
+                                    name={'btnradioend' + day.name}
+                                    id={'btnRadio-end' + day.name + index + '-pm'}
                                     autoComplete="off"
                                   />
                                   <label
                                     className="btn btn-outline-dark"
                                     htmlFor={
-                                      'btnRadio-end' + day + index + '-pm'
+                                      'btnRadio-end' + day.name + index + '-pm'
                                     }
                                   >
                                     PM

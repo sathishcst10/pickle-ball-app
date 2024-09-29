@@ -133,3 +133,6 @@ ul.p-multiselect-items.p-component {
 .p-multiselect-item h6{
   text-transform: capitalize;
 }
+label.form-label, label.form-check-label{
+  text-transform: capitalize;
+}

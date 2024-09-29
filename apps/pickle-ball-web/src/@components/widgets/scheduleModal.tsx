@@ -5,16 +5,17 @@ import { MultiSelect, MultiSelectChangeEvent } from 'primereact/multiselect';
 import Swal from 'sweetalert2';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { group } from 'console';
+import { date } from 'yup';
 export const ScheduleModal = () => {
   const stepperRef: any = useRef(null);
   const [scheduleRequest, setScheduleRequest] = useState({
     schedule_name: '',
     schedule_description: '',
-    schedule_starttime: '',
-    schedule_endtime: '',
+    schedule_starttime: new Date().toISOString().slice(0, 16),
+    schedule_endtime: new Date().toISOString().slice(0, 16),
     schedule_repeat: 0,
     schedule_repeat_day: '',
-    schedule_repeat_till: '',
+    schedule_repeat_till: new Date().toISOString().slice(0, 16),
     schedule_visibility: 0,
     schedule_skilllevel: 0,
     schedule_rating: '',
