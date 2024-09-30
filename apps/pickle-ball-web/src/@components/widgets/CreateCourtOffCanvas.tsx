@@ -35,7 +35,7 @@ export function CreateCourtV2() {
     court_note: '',
     court_surface_ids: [],
     court_aminity_ids: [],
-    court_avail_ids: [      
+    court_avail_ids: [
       {
         name : 'Sunday',
         day : 0,
@@ -102,30 +102,50 @@ export function CreateCourtV2() {
     ],
   });
   const handleCheckboxChange = (dayIndex : number) => {
-    setFormData(prevData => {
-      return prevData.map((day, index) => {
+    setCourtRequest({
+      ...courtRequest,
+      court_avail_ids: courtRequest.court_avail_ids.map((day, index) => {
         if (index === dayIndex) {
           return { ...day, isChecked: !day.isChecked };
         }
         return day;
-      });
-    });
+    })
+  });
+
+    // setFormData(prevData => {
+    //   return prevData.map((day, index) => {
+    //     if (index === dayIndex) {
+    //       return { ...day, isChecked: !day.isChecked };
+    //     }
+    //     return day;
+    //   });
+    // });
   };
 
   const handleTimeChange = (dayIndex : number, field : any, value : any) => {
-    setFormData((prevData) => {
-      const updatedData : any = [...prevData];
-      updatedData[dayIndex][field] = value;
-      return updatedData;
-    });
+    setCourtRequest({
+      ...courtRequest,
+      court_avail_ids: courtRequest.court_avail_ids.map((day, index) => {
+        if (index === dayIndex) {
+          return { ...day, [field]: value };
+        }
+        return day;
+      })
+    })
+
+    // setFormData((prevData) => {
+    //   const updatedData : any = [...prevData];
+    //   updatedData[dayIndex][field] = value;
+    //   return updatedData;
+    // });
   };
 
   const handleAmPmChange = (dayIndex :any, field : any, value : any) => {
-    setFormData((prevData) => {
-      const updatedData : any = [...prevData];
-      updatedData[dayIndex][field] = value;
-      return updatedData;
-    });
+    // setFormData((prevData) => {
+    //   const updatedData : any = [...prevData];
+    //   updatedData[dayIndex][field] = value;
+    //   return updatedData;
+    // });
   };
 
   const stepOneValidation = () => {
@@ -133,7 +153,7 @@ export function CreateCourtV2() {
       courtRequest.court_name.length > 0 &&
       courtRequest.court_address.length > 0 &&
       courtRequest.court_indoor_count > 0 &&
-      courtRequest.court_outdoor_count > 0 
+      courtRequest.court_outdoor_count > 0
     ) {
       return true;
     }
@@ -147,7 +167,7 @@ export function CreateCourtV2() {
   };
   const stepThreeValidation = () => {
     if (
-     formData.some((day) => day.isChecked)
+     courtRequest.court_avail_ids.some((day) => day.isChecked)
     ) {
       return true;
     }
@@ -161,28 +181,16 @@ export function CreateCourtV2() {
     return false;
   };
 
- 
-  const create_courts = () => {
-   setCourtRequest({
-      ...courtRequest,      
-      court_avail_ids: formData
-        .filter((day) => day.isChecked)
-        .map((day) => {
-          return {
-            day: day.day,
-            startTime: day.startTime,
-            endTime: day.endTime,
-          };
-        })
-    })
 
+  const create_courts = () => {
+   
     fetch('https://acepicklapi.raganindustries.com/api_create_court.php',{
       method : "POST",
       headers : {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('user') as string).access_token,
       },
-      body : JSON.stringify(courtRequest)      
+      body : JSON.stringify(courtRequest)
     }
     ).then(res=>res.json())
     .then((response)=>{
@@ -197,11 +205,17 @@ export function CreateCourtV2() {
           icon: 'success',
           title: 'Court created successfully',
           showConfirmButton: false,
-          timer: 2000          
+          timer: 2000
         })
         setTimeout(() => {
           window.location.reload()
         }, 3000);
+      }else{
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: response,
+        })
       }
 
 
@@ -280,7 +294,7 @@ export function CreateCourtV2() {
                     />
                   </div>
                   <div className="mb-3">
-                    <label 
+                    <label
                       htmlFor="formGroupExampleInput2"
                       className="form-label"
                     >
@@ -475,7 +489,7 @@ export function CreateCourtV2() {
 
                     <table className="table table-bordered">
                       <tbody>
-                        {formData.map((day, index) => (
+                        {courtRequest.court_avail_ids.map((day, index) => (
                           <tr key={index}>
                             <td>
                               <div className="form-check">

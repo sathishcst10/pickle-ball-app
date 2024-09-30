@@ -136,3 +136,6 @@ ul.p-multiselect-items.p-component {
 label.form-label, label.form-check-label{
   text-transform: capitalize;
 }
+table thead th {
+  text-transform: capitalize;
+}

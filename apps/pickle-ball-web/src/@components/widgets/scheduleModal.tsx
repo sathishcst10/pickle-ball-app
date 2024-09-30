@@ -4,8 +4,7 @@ import { StepperPanel } from 'primereact/stepperpanel';
 import { MultiSelect, MultiSelectChangeEvent } from 'primereact/multiselect';
 import Swal from 'sweetalert2';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { group } from 'console';
-import { date } from 'yup';
+
 export const ScheduleModal = () => {
   const stepperRef: any = useRef(null);
   const [scheduleRequest, setScheduleRequest] = useState({
@@ -21,7 +20,7 @@ export const ScheduleModal = () => {
     schedule_rating: '',
     schedule_format: '',
     schedule_cost: '',
-    schedule_signup: '',
+    schedule_signup: 'email',
     schedule_note_player: '',
     schedule_note_reviewer: '',
     schedule_auto_email: 0,
@@ -33,7 +32,7 @@ export const ScheduleModal = () => {
   const [courtLists, setCourtLists] = useState([])
 
   const navigate = useNavigate();
-
+  
   const getCourtLists = () => {
     fetch('https://acepicklapi.raganindustries.com/api_select_all_courts.php', {
       method: 'get',
@@ -54,10 +53,11 @@ export const ScheduleModal = () => {
           console.log('Unauthorized');
           localStorage.clear();
           navigate('/login');
-        } else {
+        } else{
           const lists: any =
             response !== undefined
-              ? Object.keys(response).map((key) => response[key])
+              ? response.map((court : any, index : number)=>{return {id : court.court_id, count : court.court_net_count, name : court.court_name}})
+
               : [];
           setCourtLists(lists);
         }
@@ -99,7 +99,7 @@ export const ScheduleModal = () => {
   const createSchedule = async (e: any) => {
     const request = {
       ...scheduleRequest,
-      schedule_courts: { ...scheduleRequest.schedule_courts },
+      schedule_courts: scheduleRequest.schedule_courts.map((court: any) =>{ return {id : court.id, count: court.count} }),
       schedule_group_id: location.state !== null ? location.state.group_id : null,
     };
 
@@ -124,9 +124,20 @@ export const ScheduleModal = () => {
         text: 'Schedule created successfully',
         icon: 'success',
       });
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+
     } else if (data === 'ACCESS TOKEN ERROR') {
       localStorage.clear();
       navigate('/login');
+    }else{
+      Swal.fire({
+        title: 'Error',
+        text: data,
+        icon: 'error',
+      });
     }
     console.log(data);
   };
@@ -560,7 +571,7 @@ export const ScheduleModal = () => {
                                     };
                                   });
                                 }}
-                                optionLabel="court_name"
+                                optionLabel="name"
                                 display="chip"
                                 filter
                               />

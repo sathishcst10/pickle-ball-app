@@ -31,11 +31,7 @@ export default function AceCourts() {
           localStorage.clear();
           navigate('/login');
         } else {
-          const lists: any =
-            response !== undefined
-              ? Object.keys(response).map((key) => response[key])
-              : [];
-          setCourtLists(lists);
+          setCourtLists(response);
         }
       })
       .catch((error) => {
@@ -57,7 +53,7 @@ export default function AceCourts() {
               <button className="btn btn-dark"
                  data-bs-toggle="modal"
                  data-bs-target='#createCourtModal'                 
-              >Add Court</button>
+              >Create Court</button>
             </div>
           </div>
         </div>

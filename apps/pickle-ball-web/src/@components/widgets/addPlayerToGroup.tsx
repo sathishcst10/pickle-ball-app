@@ -1,6 +1,6 @@
 import { MultiSelect, MultiSelectChangeEvent } from 'primereact/multiselect';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 interface Player {
@@ -15,14 +15,14 @@ export function AddPlayerToGroup() {
   const [players, setPlayers] = useState([]);
 
   const navigate = useNavigate();
-
+  const location = useLocation();
   const [userGroup, setUserGroup] = useState({})  
 
   const addUserToGroup = (e :any) => {
     e.preventDefault();
     console.log(selectedPlayers);
     const user_group = {
-      "group_id" : 2,
+      "group_id" : location.state.group_id,
       "group_users" : {...selectedPlayers.map((item : any)=>item.user_id)}
     }
     fetch('https://acepicklapi.raganindustries.com/api_add_group_users.php', {

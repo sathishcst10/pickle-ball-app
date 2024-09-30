@@ -4,13 +4,14 @@ import { CreateGroupModal } from '../@components/widgets/CreateGroupModal';
 import { ScheduleModal } from '../@components/widgets/scheduleModal';
 import { useEffect, useState } from 'react';
 import { MultiSelect, MultiSelectChangeEvent } from 'primereact/multiselect';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 export const Groups: React.FC = () => {
   const [groupLists, setGroupLists] = useState([]);
   const [groupDetails, setGroupDetails]: any = useState({});
   const navigate = useNavigate();
-  const userGroupsByUserId = (id: any = 1) => {
+  const location = useLocation();
+  const userGroupsByUserId = () => {
     fetch(
       'https://acepicklapi.raganindustries.com/api_select_user_groups.php',
       {
@@ -21,7 +22,7 @@ export const Groups: React.FC = () => {
             'Bearer ' +
             JSON.parse(localStorage.getItem('user') as string).access_token,
         },
-        body: JSON.stringify({ user_id: id }),
+        body: JSON.stringify({}),
       }
     )
       .then((res) => res.json())
@@ -45,7 +46,7 @@ export const Groups: React.FC = () => {
   };
 
   useEffect(() => {
-    userGroupsByUserId(JSON.parse(localStorage.getItem('user')!).user_id && 1);
+    userGroupsByUserId();
   }, []);
 
   const getGroupDetails = (id: any) => {
@@ -159,6 +160,8 @@ export const Groups: React.FC = () => {
                           title="Add/View players"
                           data-bs-toggle="modal"
                           data-bs-target="#addPlayerModal"
+
+                          onClick={(e) => location.state = {group_id: group.group_id}}
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"

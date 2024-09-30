@@ -12,14 +12,14 @@ export function Schedule() {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedGroup, setSelectedGroup] = useState(0);
-  const userGroupsByUserId = (id: any = 1) => {
+  const userGroupsByUserId = () => {
     fetch('https://acepicklapi.raganindustries.com/api_select_user_groups.php', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('user') as string).access_token,
       },
-      body: JSON.stringify({ user_id: id }),
+      body: JSON.stringify({}),
   }).then(res=>res.json())
   .then(
     (response) => {
@@ -39,7 +39,10 @@ export function Schedule() {
     console.log(error);
   });
   }
-
+  const changeGroup = (e: any) => {
+    setSelectedGroup(e.target.value);
+    location.state = {group_id:e.target.value}
+  }
   const getScheduleList = () => {
     fetch('https://acepicklapi.raganindustries.com/api_show_schedule_details.php',{
       method: "POST",
@@ -72,7 +75,7 @@ export function Schedule() {
   useEffect(() => {
 
     setSelectedGroup(location.state !== null ? location.state.group_id : 0);
-    userGroupsByUserId(JSON.parse(localStorage.getItem('user')!).user_id && 1);
+    userGroupsByUserId();
     
   }, []);
 
@@ -88,7 +91,7 @@ export function Schedule() {
               <h4 className="text-start">Schedule</h4>
               <div className='d-flex align-content-center' style={{whiteSpace:"nowrap"}}>
                 <select className='form-select me-2' value={selectedGroup} 
-                  onChange={(e)=>setSelectedGroup(Number(e.target.value))}
+                  onChange={(e)=>changeGroup(e)}
                 >
                   <option>--Select group--</option>
                   {
@@ -104,7 +107,7 @@ export function Schedule() {
                   data-bs-toggle="modal"
                   data-bs-target="#scheduleModal"
                 >
-                  Add Schedule
+                  Create Schedule
                 </button>
               </div>
             </div>
