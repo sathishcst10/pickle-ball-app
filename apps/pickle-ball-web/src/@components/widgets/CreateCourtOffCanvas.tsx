@@ -206,10 +206,11 @@ export function CreateCourtV2() {
           title: 'Court created successfully',
           showConfirmButton: false,
           timer: 2000
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
         })
-        setTimeout(() => {
-          window.location.reload()
-        }, 3000);
       }else{
         Swal.fire({
           icon: 'error',

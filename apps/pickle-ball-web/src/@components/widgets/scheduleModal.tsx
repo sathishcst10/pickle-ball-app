@@ -123,11 +123,11 @@ export const ScheduleModal = () => {
         title: 'Success',
         text: 'Schedule created successfully',
         icon: 'success',
-      });
-
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });     
 
     } else if (data === 'ACCESS TOKEN ERROR') {
       localStorage.clear();

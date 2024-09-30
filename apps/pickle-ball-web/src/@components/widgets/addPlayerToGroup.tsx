@@ -45,6 +45,10 @@ export function AddPlayerToGroup() {
             title: 'Success',
             text: 'User added to group',
             icon: 'success',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
           });          
         }
         else{
