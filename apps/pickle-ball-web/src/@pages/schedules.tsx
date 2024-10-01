@@ -124,7 +124,7 @@ export function Schedule() {
     location.state = {group_id:e.target.value}
   }
   const getScheduleList = () => {
-    fetch('https://acepicklapi.raganindustries.com/api_show_schedule_details.php',{
+    fetch('https://acepicklapi.raganindustries.com/api_get_user_schedule.php',{
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
@@ -170,9 +170,10 @@ useEffect(() => {
     updateScoreModal.show();
   }
 },[isUpdateScore])
+
   useEffect(() => {
     getScheduleList();
-  },[selectedGroup])
+  },[])
   return (
     <>
       <div className="container-fluid">
