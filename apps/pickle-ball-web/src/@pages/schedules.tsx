@@ -17,6 +17,7 @@ export function Schedule() {
   const [selectedGroup, setSelectedGroup] = useState(0);
 
   const [isPlayerSummary, setIsPlayerSummary] = useState(false);
+  const [isUpdateScore, setIsUpdateScore] = useState(false);
   const [playerSummary, setPlayerSummary] = useState({
     "accept" : 0,
     "reject" : 0,
@@ -150,13 +151,20 @@ export function Schedule() {
       console.log(error)
     });
   }
-
+  const showUpdateScore = (args : any) => {
+    setIsUpdateScore(true);
+    location.state = {schedule_id:args}   
+    const updateScoreModal = new bootstrap.Modal(document.getElementById('updateScoreModal') as HTMLElement);
+    updateScoreModal.show(); 
+  }
   useEffect(() => {
 
     setSelectedGroup(location.state !== null ? location.state.group_id : 0);
     userGroupsByUserId();
     
   }, []);
+
+
 
   useEffect(() => {
     getScheduleList();
@@ -254,7 +262,7 @@ export function Schedule() {
                             </button>
                             <ul className="dropdown-menu dropdown-menu-end">
                               <li><button className="dropdown-item" type="button">Edit</button></li>
-                              <li><button className="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#updateScoreModal">Update Score</button></li>
+                              <li><button className="dropdown-item" type="button" onClick={(e)=>showUpdateScore(data.schedule_id)}>Update Score</button></li>
                               <li><button className="dropdown-item" type="button" onClick={(e)=>playerSummaryData(data.schedule_id)}>Player Summary</button></li>
                               <li><button className="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#teamDetailsModal">Team Details</button></li>
                               <li><hr className="dropdown-divider"/></li>
@@ -272,7 +280,9 @@ export function Schedule() {
         </div>
       </div>
       <ScheduleModal/>
-      <UpdateScore/>
+      {
+       isUpdateScore && <UpdateScore/>
+      }
       {
         isPlayerSummary && <PlayerSummary _data ={playerSummary}/>
       }

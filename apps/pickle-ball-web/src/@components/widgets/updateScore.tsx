@@ -1,15 +1,16 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
-export const UpdateScore = () => {
+export const UpdateScore = (props : any) => {
+  const location = useLocation();
   const [updateScore, setUpdateScore] = useState({
-    schedule_id: null,
-    user_id: null,
+    schedule_id: location.state.schedule_id,
     scores: [
       {
-        match: 1,
-        playedOn: '2021-09-01T00:00',
-        score: 21,
+        match: 0,
+        playedOn: new Date().toISOString(),
+        score: 0,
       },
     ],
   });
@@ -39,14 +40,12 @@ export const UpdateScore = () => {
     });
   }
 
-const getScores = () => {
-  console.log(updateScore);
-}
+
   
 
   const updatePlayerScore = () => {
     fetch(
-      'https://acepicklapi.raganindustries.com/api_update_player_score.php',
+      'https://acepicklapi.raganindustries.com/api_update_score.php',
       {
         method: 'post',
         headers: {
@@ -55,10 +54,9 @@ const getScores = () => {
             'Bearer ' +
             JSON.parse(localStorage.getItem('user') as string).access_token,
         },
-        body: JSON.stringify({
-          player_id: 1,
-          score: updateScore,
-        }),
+        body: JSON.stringify(
+         updateScore
+        ),
       }
     )
       .then((res) => res.json())
@@ -67,8 +65,22 @@ const getScores = () => {
           console.log('console.log(updateScore);Unauthorized');
           localStorage.clear();
           navigate('/login');
-        } else {
-          console.log(response);
+        } else if(response === 'STATUS OK') {
+          Swal.fire({
+            title: 'Success',
+            text: 'Player score updated successfully',
+            icon: 'success',
+            confirmButtonText: 'OK',
+          }).then((result) => {
+            window.location.reload();
+          })
+        }else{
+          Swal.fire({
+            title: 'Error',
+            text: response,
+            icon: 'error',
+            confirmButtonText: 'OK',
+          });
         }
       })
       .catch((error) => {
@@ -230,7 +242,7 @@ const getScores = () => {
             >
               Close
             </button>
-            <button type="button" className="btn btn-primary" onClick={()=>getScores()}>
+            <button type="button" className="btn btn-primary" onClick={()=>updatePlayerScore()}>
               Update score
             </button>
           </div>
