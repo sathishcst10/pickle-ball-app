@@ -9,7 +9,7 @@ export const UpdateScore = (props : any) => {
     scores: [
       {
         match: 0,
-        playedOn: new Date().toISOString(),
+        playedOn: new Date().toISOString().slice(0, 16),
         score: 0,
       },
     ],
@@ -26,19 +26,19 @@ export const UpdateScore = (props : any) => {
     });
   };
 
-  const addRow = () => {
-    setUpdateScore({
-      ...updateScore,
-      scores: [
-        ...updateScore.scores,
-        {
-          match: 0,
-          playedOn: '2021-09-01T00:00',
-          score: 0,
-        },
-      ],
-    });
-  }
+  // const addRow = () => {
+  //   setUpdateScore({
+  //     ...updateScore,
+  //     scores: [
+  //       ...updateScore.scores,
+  //       {
+  //         match: 0,
+  //         playedOn: '2021-09-01T00:00',
+  //         score: 0,
+  //       },
+  //     ],
+  //   });
+  // }
 
 
   

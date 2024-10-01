@@ -154,8 +154,8 @@ export function Schedule() {
   const showUpdateScore = (args : any) => {
     setIsUpdateScore(true);
     location.state = {schedule_id:args}   
-    const updateScoreModal = new bootstrap.Modal(document.getElementById('updateScoreModal') as HTMLElement);
-    updateScoreModal.show(); 
+    // const updateScoreModal = new bootstrap.Modal(document.getElementById('updateScoreModal') as HTMLElement);
+    // updateScoreModal.show(); 
   }
   useEffect(() => {
 
@@ -164,8 +164,12 @@ export function Schedule() {
     
   }, []);
 
-
-
+useEffect(() => {
+  if(isUpdateScore){
+    const updateScoreModal = new bootstrap.Modal(document.getElementById('updateScoreModal') as HTMLElement);
+    updateScoreModal.show();
+  }
+},[isUpdateScore])
   useEffect(() => {
     getScheduleList();
   },[selectedGroup])
