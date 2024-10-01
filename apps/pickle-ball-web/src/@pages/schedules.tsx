@@ -5,6 +5,9 @@ import { UpdateScore } from '../@components/widgets/updateScore';
 import { PlayerSummary } from '../@components/widgets/playerSummary';
 import { TeamDetails } from '../@components/widgets/teamDetails';
 import { MatchDetails } from '../@components/widgets/matchDetails';
+import Swal from 'sweetalert2';
+
+import * as bootstrap from 'bootstrap';
 
 export function Schedule() {
   const [groupLists, setGroupLists] = useState([]);
@@ -12,6 +15,16 @@ export function Schedule() {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedGroup, setSelectedGroup] = useState(0);
+
+  const [isPlayerSummary, setIsPlayerSummary] = useState(false);
+  const [playerSummary, setPlayerSummary] = useState({
+    "accept" : 0,
+    "reject" : 0,
+    "cancelled" : 0,
+    "notRespond" : 0,
+    "total" : 0
+});
+
   const userGroupsByUserId = () => {
     fetch('https://acepicklapi.raganindustries.com/api_select_user_groups.php', {
       method: 'post',
@@ -39,6 +52,72 @@ export function Schedule() {
     console.log(error);
   });
   }
+  const playerSummaryData = (args : any) => {
+    setIsPlayerSummary(true);
+    fetch('https://acepicklapi.raganindustries.com/api_player_summary.php',{
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('user') as string).access_token,
+        },
+        body: JSON.stringify({
+          schedule_id: args
+        })
+      }).then((res)=>res.json())      
+      .then((response)=>{
+        if(response === 'ACCESS TOKEN ERROR'){
+          console.log('Unauthorized');
+          localStorage.clear();
+          navigate('/login');
+        }else if(response){
+          setPlayerSummary(response);         
+          const playerModal = new bootstrap.Modal(document.getElementById('playerSummaryModal') as HTMLElement);
+          playerModal.show();
+        }else{
+          Swal.fire({
+            title: 'Error',
+            text: response,
+            icon: 'error',
+          })
+          // const playerModal = new bootstrap.Modal(document.getElementById('playerSummaryModal') as HTMLElement);
+          // playerModal.show();
+          console.log(response);
+        }
+      }).catch((error)=>{
+        console.log(error)
+      });    
+  }
+  const updateStatus = (args : any) => {
+    fetch('https://acepicklapi.raganindustries.com/api_update_status.php',{
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('user') as string).access_token,
+      },
+      body: JSON.stringify({
+        schedule_id: args.id,
+        accept_status: args.status,
+        play_status: 0
+      })
+    }).then((res)=>res.json())
+    .then((response)=>{
+      if(response === 'ACCESS TOKEN ERROR'){
+        console.log('Unauthorized');
+        localStorage.clear();
+        navigate('/login');
+      }else{
+        Swal.fire({
+          title: 'Success',
+          text: 'User status updated '+ response,
+          icon: 'success',
+        })
+        console.log(response);
+      }
+    }).catch((error)=>{
+      console.log(error)
+    });
+  }
+
   const changeGroup = (e: any) => {
     setSelectedGroup(e.target.value);
     location.state = {group_id:e.target.value}
@@ -156,8 +235,8 @@ export function Schedule() {
                               User status
                             </button>
                             <ul className="dropdown-menu dropdown-menu-end">
-                              <li><button className="dropdown-item" type="button">Accept</button></li>
-                              <li><button className="dropdown-item" type="button">Reject</button></li>                              
+                              <li><button className="dropdown-item" type="button" onClick={(e)=>updateStatus({id : data.schedule_id, status : 1})}>Accept</button></li>
+                              <li><button className="dropdown-item" type="button" onClick={(e)=>updateStatus({id : data.schedule_id, status : -1})}>Reject</button></li>                              
 
                               <li><hr className="dropdown-divider"/></li>
                               <li><button className="dropdown-item text-danger" type="button">Cancel</button></li>
@@ -176,7 +255,7 @@ export function Schedule() {
                             <ul className="dropdown-menu dropdown-menu-end">
                               <li><button className="dropdown-item" type="button">Edit</button></li>
                               <li><button className="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#updateScoreModal">Update Score</button></li>
-                              <li><button className="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#playerSummaryModal">Player Summary</button></li>
+                              <li><button className="dropdown-item" type="button" onClick={(e)=>playerSummaryData(data.schedule_id)}>Player Summary</button></li>
                               <li><button className="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#teamDetailsModal">Team Details</button></li>
                               <li><hr className="dropdown-divider"/></li>
                               <li><button className="dropdown-item text-danger" type="button">Delete</button></li>
@@ -194,7 +273,9 @@ export function Schedule() {
       </div>
       <ScheduleModal/>
       <UpdateScore/>
-      <PlayerSummary/>
+      {
+        isPlayerSummary && <PlayerSummary _data ={playerSummary}/>
+      }
       <TeamDetails/>
       <MatchDetails/>
     </>

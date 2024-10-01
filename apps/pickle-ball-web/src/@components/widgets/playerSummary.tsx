@@ -1,4 +1,11 @@
-export const PlayerSummary = () => {
+import { useEffect } from "react";
+
+export const PlayerSummary = (props : any) => {
+  const {accept, reject, cancelled, notRespond, total} = props._data;
+
+  useEffect(() => {
+    console.log('Player Summary', props);
+  },[])
   return (
     <div
       className="modal fade"
@@ -34,23 +41,23 @@ export const PlayerSummary = () => {
                 <tbody>
                   <tr>
                     <td>Accepted</td>
-                    <td>0</td>
+                    <td>{accept}</td>
                   </tr>
                   <tr>
                     <td>Rejected</td>
-                    <td>0</td>
+                    <td>{reject}</td>
                   </tr>
                   <tr>
                     <td>Not Responded</td>
-                    <td>0</td>
+                    <td>{notRespond}</td>
                   </tr>
                   <tr>
                     <td>Cancelled</td>
-                    <td>0</td>
+                    <td>{cancelled}</td>
                   </tr>
-                  <tr>
+                  <tr className="table-secondary fw-bold">
                     <td>Total</td>
-                    <td>0</td>
+                    <td>{total}</td>
                   </tr>
                 </tbody>
               </table>
