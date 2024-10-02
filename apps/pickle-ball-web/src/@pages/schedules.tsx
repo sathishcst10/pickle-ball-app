@@ -18,6 +18,7 @@ export function Schedule() {
 
   const [isPlayerSummary, setIsPlayerSummary] = useState(false);
   const [isUpdateScore, setIsUpdateScore] = useState(false);
+  const [isMatchDetails, setIsMatchDetails] = useState(false);
   const [playerSummary, setPlayerSummary] = useState({
     "accept" : 0,
     "reject" : 0,
@@ -157,6 +158,13 @@ export function Schedule() {
     // const updateScoreModal = new bootstrap.Modal(document.getElementById('updateScoreModal') as HTMLElement);
     // updateScoreModal.show(); 
   }
+
+  const showMatchDetails = (args : any) => {
+    setIsMatchDetails(true);
+    location.state = {schedule_id:args}   
+    // const matchDetailsModal = new bootstrap.Modal(document.getElementById('matchDetailsModal') as HTMLElement);
+    // matchDetailsModal.show(); 
+  }
   useEffect(() => {
 
     setSelectedGroup(location.state !== null ? location.state.group_id : 0);
@@ -169,7 +177,12 @@ useEffect(() => {
     const updateScoreModal = new bootstrap.Modal(document.getElementById('updateScoreModal') as HTMLElement);
     updateScoreModal.show();
   }
-},[isUpdateScore])
+
+  if(isMatchDetails){
+    const matchDetailsModal = new bootstrap.Modal(document.getElementById('matchDetailsModal') as HTMLElement);
+    matchDetailsModal.show();
+  }
+},[isUpdateScore, isMatchDetails])
 
   useEffect(() => {
     getScheduleList();
@@ -222,7 +235,7 @@ useEffect(() => {
               <tbody>
                 {scheduleList.map((data : any, index) => {
                   return (
-                    <tr>
+                    <tr key={index}>
                       <td>
                         {data.schedule_group_name || 'NA'}
                       </td>
@@ -257,7 +270,7 @@ useEffect(() => {
                           </div>
                       </td>
                       <td>
-                        <button className="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#matchDetailsModal">Match Details</button>
+                        <button className="btn btn-outline-dark" onClick={()=>showMatchDetails(data.schedule_id)}>Match Details</button>
                       </td>
                       <td className="text-end">
                         <div className='d-flex justify-content-end'>                          
@@ -292,7 +305,10 @@ useEffect(() => {
         isPlayerSummary && <PlayerSummary _data ={playerSummary}/>
       }
       <TeamDetails/>
-      <MatchDetails/>
+      {
+        isMatchDetails &&
+        <MatchDetails/>
+      }
     </>
   );
 }

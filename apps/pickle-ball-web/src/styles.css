@@ -149,3 +149,15 @@ input[type=number]::-webkit-outer-spin-button {
 textarea {
   resize: none;
 }
+.nav-pills .nav-link{
+  color: #0b132b;
+}
+.nav-pills .nav-link.active {
+  color: #0b132b;
+  background-color: #ffffff;
+}
+div#pills-tabContent {
+  border: 1px solid RGBA(var(--bs-light-rgb),var(--bs-bg-opacity,1))!important;
+  height: 90%;
+  overflow: auto;
+}
