@@ -29,8 +29,8 @@ export function CreateCourtV2() {
     court_address: '',
     court_map_latitude: '',
     court_map_longitude: '',
-    court_indoor_count: 0,
-    court_outdoor_count: 0,
+    court_indoor_count: undefined,
+    court_outdoor_count: undefined,
     court_description: '',
     court_note: '',
     court_surface_ids: [],
@@ -152,8 +152,8 @@ export function CreateCourtV2() {
     if (
       courtRequest.court_name.length > 0 &&
       courtRequest.court_address.length > 0 &&
-      courtRequest.court_indoor_count > 0 &&
-      courtRequest.court_outdoor_count > 0
+      courtRequest.court_indoor_count !== null &&
+      courtRequest.court_outdoor_count !== null
     ) {
       return true;
     }
@@ -265,6 +265,7 @@ export function CreateCourtV2() {
                       id="formGroupExampleInput"
                       placeholder="Enter court title/name"
                       value={courtRequest.court_name}
+                      maxLength={150}
                       onChange={(e) =>
                         setCourtRequest({
                           ...courtRequest,
@@ -306,6 +307,7 @@ export function CreateCourtV2() {
                       className="form-control"
                       id="formGroupExampleInput2"
                       placeholder="Court Location"
+                      max={150}
                       value={courtRequest.court_map_latitude}
                       onChange={(e) =>
                         setCourtRequest({
@@ -458,7 +460,7 @@ export function CreateCourtV2() {
                     <label htmlFor="" className="form-label">
                       Additional description
                     </label>
-                    <textarea name="" id="" className="form-control"></textarea>
+                    <input type="text" name="" id="" maxLength={150} className='form-control'/>
                   </div>
                 </div>
                 <div className="d-flex pt-4 justify-content-between">
@@ -524,7 +526,7 @@ export function CreateCourtV2() {
                                   }
                                 />
                                 <div
-                                  className="btn-group"
+                                  className="btn-group d-none"
                                   role="group"
                                   aria-label="Basic radio toggle button group"
                                 >
@@ -566,7 +568,7 @@ export function CreateCourtV2() {
                                 to
                               </label>
                             </td>
-                            <td>
+                            <td >
                               <div className="d-flex">
                                 <input
                                   type="time"
@@ -581,7 +583,7 @@ export function CreateCourtV2() {
                                   }
                                 />
                                 <div
-                                  className="btn-group"
+                                  className="btn-group d-none"
                                   role="group"
                                   aria-label="Basic radio toggle button group"
                                 >
@@ -780,6 +782,7 @@ export function CreateCourtV2() {
                           court_note: e.target.value,
                         })
                       }
+                      maxLength={150}
                     ></textarea>
                   </div>
                 </div>

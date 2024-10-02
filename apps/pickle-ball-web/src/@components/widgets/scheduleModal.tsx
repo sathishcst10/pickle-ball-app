@@ -251,11 +251,17 @@ export const ScheduleModal = () => {
                                 className="form-control"
                                 id="inputEndDate"
                                 value={scheduleRequest.schedule_endtime}
-                                onChange={(e) =>
-                                  setScheduleRequest({
-                                    ...scheduleRequest,
-                                    schedule_endtime: e.target.value,
-                                  })
+                                onChange={(e) =>{
+                                  if(scheduleRequest.schedule_starttime > e.target.value){
+                                    alert('End date should be greater than start date');
+                                    return;
+                                  }else{
+                                    setScheduleRequest({
+                                      ...scheduleRequest,
+                                      schedule_endtime: e.target.value,
+                                    })
+                                  }
+                                  }
                                 }
                               />
                             </div>

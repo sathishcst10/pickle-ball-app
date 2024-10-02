@@ -139,3 +139,13 @@ label.form-label, label.form-check-label{
 table thead th {
   text-transform: capitalize;
 }
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0; 
+}
+textarea {
+  resize: none;
+}
