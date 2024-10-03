@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
@@ -14,7 +14,54 @@ export const UpdateScore = (props : any) => {
       },
     ],
   });
+  const [currentMatch, setCurrentMatch] = useState(0);
+
+
   const navigate = useNavigate();
+
+
+  const getCurrentMatch = () => {
+    fetch(
+      'https://acepicklapi.raganindustries.com/api_get_current_match.php',
+      {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization:
+            'Bearer ' +
+            JSON.parse(localStorage.getItem('user') as string).access_token,
+        },
+        body: JSON.stringify({
+          schedule_id: location.state.schedule_id,
+        }),
+      }
+    )
+      .then((res) => res.json())
+      .then((response) => {
+        console.log(response,"Current Match");
+        if (response === 'ACCESS TOKEN ERROR') {
+          console.log('Unauthorized');
+          localStorage.clear();
+          navigate('/login');
+        } else {
+          setCurrentMatch(response);
+          setUpdateScore({
+            ...updateScore,
+            scores: [
+              {
+                match: response,
+                playedOn: new Date().toISOString().slice(0, 16),
+                score: 0,
+              },
+            ],
+          })
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   const handleScoreChange = (index : number, field : any, value : any) => {
     setUpdateScore((prevUpdateScore) => {
       const updatedScores : any = [...prevUpdateScore.scores];
@@ -88,6 +135,10 @@ export const UpdateScore = (props : any) => {
       });
   };
 
+useEffect(() => {
+  getCurrentMatch();  
+},[])
+
   return (
     <div
       className="modal fade"
@@ -132,8 +183,9 @@ export const UpdateScore = (props : any) => {
                           type="text"
                           name={`inputMatch_${index}`}
                           id={`inputMatch_${index}`}
-                          className="form-control"
+                          className="form-control disabled"
                           placeholder="Enter match number"
+                          disabled
                           value={score.match}
                           onChange={(e) => { handleScoreChange(index, 'match', e.target.value) }}
                         />
@@ -164,7 +216,7 @@ export const UpdateScore = (props : any) => {
                           <button
                             className="btn btn-sm btn-dark text-center rounded-3 me-2"
                             title="Add row"
-                            onClick={()=>addRow()}
+                           
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"

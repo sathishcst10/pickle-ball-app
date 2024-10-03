@@ -121,7 +121,7 @@ export function Schedule() {
   }
 
   const changeGroup = (e: any) => {
-    setSelectedGroup(e.target.value);
+    setSelectedGroup(Number(e.target.value));
     location.state = {group_id:e.target.value}
   }
   const getScheduleList = () => {
@@ -173,6 +173,21 @@ export function Schedule() {
   }, []);
 
 useEffect(() => {
+  const modalElement = document.getElementById('updateScoreModal') as HTMLElement;
+
+if (modalElement) {
+  const myModalEl = new bootstrap.Modal(modalElement);
+
+  modalElement.addEventListener('hidden.bs.modal', (event) => {
+    // Your logic goes here...
+    if (isUpdateScore) {
+      setIsUpdateScore(false);
+    }
+  });
+
+  // Example to show the modal
+  //myModalEl.show();
+}
   if(isUpdateScore){
     const updateScoreModal = new bootstrap.Modal(document.getElementById('updateScoreModal') as HTMLElement);
     updateScoreModal.show();
@@ -198,17 +213,17 @@ useEffect(() => {
                 <select className='form-select me-2' value={selectedGroup} 
                   onChange={(e)=>changeGroup(e)}
                 >
-                  <option>--Select group--</option>
+                  <option value={0}>--Select group--</option>
                   {
-                    groupLists.map((item: any) => {
+                    groupLists.map((item: any, index : number) => {
                       return (
-                        <option value={item.group_id}>{item.group_name }</option>
+                        <option key={index} value={item.group_id}>{item.group_name }</option>
                       )
                     })
                   }
                 </select>
                 <button
-                  className="btn btn-dark"
+                  className={`btn btn-dark ${selectedGroup === 0 ? 'disabled' : ''}`}
                   data-bs-toggle="modal"
                   data-bs-target="#scheduleModal"
                 >
@@ -282,7 +297,7 @@ useEffect(() => {
                               <li><button className="dropdown-item" type="button">Edit</button></li>
                               <li><button className="dropdown-item" type="button" onClick={(e)=>showUpdateScore(data.schedule_id)}>Update Score</button></li>
                               <li><button className="dropdown-item" type="button" onClick={(e)=>playerSummaryData(data.schedule_id)}>Player Summary</button></li>
-                              <li><button className="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#teamDetailsModal">Team Details</button></li>
+                              <li><button className="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#teamDetailsModal">Player Lists</button></li>
                               <li><hr className="dropdown-divider"/></li>
                               <li><button className="dropdown-item text-danger" type="button">Delete</button></li>
                             </ul>

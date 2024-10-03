@@ -42,6 +42,10 @@ export const routes = createBrowserRouter([
         element : <DashboardLayout/>, 
         children : [
             {
+                path : "/ace/landing",
+                element : <Landing/>
+            },
+            {
                 path : "/ap/groups",
                 element : <Groups/>
             },

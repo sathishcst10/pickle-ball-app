@@ -24,7 +24,7 @@ export const DashboardHeader = () => {
   return (
     // <header className="navbar sticky-top bg-light flex-md-nowrap p-0 shadow">
     <nav
-      className="navbar navbar-expand-lg bg-body-tertiary rounded shadow-sm"
+      className="navbar navbar-expand-lg bg-body-tertiary rounded shadow-sm sticky-top"
       aria-label="Thirteenth navbar example"
     >
       <div className="container-fluid">
@@ -44,7 +44,7 @@ export const DashboardHeader = () => {
           className="collapse navbar-collapse d-lg-flex"
           id="navbarsExample11"
         >
-          <Link className="navbar-brand col-lg-3 me-0" to={'#'}>
+          <Link className="navbar-brand col-lg-3 me-0" to={'/ace/landing'}>
             <img
               src="Logo-Green-Trans.png"
               alt="Logo"

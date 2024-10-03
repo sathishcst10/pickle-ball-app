@@ -26,7 +26,7 @@ export function Login() {
             localStorage.setItem('user', JSON.stringify(data));
             localStorage.setItem('isLoggedIn', 'true');
             //window.location.href = '/ap/groups';
-            navigate('/ap/groups');
+            navigate('/ace/landing');
             //redirect('/groups');
         }else{
           alert(data.status +" : "+ data.description);
