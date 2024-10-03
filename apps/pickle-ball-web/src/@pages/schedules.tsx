@@ -8,7 +8,7 @@ import { MatchDetails } from '../@components/widgets/matchDetails';
 import Swal from 'sweetalert2';
 
 import * as bootstrap from 'bootstrap';
-import { DeleteIcon, EditIcon, PlayersListsIcon, PlayerSummaryIcon, UpdateScoreIcon } from '../@components/_icons/menu_icons';
+import { DeleteIcon, EditIcon, PlayersListsIcon, PlayerSummaryIcon, UpdateScoreIcon, ViewIcon } from '../@components/_icons/menu_icons';
 
 export function Schedule() {
   const [groupLists, setGroupLists] = useState([]);
@@ -364,6 +364,12 @@ export function Schedule() {
                               Action
                             </button>
                             <ul className="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <button className="dropdown-item" type="button">
+                                  <ViewIcon/>
+                                    View
+                                </button>
+                              </li>
                               <li>
                                 <button className="dropdown-item" type="button">
                                   <EditIcon/>
