@@ -146,7 +146,7 @@ export const Groups: React.FC = () => {
                     <p className="card-text">{group.group_description}</p>
 
                     <div className='d-flex' style={{ position: 'absolute', top: '5px', right: '5px' }}>
-                      <button className='btn btn-light me-2'>
+                      <button className='btn btn-light me-2' title='Chat'>
                         <ChatIconV2/>
                       </button>
                       <div
@@ -158,6 +158,7 @@ export const Groups: React.FC = () => {
                           type="button"
                           data-bs-toggle="dropdown"
                           aria-expanded="false"
+
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -195,7 +196,7 @@ export const Groups: React.FC = () => {
                             <button
                               className="dropdown-item"
                               type="button"
-                              title="Edit/View Group"
+                              title="View Group"
                               data-bs-toggle="modal"
                               data-bs-target="#viewGroupModal"
                               onClick={(e) => getGroupDetails(group.group_id)}
@@ -204,7 +205,7 @@ export const Groups: React.FC = () => {
                             </button>
                           </li>
                           <li>
-                            <button className="dropdown-item" type="button">
+                            <button title='Edit Group' className="dropdown-item" type="button">
                               <EditIcon /> Edit Group
                             </button>
                           </li>
@@ -212,7 +213,7 @@ export const Groups: React.FC = () => {
                             <button
                               className="dropdown-item"
                               type="button"
-                              title="Add/View players"
+                              title="Add Players"
                               data-bs-toggle="modal"
                               data-bs-target="#addPlayerModal"
                               onClick={(e) =>
@@ -235,7 +236,7 @@ export const Groups: React.FC = () => {
                             </Link>
                           </li>
                           <li>
-                            <button className="dropdown-item" data-bs-toggle="modal" data-bs-target="#teamDetailsModalV2">
+                            <button title="Player's Lists"  className="dropdown-item" data-bs-toggle="modal" data-bs-target="#teamDetailsModalV2">
                               <PlayersListsIcon />
                               Player's List
                             </button>

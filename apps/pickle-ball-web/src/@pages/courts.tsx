@@ -2,8 +2,10 @@ import React, { useEffect, useRef } from 'react';
 import { Stepper } from 'primereact/stepper';
 import { StepperPanel } from 'primereact/stepperpanel';
 import { Button } from 'primereact/button';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { CreateCourtV2 } from '../@components/widgets/CreateCourtOffCanvas';
+import { group } from 'console';
+import { ViewIcon, EditIcon, AddPlayersIcon, ScheduleIcon, PlayersListsIcon, DeleteIcon, ViewImagesIcon } from '../@components/_icons/menu_icons';
 
 export default function AceCourts() {
   const stepperRef = useRef(null);
@@ -66,7 +68,7 @@ export default function AceCourts() {
                   <div className="row g-0">
                     <div className="col-md-4">
                       <img
-                        src="..."
+                        src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
                         className="img-fluid h-100"
                         alt="..."
                         style={{ backgroundColor: '#d1d5db' }}
@@ -98,6 +100,87 @@ export default function AceCourts() {
                             Note : {court.court_note}
                           </small>
                         </p>
+                        <div
+                        className="dropdown"
+                        style={{ position: 'absolute', bottom: '5px', right: '5px' }}
+                      >
+                        <button
+                          className="btn btn-dark"
+                          type="button"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            width={24}
+                            height={24}
+                            color={'currentColor'}
+                            fill={'none'}
+                          >
+                            <path
+                              d="M11.992 12H12.001"
+                              stroke="currentColor"
+                              strokeWidth="2.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                            <path
+                              d="M11.9842 18H11.9932"
+                              stroke="currentColor"
+                              strokeWidth="2.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                            <path
+                              d="M11.9998 6H12.0088"
+                              stroke="currentColor"
+                              strokeWidth="2.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </button>
+                        <ul className="dropdown-menu dropdown-menu-end">
+                          <li>
+                            <button
+                              className="dropdown-item"
+                              type="button"
+                              title="View Court"
+                              
+                            >
+                              <ViewIcon /> View Court
+                            </button>
+                          </li>
+                          <li>
+                            <button title='Edit Court' className="dropdown-item" type="button">
+                              <EditIcon /> Edit Court
+                            </button>
+                          </li>
+                          
+                          <li>
+                            <button title="View Images"  className="dropdown-item">
+                              <ViewImagesIcon />
+                              View Images
+                            </button>
+                          </li>
+                          <li>
+                            <hr className="dropdown-divider" />
+                          </li>
+                          <li>
+                            <button
+                              className="dropdown-item text-danger"
+                              type="button"
+                              title="Delete Court"
+                              
+                            >
+                              <DeleteIcon />
+                              Delete Court
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
                       </div>
                     </div>
                   </div>
