@@ -486,6 +486,17 @@ export const ScheduleModal = () => {
                         </StepperPanel>
                         <StepperPanel header="Advanced">
                           <div className="row">
+                            <div className="coml-md-12">
+                              <label htmlFor="inputScheduleValidHrs">
+                                Schedule Valid Hours
+                              </label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="inputScheduleValidHrs"
+                                placeholder="Enter valid hours"
+                              />
+                            </div>
                             <div className="col-6 mb-3">
                               <label
                                 htmlFor="inputFormat"

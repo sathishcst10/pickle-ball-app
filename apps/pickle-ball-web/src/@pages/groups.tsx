@@ -5,6 +5,9 @@ import { ScheduleModal } from '../@components/widgets/scheduleModal';
 import { useEffect, useState } from 'react';
 import { MultiSelect, MultiSelectChangeEvent } from 'primereact/multiselect';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+
+import * as bootstrap from 'bootstrap';
+
 import {
   AddPlayersIcon,
   ChatIcon,
@@ -20,6 +23,8 @@ import { TeamDetailsV2 } from '../@components/widgets/teamDetails';
 export const Groups: React.FC = () => {
   const [groupLists, setGroupLists] = useState([]);
   const [groupDetails, setGroupDetails]: any = useState({});
+  const [isPlayerLists, setIsPlayerLists] = useState(false);
+
   const navigate = useNavigate();
   const location = useLocation();
   const userGroupsByUserId = () => {
@@ -56,9 +61,35 @@ export const Groups: React.FC = () => {
       });
   };
 
+  const ShowPlayerLists = (args :any) => {
+    setIsPlayerLists(true);
+    location.state = { group_id: args };
+  }
+
   useEffect(() => {
     userGroupsByUserId();
   }, []);
+
+  useEffect(() => {
+    const modalElement_playerListsV2 = document.getElementById(
+      'teamDetailsModalV2'
+    ) as HTMLElement;
+    if (modalElement_playerListsV2) {
+      modalElement_playerListsV2.addEventListener('hidden.bs.modal', function (
+        event
+      ) {
+        setIsPlayerLists(false);
+      });
+    }
+    if(isPlayerLists){
+      if(isPlayerLists){
+        const playerListsModal = new bootstrap.Modal(
+          document.getElementById('teamDetailsModalV2') as HTMLElement
+        );
+        playerListsModal.show();
+      }
+    }
+  },[isPlayerLists])
 
   const getGroupDetails = (id: any) => {
     fetch(
@@ -236,7 +267,7 @@ export const Groups: React.FC = () => {
                             </Link>
                           </li>
                           <li>
-                            <button title="Player's Lists"  className="dropdown-item" data-bs-toggle="modal" data-bs-target="#teamDetailsModalV2">
+                            <button title="Player's Lists"  className="dropdown-item" onClick={()=>ShowPlayerLists(group.group_id)}>
                               <PlayersListsIcon />
                               Player's List
                             </button>
@@ -323,7 +354,7 @@ export const Groups: React.FC = () => {
         </div>
       </div>
 
-      <TeamDetailsV2/>
+      {isPlayerLists && <TeamDetailsV2/>}
     </>
   );
 };

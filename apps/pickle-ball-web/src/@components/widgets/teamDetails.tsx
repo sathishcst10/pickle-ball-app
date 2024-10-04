@@ -2,8 +2,8 @@ import { useLocation } from "react-router-dom";
 import { Schedule } from "../../@pages/schedules";
 import { useEffect, useState } from "react";
 
-export const TeamDetails = () => {
-  const location = useLocation();  
+const TeamDetails = () => {
+const location = useLocation();  
 const [playerLists, setPlayerLists] = useState([]);
 
 const getPlayerLists = ()=>{
@@ -112,9 +112,44 @@ useEffect(() => {
   );
 };
 
-export const TeamDetailsV2 = () => {
+const TeamDetailsV2 = () => {
 
-
+  const location = useLocation();  
+  const [playerLists, setPlayerLists] = useState([]);
+  
+  const getGroupPlayerLists = ()=>{
+    fetch(`https://acepicklapi.raganindustries.com/api_get_group.php`,{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('user') as string).access_token
+      },
+      body : JSON.stringify(
+        {
+          group_id : location.state.group_id
+        }
+      )
+    }).then((res) => res.json())
+    .then((response) => {
+      if (response === 'ACCESS TOKEN ERROR') {
+        console.log('Unauthorized');
+        localStorage.clear();
+        //navigate('/login');
+      }else{
+        setPlayerLists(response.group_users);
+      }
+  
+      console.log(response);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  
+  }
+  
+  useEffect(() => {
+    getGroupPlayerLists();
+  },[]);
   return (
     <div
       className="modal fade"
@@ -149,6 +184,18 @@ export const TeamDetailsV2 = () => {
                     <th>Rank</th>                    
                   </tr>
                 </thead>
+                <tbody>
+                  {playerLists.map((player: any, index: number) => {
+                    return (
+                      <tr key={index}>
+                        <td>{player.user_name}</td>
+                        <td>{player.user_email}</td>
+                        <td>{player.user_phone}</td>
+                        <td>{player.user_rank || 'NA'}</td>                        
+                      </tr>
+                    );
+                  })}
+                </tbody>
               </table>
             </div>
           </div>
@@ -169,3 +216,5 @@ export const TeamDetailsV2 = () => {
     </div>
   );
 };
+
+export { TeamDetails, TeamDetailsV2 };

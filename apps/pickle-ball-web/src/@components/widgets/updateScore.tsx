@@ -153,7 +153,7 @@ useEffect(() => {
         <div className="modal-content">
           <div className="modal-header">
             <h1 className="modal-title fs-5" id="updateScoreModalLabel">
-              Update player score
+              Update Score
             </h1>
             <button
               type="button"
@@ -166,7 +166,7 @@ useEffect(() => {
             <table className="table table-bordered">
               <tbody>
                 <tr>
-                  <td>Player name</td>
+                  <td>Player Name</td>
                   <td colSpan={2}>
                     <span className="fw-bold">
                       {JSON.parse(localStorage.getItem('user')!).user_fname +

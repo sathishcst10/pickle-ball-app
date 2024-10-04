@@ -205,6 +205,24 @@ export function Schedule() {
       'updateScoreModal'
     ) as HTMLElement;
 
+    const modalElement_playerLists = document.getElementById(
+      'teamDetailsModal'
+    ) as HTMLElement;
+
+    const modalElement_playerListsV2 = document.getElementById(
+      'teamDetailsModalV2'
+    ) as HTMLElement;
+
+    const modalElement_playerSummary = document.getElementById(
+      'playerSummaryModal'
+    ) as HTMLElement;
+
+    const modalElement_matchDetails = document.getElementById(
+      'matchDetailsModal'
+    ) as HTMLElement;
+
+
+
     if (modalElement) {
       const myModalEl = new bootstrap.Modal(modalElement);
 
@@ -214,10 +232,47 @@ export function Schedule() {
           setIsUpdateScore(false);
         }
       });
+    }else if(modalElement_playerLists){
+      const myModalEl = new bootstrap.Modal(modalElement_playerLists);
 
-      // Example to show the modal
-      //myModalEl.show();
+      modalElement_playerLists.addEventListener('hidden.bs.modal', (event) => {
+        // Your logic goes here...
+        if (isPlayerLists) {
+          setIsPlayerLists(false);
+        }
+      });
+    }else if(modalElement_playerListsV2){
+      const myModalEl = new bootstrap.Modal(modalElement_playerListsV2);
+
+      modalElement_playerListsV2.addEventListener('hidden.bs.modal', (event) => {
+        // Your logic goes here...
+        if (isPlayerLists) {
+          setIsPlayerLists(false);
+        }
+      });
+    }else if(modalElement_playerSummary){
+      const myModalEl = new bootstrap.Modal(modalElement_playerSummary);
+
+      modalElement_playerSummary.addEventListener('hidden.bs.modal', (event) => {
+        // Your logic goes here...
+        if (isPlayerSummary) {
+          setIsPlayerSummary(false);
+        }
+      });
     }
+    else if(modalElement_matchDetails){
+      const myModalEl = new bootstrap.Modal(modalElement_matchDetails);
+
+      modalElement_matchDetails.addEventListener('hidden.bs.modal', (event) => {
+        // Your logic goes here...
+        if (isMatchDetails) {
+          setIsMatchDetails(false);
+        }
+      });
+    }
+
+
+
     if (isUpdateScore) {
       const updateScoreModal = new bootstrap.Modal(
         document.getElementById('updateScoreModal') as HTMLElement
@@ -314,7 +369,7 @@ export function Schedule() {
                             data-bs-toggle="dropdown"
                             aria-expanded="false"
                           >
-                            User status
+                            User Status
                           </button>
                           <ul className="dropdown-menu dropdown-menu-end">
                             <li>
