@@ -20,6 +20,7 @@ export function Schedule() {
   const [isPlayerSummary, setIsPlayerSummary] = useState(false);
   const [isUpdateScore, setIsUpdateScore] = useState(false);
   const [isMatchDetails, setIsMatchDetails] = useState(false);
+  const [isPlayerLists, setIsPlayerLists] = useState(false);
   const [playerSummary, setPlayerSummary] = useState({
     accept: 0,
     reject: 0,
@@ -186,6 +187,14 @@ export function Schedule() {
     // const matchDetailsModal = new bootstrap.Modal(document.getElementById('matchDetailsModal') as HTMLElement);
     // matchDetailsModal.show();
   };
+
+  const showPlayerLists = (args: any) => {
+    setIsPlayerLists(true);
+    location.state = { schedule_id: args };
+    // const teamDetailsModal = new bootstrap.Modal(document.getElementById('teamDetailsModal') as HTMLElement);
+    // teamDetailsModal.show();
+  }
+
   useEffect(() => {
     setSelectedGroup(location.state !== null ? location.state.group_id : 0);
     userGroupsByUserId();
@@ -222,7 +231,14 @@ export function Schedule() {
       );
       matchDetailsModal.show();
     }
-  }, [isUpdateScore, isMatchDetails]);
+
+    if(isPlayerLists){
+      const playerListsModal = new bootstrap.Modal(
+        document.getElementById('teamDetailsModal') as HTMLElement
+      );
+      playerListsModal.show();
+    }
+  }, [isUpdateScore, isMatchDetails, isPlayerLists]);
 
   useEffect(() => {
     getScheduleList();
@@ -404,8 +420,7 @@ export function Schedule() {
                                 <button
                                   className="dropdown-item"
                                   type="button"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#teamDetailsModal"
+                                  onClick={(e) =>showPlayerLists(data.schedule_id)}
                                 >
                                   <PlayersListsIcon/>
                                   Player Lists
@@ -438,7 +453,7 @@ export function Schedule() {
       <ScheduleModal />
       {isUpdateScore && <UpdateScore />}
       {isPlayerSummary && <PlayerSummary _data={playerSummary} />}
-      <TeamDetails />
+      {isPlayerLists && <TeamDetails/>}
       {isMatchDetails && <MatchDetails />}
     </>
   );
