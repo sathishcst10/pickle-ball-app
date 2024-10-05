@@ -24,7 +24,8 @@ export const Groups: React.FC = () => {
   const [groupLists, setGroupLists] = useState([]);
   const [groupDetails, setGroupDetails]: any = useState({});
   const [isPlayerLists, setIsPlayerLists] = useState(false);
-
+  const [isAddGroup, setIsAddGroup] = useState(false);
+  const [fnType, setFnType] = useState('Create');
   const navigate = useNavigate();
   const location = useLocation();
   const userGroupsByUserId = () => {
@@ -141,6 +142,32 @@ export const Groups: React.FC = () => {
       }
     });
   };
+  const changeFnType = (type: string, groupId : any) => {
+    if(type === 'Edit'){
+      location.state = { group_id: groupId };
+    }
+    setFnType(type);
+    setIsAddGroup(true);
+  }
+
+  useEffect(() => {
+
+
+    const modalElement = document.getElementById('CreateGroupModal') as HTMLElement;
+    if (modalElement) {
+      modalElement.addEventListener('hidden.bs.modal', function (event) {
+        setIsAddGroup(false);
+      });
+    }
+
+
+    if(isAddGroup){      
+        const createGroupModal = new bootstrap.Modal(
+          document.getElementById('CreateGroupModal') as HTMLElement
+        );
+        createGroupModal.show();      
+    }
+  },[isAddGroup])
 
   return (
     <>
@@ -151,9 +178,8 @@ export const Groups: React.FC = () => {
               <h4>Groups</h4>
 
               <button
-                className="btn btn-primary ml-auto"
-                data-bs-toggle="modal"
-                data-bs-target="#CreateGroupModal"
+                className="btn btn-primary ml-auto"               
+                onClick={()=>changeFnType('Create', null)}
               >
                 Create Group
               </button>
@@ -166,11 +192,17 @@ export const Groups: React.FC = () => {
               <div className="col" key={index}>
                 <div className="card shadow-sm">
                   <img
-                    src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
+                    src={'https://acepicklapi.raganindustries.com'+ group.group_photo_id}
                     alt="top"
                     className="bd-placeholder-img card-img-top"
                     style={{aspectRatio: '16/9'}}
                     height={195}
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.onerror = null;
+                      target.src =
+                        'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png';
+                    }}
                   />
                   <div className="card-body position-relative">
                     <h5 className="card-title">{group.group_name}</h5>
@@ -236,7 +268,7 @@ export const Groups: React.FC = () => {
                             </button>
                           </li>
                           <li>
-                            <button title='Edit Group' className="dropdown-item" type="button">
+                            <button title='Edit Group' className="dropdown-item" type="button" onClick={()=>changeFnType('Edit', group.group_id)}>
                               <EditIcon /> Edit Group
                             </button>
                           </li>
@@ -286,7 +318,7 @@ export const Groups: React.FC = () => {
                               Delete Group
                             </button>
                           </li>
-                        </ul>
+                        </ul> 
                       </div>
                     </div>
                   </div>
@@ -296,7 +328,7 @@ export const Groups: React.FC = () => {
           })}
         </div>
       </div>
-      <CreateGroupModal />
+     { isAddGroup && <CreateGroupModal type={fnType}/>}
       <AddPlayerToGroup />
       <div
         className="modal fade"
@@ -323,7 +355,7 @@ export const Groups: React.FC = () => {
             <div className="modal-body">
               <div className="card mb-3">
                 <img
-                  src={groupDetails.group_photo_id}
+                  src={'https://acepicklapi.raganindustries.com'+ groupDetails.group_photo_id}
                   className="card-img-top"
                   alt="..."
                   height={360}
@@ -331,7 +363,7 @@ export const Groups: React.FC = () => {
                     const target = e.target as HTMLImageElement;
                     target.onerror = null;
                     target.src =
-                      'https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg';
+                      'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png';
                   }}
                 />
                 <div className="card-body">

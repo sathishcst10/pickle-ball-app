@@ -2,6 +2,7 @@ import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { DashboardHeader } from './dashboardHeader';
 import { useEffect } from 'react';
 import { UserProfileCanvas } from '../@components/widgets/userProfileCanvas';
+import { ChangePasswordCanvas } from '../@components/widgets/changePasswordCanvas';
 
 export const DashboardLayout = ({ children }: any) => {
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ useEffect   (() => {
         </div>
 
         <UserProfileCanvas/>
+        <ChangePasswordCanvas/>
     </>
   );
 };

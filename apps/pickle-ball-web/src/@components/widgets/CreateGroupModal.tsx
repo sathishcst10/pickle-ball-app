@@ -3,7 +3,7 @@ import { StepperPanel } from 'primereact/stepperpanel';
 import { Button } from 'primereact/button';
 import { useEffect, useRef, useState } from 'react';
 import { MultiSelect } from 'primereact/multiselect';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { CreateCourt } from './CreateCourt';
 import { CreateCourtV2 } from './CreateCourtOffCanvas';
 import { create } from 'domain';
@@ -22,7 +22,8 @@ interface CreateGroup {
   group_access_message_all: number;
 }
 
-export const CreateGroupModal: React.FC = () => {
+export const CreateGroupModal = (props : any) => {
+  console.log('CreateGroupModal', props);
   const stepperRef: any = useRef(null);
   const courts = [
     { name: 'Ace Pickl Court-1', code: '1' },
@@ -46,6 +47,7 @@ export const CreateGroupModal: React.FC = () => {
   });
   const [courtLists, setCourtLists] = useState([]);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const getCourtLists = () => {
     fetch('https://acepicklapi.raganindustries.com/api_select_all_courts.php', {
@@ -131,9 +133,51 @@ export const CreateGroupModal: React.FC = () => {
     return false;
   }
 
+  const getGroupById = (group_id: number) => {
+    fetch('https://acepicklapi.raganindustries.com/api_get_group.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization":
+          'Bearer ' +
+          JSON.parse(localStorage.getItem('user') as string).access_token,
+      },
+      body: JSON.stringify({
+        group_id: group_id,
+      }),
+    }).then((res) => res.json()).then((response) => {
+      if (response === 'ACCESS TOKEN ERROR') {
+        console.log('Unauthorized');
+        localStorage.clear();
+        navigate('/login');
+      }else{
+        setCreateGroupRequest({
+          group_name: response.group_name,
+          group_description: response.group_description,
+          group_allowpublic: Number(response.group_allowpublic),
+          group_court_id: response.group_court_id,
+          group_access_name: response.group_access_name,
+          group_access_visibility: Number(response.access_visibility),
+          group_access_skill_level: Number(response.access_skill_level),
+          group_access_rating: response.access_rating,
+          group_access_invite_others: Number(response.access_invite_others),
+          group_access_message_all: Number(response.access_message_all),
+        });
+      }
+      console.log(response);
+    }).catch((error) => {
+      console.error('Error:', error);
+    })
+    
+  }
+
   useEffect(() => {
     getCourtLists();
-  }, []);
+
+    if(props.type === 'Edit'){
+      getGroupById(location.state.group_id);
+    }
+  }, [props.type]);
 
   return (
     <div

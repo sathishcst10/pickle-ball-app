@@ -1,7 +1,8 @@
 import { MultiSelect } from 'primereact/multiselect';
 import { Stepper } from 'primereact/stepper';
 import { StepperPanel } from 'primereact/stepperpanel';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 interface SURFACE {
@@ -9,7 +10,7 @@ interface SURFACE {
   name : string
 }
 
-export function CreateCourtV2() {
+export function CreateCourtV2(props : any) {
   const stepperRef: any = useRef(null);
   const [surfaces, setSurfaces] = useState<SURFACE[]>([
     { id: 1, name: 'Hard' },
@@ -18,7 +19,7 @@ export function CreateCourtV2() {
     { id: 4, name: 'Carpet' },
     { id: 5, name: 'Acrylic' },
   ]);
-
+  const location = useLocation();
   const [selectedSurfaces, setSelectedSurfaces] = useState<SURFACE[]>([]);
   const [selectedAmities, setSelectedAmities] = useState<SURFACE[]>([]);
 
@@ -224,6 +225,54 @@ export function CreateCourtV2() {
       console.error(error)
     })
   };
+
+  const getCourtById = (id : number) => {
+    fetch('https://acepicklapi.raganindustries.com/api_get_court.php',{
+      method : "POST",
+      headers : {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('user') as string).access_token,
+      },
+      body : JSON.stringify({court_id : id})
+    }).then(res=>res.json())
+    .then((response : any)=>{
+      console.log(response)
+      if(response === 'ACCESS TOKEN ERROR'){
+        console.log('Unauthorized')
+        localStorage.clear()
+        // navigate('/login')
+      }else {
+        console.log(response);
+        setCourtRequest(
+          {
+            court_name: response.court_name,
+            court_address: response.court_address,
+            court_map_latitude: response.court_map_latitude,
+            court_map_longitude: response.court_map_longitude,
+            court_indoor_count: response.court_indoor_count,
+            court_outdoor_count: response.court_outdoor_count,
+            court_description: response.court_description,
+            court_note: response.court_note,
+            court_surface_ids: [],
+            court_aminity_ids: [],
+            court_avail_ids : [],
+          }          
+        )
+
+      }
+    }).catch((error)=>{
+      console.error(error)
+    })
+
+  }
+
+
+  useEffect(() => {
+    if(props.type === 'Edit'){
+      getCourtById(location.state.court_id)
+    }
+  },[props.type])
+
 
   return (
     <div

@@ -2,15 +2,18 @@ import React, { useEffect, useRef } from 'react';
 import { Stepper } from 'primereact/stepper';
 import { StepperPanel } from 'primereact/stepperpanel';
 import { Button } from 'primereact/button';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { CreateCourtV2 } from '../@components/widgets/CreateCourtOffCanvas';
-import { group } from 'console';
+import * as bootstrap from 'bootstrap';
 import { ViewIcon, EditIcon, AddPlayersIcon, ScheduleIcon, PlayersListsIcon, DeleteIcon, ViewImagesIcon } from '../@components/_icons/menu_icons';
 
 export default function AceCourts() {
   const stepperRef = useRef(null);
   const [courtLists, setCourtLists] = React.useState([]);
+  const [isAddCourt, setIsAddCourt] = React.useState(false);
+  const [fnType, setFnType] = React.useState('Create');
   const navigate = useNavigate();
+  const location = useLocation();
 
   const getCourtLists = () => {
     fetch('https://acepicklapi.raganindustries.com/api_select_all_courts.php', {
@@ -41,9 +44,33 @@ export default function AceCourts() {
       });
   };
 
+const showCreateCourt = (type : string, courtId : any) => {
+  if(type === 'Edit'){
+    location.state = { court_id: courtId };
+  }
+  setIsAddCourt(true);
+  setFnType(type);
+}
+
   useEffect(() => {
     getCourtLists();
-  }, []);
+
+    const modalElement = document.getElementById('createCourtModal') as HTMLElement;
+    if (modalElement) {
+      modalElement.addEventListener('hidden.bs.modal', function (event) {
+        setIsAddCourt(false);
+      });
+    }
+
+
+    if(isAddCourt){      
+        const createGroupModal = new bootstrap.Modal(
+          document.getElementById('createCourtModal') as HTMLElement
+        );
+        createGroupModal.show();      
+    }
+
+  }, [isAddCourt]);
 
   return (
     <>
@@ -53,8 +80,7 @@ export default function AceCourts() {
             <div className="d-flex justify-content-between">
               <h4 className="text-start">Courts</h4>
               <button className="btn btn-dark"
-                 data-bs-toggle="modal"
-                 data-bs-target='#createCourtModal'                 
+                onClick={() => showCreateCourt('Create', null)}         
               >Create Court</button>
             </div>
           </div>
@@ -154,7 +180,7 @@ export default function AceCourts() {
                             </button>
                           </li>
                           <li>
-                            <button title='Edit Court' className="dropdown-item" type="button">
+                            <button title='Edit Court' className="dropdown-item" type="button" onClick={(e)=>showCreateCourt('Edit', court.court_id)}>
                               <EditIcon /> Edit Court
                             </button>
                           </li>
@@ -191,7 +217,7 @@ export default function AceCourts() {
         </div>
       </div>
 
-      <CreateCourtV2 />
+     {isAddCourt && <CreateCourtV2 type={fnType}/>}
     </>
   );
 }

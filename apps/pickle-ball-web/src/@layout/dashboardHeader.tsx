@@ -206,7 +206,10 @@ export const DashboardHeader = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link className="dropdown-item" to={'#'}>
+                  <Link className="dropdown-item"  data-bs-toggle="offcanvas"
+                    to={'#changePasswordCanvas'}
+                    role="button"
+                    aria-controls="changePasswordCanvas">
                     Change Password
                   </Link>
                 </li>
