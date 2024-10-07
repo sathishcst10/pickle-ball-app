@@ -23,9 +23,73 @@ export function CreateCourtV2(props : any) {
   const [selectedSurfaces, setSelectedSurfaces] = useState<SURFACE[]>([]);
   const [selectedAmities, setSelectedAmities] = useState<SURFACE[]>([]);
 
-  const [formData, setFormData] = useState();
+  const [formData, setFormData] = useState([
+    {
+      name : 'Sunday',
+      day : 0,
+      isChecked: false,
+      startTime: '00:00',
+      endTime: '23:59',
+      amPmStart: 'AM',
+      amPmEnd: 'AM',
+    },
+    {
+      name : 'Monday',
+      day : 1,
+      isChecked: false,
+      startTime: '00:00',
+      endTime: '23:59',
+      amPmStart: 'AM',
+      amPmEnd: 'AM',
+    },
+    {
+      name : 'Tuesday',
+      day : 2,
+      isChecked: false,
+      startTime: '00:00',
+      endTime: '23:59',
+      amPmStart: 'AM',
+      amPmEnd: 'AM',
+    },
+    {
+      name : 'Wednesday',
+      day : 3,
+      isChecked: false,
+      startTime: '00:00',
+      endTime: '23:59',
+      amPmStart: 'AM',
+      amPmEnd: 'AM',
+    },
+    {
+      name : 'Thursday',
+      day : 4,
+      isChecked: false,
+      startTime: '00:00',
+      endTime: '23:59',
+      amPmStart: 'AM',
+      amPmEnd: 'AM',
+    },
+    {
+      name : 'Friday',
+      day : 5,
+      isChecked: false,
+      startTime: '00:00',
+      endTime: '23:59',
+      amPmStart: 'AM',
+      amPmEnd: 'AM',
+    },
+    {
+      name : 'Saturday',
+      day : 6,
+      isChecked: false,
+      startTime: '00:00',
+      endTime: '23:59',
+      amPmStart: 'AM',
+      amPmEnd: 'AM',
+    }
+  ]);
 
-  const [courtRequest, setCourtRequest] = useState({
+  const [courtRequest, setCourtRequest] : any = useState({
     court_name: '',
     court_address: '',
     court_map_latitude: '',
@@ -36,109 +100,45 @@ export function CreateCourtV2(props : any) {
     court_note: '',
     court_surface_ids: [],
     court_aminity_ids: [],
-    court_avail_ids: [
-      {
-        name : 'Sunday',
-        day : 0,
-        isChecked: false,
-        startTime: '00:00',
-        endTime: '23:59',
-        amPmStart: 'AM',
-        amPmEnd: 'AM',
-      },
-      {
-        name : 'Monday',
-        day : 1,
-        isChecked: false,
-        startTime: '00:00',
-        endTime: '23:59',
-        amPmStart: 'AM',
-        amPmEnd: 'AM',
-      },
-      {
-        name : 'Tuesday',
-        day : 2,
-        isChecked: false,
-        startTime: '00:00',
-        endTime: '23:59',
-        amPmStart: 'AM',
-        amPmEnd: 'AM',
-      },
-      {
-        name : 'Wednesday',
-        day : 3,
-        isChecked: false,
-        startTime: '00:00',
-        endTime: '23:59',
-        amPmStart: 'AM',
-        amPmEnd: 'AM',
-      },
-      {
-        name : 'Thursday',
-        day : 4,
-        isChecked: false,
-        startTime: '00:00',
-        endTime: '23:59',
-        amPmStart: 'AM',
-        amPmEnd: 'AM',
-      },
-      {
-        name : 'Friday',
-        day : 5,
-        isChecked: false,
-        startTime: '00:00',
-        endTime: '23:59',
-        amPmStart: 'AM',
-        amPmEnd: 'AM',
-      },
-      {
-        name : 'Saturday',
-        day : 6,
-        isChecked: false,
-        startTime: '00:00',
-        endTime: '23:59',
-        amPmStart: 'AM',
-        amPmEnd: 'AM',
-      }
-    ],
+    court_avail_ids: [],
   });
   const handleCheckboxChange = (dayIndex : number) => {
-    setCourtRequest({
-      ...courtRequest,
-      court_avail_ids: courtRequest.court_avail_ids.map((day, index) => {
+  //   setCourtRequest({
+  //     ...courtRequest,
+  //     court_avail_ids: courtRequest.court_avail_ids.map((day, index) => {
+  //       if (index === dayIndex) {
+  //         return { ...day, isChecked: !day.isChecked };
+  //       }
+  //       return day;
+  //   })
+  // });
+
+    setFormData(prevData => {
+      return prevData.map((day, index) => {
         if (index === dayIndex) {
           return { ...day, isChecked: !day.isChecked };
         }
         return day;
-    })
-  });
-
-    // setFormData(prevData => {
-    //   return prevData.map((day, index) => {
-    //     if (index === dayIndex) {
-    //       return { ...day, isChecked: !day.isChecked };
-    //     }
-    //     return day;
-    //   });
-    // });
+      });
+    });
   };
 
   const handleTimeChange = (dayIndex : number, field : any, value : any) => {
-    setCourtRequest({
-      ...courtRequest,
-      court_avail_ids: courtRequest.court_avail_ids.map((day, index) => {
-        if (index === dayIndex) {
-          return { ...day, [field]: value };
-        }
-        return day;
-      })
-    })
+    // setCourtRequest({
+    //   ...courtRequest,
+    //   court_avail_ids: courtRequest.court_avail_ids.map((day, index) => {
+    //     if (index === dayIndex) {
+    //       return { ...day, [field]: value };
+    //     }
+    //     return day;
+    //   })
+    // })
 
-    // setFormData((prevData) => {
-    //   const updatedData : any = [...prevData];
-    //   updatedData[dayIndex][field] = value;
-    //   return updatedData;
-    // });
+    setFormData((prevData) => {
+      const updatedData : any = [...prevData];
+      updatedData[dayIndex][field] = value;
+      return updatedData;
+    });
   };
 
   const handleAmPmChange = (dayIndex :any, field : any, value : any) => {
@@ -168,7 +168,7 @@ export function CreateCourtV2(props : any) {
   };
   const stepThreeValidation = () => {
     if (
-     courtRequest.court_avail_ids.some((day) => day.isChecked)
+     formData.some((day) => day.isChecked)
     ) {
       return true;
     }
@@ -225,6 +225,63 @@ export function CreateCourtV2(props : any) {
       console.error(error)
     })
   };
+
+  useEffect(() => {
+    setCourtRequest({
+      ...courtRequest,
+      court_avail_ids: formData.filter((_day, index)=>_day.isChecked).map((day, index) => {
+        return {
+          day : day.day,
+          startTime : day.startTime,
+          endTime : day.endTime
+      }})
+    })
+},[
+    formData
+  ])
+
+  const update_courts = () => {
+    fetch('https://acepicklapi.raganindustries.com/api_edit_court.php',{
+      method : "POST",
+      headers : {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('user') as string).access_token,
+      },
+      body : JSON.stringify({
+        ...courtRequest,
+        court_id : location.state.court_id
+      })
+    }).then(res=>res.json())
+    .then((response)=>{
+      console.log(response)
+      if(response === 'ACCESS TOKEN ERROR'){
+        console.log('Unauthorized')
+        localStorage.clear()
+        // navigate('/login')
+      }else if(response === 'STATUS OK'){
+        console.log('Court updated successfully')
+        Swal.fire({
+          icon: 'success',
+          title: 'Court updated successfully',
+          showConfirmButton: false,
+          timer: 2000
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        })
+      }else{
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: response,
+        })
+      }
+    }).catch((error)=>{
+      console.error(error)
+    })
+  }
+
 
   const getCourtById = (id : number) => {
     fetch('https://acepicklapi.raganindustries.com/api_get_court.php',{
@@ -288,7 +345,7 @@ export function CreateCourtV2(props : any) {
         <div className="modal-content">
           <div className="modal-header">
             <h1 className="modal-title fs-5" id="createCourtModalLabel">
-              Create Court
+             { props.type === 'Create' ?  'Create Court' : 'Edit Court' }
             </h1>
             <button
               type="button"
@@ -541,7 +598,7 @@ export function CreateCourtV2(props : any) {
 
                     <table className="table table-bordered">
                       <tbody>
-                        {courtRequest.court_avail_ids.map((day, index) => (
+                        {formData.map((day, index) => (
                           <tr key={index}>
                             <td>
                               <div className="form-check">
@@ -842,16 +899,31 @@ export function CreateCourtV2(props : any) {
                   >
                     Back
                   </button>
-                  <button
+                  {
+                    props.type === 'Edit' ?
+                    <button
+                      className={`btn btn-success ${
+                        stepFiveValidation() ? '' : 'disabled'
+                      }`}
+                      onClick={(e) => {
+                        update_courts();
+                      }}
+                    >
+                      Update court
+                    </button> :
+
+                    <button
                     className={`btn btn-success ${
                       stepFiveValidation() ? '' : 'disabled'
                     }`}
                     onClick={(e) => {
                       create_courts();
                     }}
-                  >
-                    Submit court
-                  </button>
+                    >
+                    Create court
+                    </button>
+                  }
+                 
                 </div>
               </StepperPanel>
             </Stepper>

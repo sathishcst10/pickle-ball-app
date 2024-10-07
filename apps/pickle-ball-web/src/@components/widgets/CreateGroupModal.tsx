@@ -171,6 +171,51 @@ export const CreateGroupModal = (props : any) => {
     
   }
 
+  const updateGroup = () => {
+    fetch('https://acepicklapi.raganindustries.com/api_edit_group.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization:
+          'Bearer ' +
+          JSON.parse(localStorage.getItem('user') as string).access_token,
+      },
+      body: JSON.stringify({
+        ...createGroupRequest,
+        group_id: location.state.group_id,
+      }),
+    }).then((res) => res.json())
+    .then((response) => {
+      if (response === 'STATUS OK') {
+        console.log('Group updated successfully');
+        Swal.fire({
+          title: 'Group updated successfully',
+          icon: 'success',
+          confirmButtonText: 'Ok',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        })
+      } else {
+        Swal.fire({
+          title: 'Error',
+          text: response,
+          icon: 'error',
+          confirmButtonText: 'Ok',
+        }).then((result) => {
+          if (result.isConfirmed && response === 'ACCESS TOKEN ERROR') {
+            window.location.reload();
+          } 
+        })
+      }
+    })
+    .catch((error) => {
+      console.error('Error:', error
+      );  
+    })
+  }
+
   useEffect(() => {
     getCourtLists();
 
@@ -193,7 +238,9 @@ export const CreateGroupModal = (props : any) => {
         <div className="modal-content">
           <div className="modal-header">
             <h1 className="modal-title fs-5" id="CreateGroupModalLabel">
-              Create Group
+              {
+                props.type === 'Edit' ? 'Edit Group' : 'Create Group'
+              }
             </h1>
             <button
               type="button"
@@ -654,12 +701,23 @@ export const CreateGroupModal = (props : any) => {
                   >
                     Back
                   </button>
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => saveGroup()}
-                  >
-                    Save group
-                  </button>
+                  {
+                    props.type === 'Edit' ?
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => updateGroup()}
+                    >
+                      Update group
+                    </button>
+                    :
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => saveGroup()}
+                    >
+                      Save group
+                    </button>
+                  }
+                  
                 </div>
               </StepperPanel>
             </Stepper>

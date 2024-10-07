@@ -10,11 +10,14 @@ import * as bootstrap from 'bootstrap';
 
 import {
   AddPlayersIcon,
+  AdminIcon,
   ChatIcon,
   ChatIconV2,
   DeleteIcon,
   EditIcon,
+  MoreIcon,
   PlayersListsIcon,
+  ProfileIcon,
   ScheduleIcon,
   ViewIcon,
 } from '../@components/_icons/menu_icons';
@@ -62,10 +65,10 @@ export const Groups: React.FC = () => {
       });
   };
 
-  const ShowPlayerLists = (args :any) => {
+  const ShowPlayerLists = (args: any) => {
     setIsPlayerLists(true);
     location.state = { group_id: args };
-  }
+  };
 
   useEffect(() => {
     userGroupsByUserId();
@@ -76,21 +79,22 @@ export const Groups: React.FC = () => {
       'teamDetailsModalV2'
     ) as HTMLElement;
     if (modalElement_playerListsV2) {
-      modalElement_playerListsV2.addEventListener('hidden.bs.modal', function (
-        event
-      ) {
-        setIsPlayerLists(false);
-      });
+      modalElement_playerListsV2.addEventListener(
+        'hidden.bs.modal',
+        function (event) {
+          setIsPlayerLists(false);
+        }
+      );
     }
-    if(isPlayerLists){
-      if(isPlayerLists){
+    if (isPlayerLists) {
+      if (isPlayerLists) {
         const playerListsModal = new bootstrap.Modal(
           document.getElementById('teamDetailsModalV2') as HTMLElement
         );
         playerListsModal.show();
       }
     }
-  },[isPlayerLists])
+  }, [isPlayerLists]);
 
   const getGroupDetails = (id: any) => {
     fetch(
@@ -142,32 +146,76 @@ export const Groups: React.FC = () => {
       }
     });
   };
-  const changeFnType = (type: string, groupId : any) => {
-    if(type === 'Edit'){
+  const changeFnType = (type: string, groupId: any) => {
+    if (type === 'Edit') {
       location.state = { group_id: groupId };
     }
     setFnType(type);
     setIsAddGroup(true);
+  };
+
+  const uploadGroupImage = () => {
+    const groupImage = document.getElementById('groupImage') as HTMLInputElement;
+    const formData = new FormData();
+    //formData.append('group_id', groupDetails.group_id);
+    //formData.append('image_code', '1');
+    formData.append('file', groupImage.files[0]);
+    fetch(
+      'https://acepicklapi.raganindustries.com/api_file_upload.php',
+      {
+        method: 'post',
+        headers: {
+          Authorization:
+            'Bearer ' +
+            JSON.parse(localStorage.getItem('user') as string).access_token,
+        },
+        body: JSON.stringify({
+          "image_code": '1',
+          "image_parameter": '1',
+          ...formData
+        }),
+      }
+    )
+      .then((res) => res.json())
+      .then((response) => {
+        if (response === 'ACCESS TOKEN ERROR') {
+          console.log('Unauthorized');
+          localStorage.clear();
+          navigate('/login');
+        } else if(response === 'STATUS OK'){
+
+          console.log(response);
+        }else{
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: response,
+          })
+        }
+
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   useEffect(() => {
-
-
-    const modalElement = document.getElementById('CreateGroupModal') as HTMLElement;
+    const modalElement = document.getElementById(
+      'CreateGroupModal'
+    ) as HTMLElement;
     if (modalElement) {
       modalElement.addEventListener('hidden.bs.modal', function (event) {
         setIsAddGroup(false);
       });
     }
 
-
-    if(isAddGroup){      
-        const createGroupModal = new bootstrap.Modal(
-          document.getElementById('CreateGroupModal') as HTMLElement
-        );
-        createGroupModal.show();      
+    if (isAddGroup) {
+      const createGroupModal = new bootstrap.Modal(
+        document.getElementById('CreateGroupModal') as HTMLElement
+      );
+      createGroupModal.show();
     }
-  },[isAddGroup])
+  }, [isAddGroup]);
 
   return (
     <>
@@ -178,8 +226,8 @@ export const Groups: React.FC = () => {
               <h4>Groups</h4>
 
               <button
-                className="btn btn-primary ml-auto"               
-                onClick={()=>changeFnType('Create', null)}
+                className="btn btn-primary ml-auto"
+                onClick={() => changeFnType('Create', null)}
               >
                 Create Group
               </button>
@@ -191,68 +239,56 @@ export const Groups: React.FC = () => {
             return (
               <div className="col" key={index}>
                 <div className="card shadow-sm">
-                  <img
-                    src={'https://acepicklapi.raganindustries.com'+ group.group_photo_id}
-                    alt="top"
-                    className="bd-placeholder-img card-img-top"
-                    style={{aspectRatio: '16/9'}}
-                    height={195}
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.onerror = null;
-                      target.src =
-                        'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png';
-                    }}
-                  />
+                  <div className="position-relative">
+                    <img
+                      src={
+                        'https://acepicklapi.raganindustries.com' +
+                        group.group_photo_id
+                      }
+                      alt="top"
+                      className="bd-placeholder-img card-img-top"
+                      style={{ aspectRatio: '16/9' }}
+                      height={195}
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.onerror = null;
+                        target.src =
+                          'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png';
+                      }}
+                    />
+                    <button
+                      className="btn btn-sm btn-primary"
+                      style={{
+                        position: 'absolute',
+                        bottom: '5px',
+                        right: '5px',
+                      }}
+                      data-bs-toggle="modal"
+                      data-bs-target="#groupPhotoModal"
+                      title='Change Group Image'
+                    >
+                      <ProfileIcon />
+                    </button>
+                  </div>
                   <div className="card-body position-relative">
                     <h5 className="card-title">{group.group_name}</h5>
                     <p className="card-text">{group.group_description}</p>
 
-                    <div className='d-flex' style={{ position: 'absolute', top: '5px', right: '5px' }}>
-                      <button className='btn btn-light me-2' title='Chat'>
-                        <ChatIconV2/>
+                    <div
+                      className="d-flex"
+                      style={{ position: 'absolute', top: '5px', right: '5px' }}
+                    >
+                      <button className="btn btn-light me-2" title="Chat">
+                        <ChatIconV2 />
                       </button>
-                      <div
-                        className="dropdown"
-                        
-                      >
+                      <div className="dropdown">
                         <button
                           className="btn btn-dark"
                           type="button"
                           data-bs-toggle="dropdown"
                           aria-expanded="false"
-
                         >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            width={24}
-                            height={24}
-                            color={'currentColor'}
-                            fill={'none'}
-                          >
-                            <path
-                              d="M11.992 12H12.001"
-                              stroke="currentColor"
-                              strokeWidth="2.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M11.9842 18H11.9932"
-                              stroke="currentColor"
-                              strokeWidth="2.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M11.9998 6H12.0088"
-                              stroke="currentColor"
-                              strokeWidth="2.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
+                          <MoreIcon />
                         </button>
                         <ul className="dropdown-menu dropdown-menu-end">
                           <li>
@@ -268,7 +304,14 @@ export const Groups: React.FC = () => {
                             </button>
                           </li>
                           <li>
-                            <button title='Edit Group' className="dropdown-item" type="button" onClick={()=>changeFnType('Edit', group.group_id)}>
+                            <button
+                              title="Edit Group"
+                              className="dropdown-item"
+                              type="button"
+                              onClick={() =>
+                                changeFnType('Edit', group.group_id)
+                              }
+                            >
                               <EditIcon /> Edit Group
                             </button>
                           </li>
@@ -299,9 +342,22 @@ export const Groups: React.FC = () => {
                             </Link>
                           </li>
                           <li>
-                            <button title="Player's Lists"  className="dropdown-item" onClick={()=>ShowPlayerLists(group.group_id)}>
+                            <button
+                              title="Player's Lists"
+                              className="dropdown-item"
+                              onClick={() => ShowPlayerLists(group.group_id)}
+                            >
                               <PlayersListsIcon />
                               Player's List
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              title="View Images"
+                              className="dropdown-item"
+                            >
+                              <AdminIcon />
+                              Add Admin
                             </button>
                           </li>
                           <li>
@@ -318,7 +374,7 @@ export const Groups: React.FC = () => {
                               Delete Group
                             </button>
                           </li>
-                        </ul> 
+                        </ul>
                       </div>
                     </div>
                   </div>
@@ -328,7 +384,7 @@ export const Groups: React.FC = () => {
           })}
         </div>
       </div>
-     { isAddGroup && <CreateGroupModal type={fnType}/>}
+      {isAddGroup && <CreateGroupModal type={fnType} />}
       <AddPlayerToGroup />
       <div
         className="modal fade"
@@ -355,7 +411,10 @@ export const Groups: React.FC = () => {
             <div className="modal-body">
               <div className="card mb-3">
                 <img
-                  src={'https://acepicklapi.raganindustries.com'+ groupDetails.group_photo_id}
+                  src={
+                    'https://acepicklapi.raganindustries.com' +
+                    groupDetails.group_photo_id
+                  }
                   className="card-img-top"
                   alt="..."
                   height={360}
@@ -386,7 +445,52 @@ export const Groups: React.FC = () => {
         </div>
       </div>
 
-      {isPlayerLists && <TeamDetailsV2/>}
+      {isPlayerLists && <TeamDetailsV2 />}
+
+      <div
+        className="modal fade"
+        id="groupPhotoModal"
+        tabIndex={-1}
+        aria-labelledby="groupPhotoModalLabel"
+        aria-hidden="true"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+      >
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h1 className="modal-title fs-5" id="groupPhotoModalLabel">
+                Group Image Upload
+              </h1>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              <form>
+                <div className="mb-3">
+                  <label htmlFor="groupImage" className="col-form-label">
+                    Select image
+                  </label>
+                  <input type="file" className="form-control" id="groupImage" />
+                </div>
+                <div>
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={uploadGroupImage}
+                  >
+                    Upload
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 };
