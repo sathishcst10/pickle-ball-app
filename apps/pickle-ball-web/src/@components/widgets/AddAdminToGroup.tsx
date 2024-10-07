@@ -10,7 +10,7 @@ interface Player {
   phone: string;
 }
 
-export function AddPlayerToGroup() {
+export function AddAdminToGroup() {
   const [selectedPlayers, setSelectedPlayers] = useState([]);
   const [players, setPlayers] = useState([]);
 
@@ -122,9 +122,9 @@ useEffect(() => {
   return (
     <div
       className="modal fade"
-      id="addPlayerModal"
+      id="addAdminModal"
       tabIndex={-1}
-      aria-labelledby="addPlayerLabel"
+      aria-labelledby="addAdminLabel"
       aria-hidden="true"
       data-bs-backdrop="static"
       data-bs-keyboard="false"
@@ -132,8 +132,8 @@ useEffect(() => {
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
           <div className="modal-header">
-            <h1 className="modal-title fs-5" id="addPlayerLabel">
-              Add Player To Group
+            <h1 className="modal-title fs-5" id="addAdminLabel">
+              Add Admin To Group
             </h1>
             <button
               type="button"
@@ -142,12 +142,11 @@ useEffect(() => {
               aria-label="Close"
             ></button>
           </div>
-          <form >
-          {/* onSubmit={(e)=>addUserToGroup(e)} */}
+          <form onSubmit={(e)=>addUserToGroup(e)}>
           <div className="modal-body">            
               <div className="mb-3">
                 <label htmlFor="playerName" className="form-label">
-                  Player Name
+                  Admin Name
                 </label>
                 <MultiSelect
                   value={selectedPlayers}

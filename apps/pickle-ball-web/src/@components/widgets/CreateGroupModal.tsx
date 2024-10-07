@@ -156,7 +156,7 @@ export const CreateGroupModal = (props : any) => {
           group_description: response.group_description,
           group_allowpublic: Number(response.group_allowpublic),
           group_court_id: response.group_court_id,
-          group_access_name: response.group_access_name,
+          group_access_name: response.access_name,
           group_access_visibility: Number(response.access_visibility),
           group_access_skill_level: Number(response.access_skill_level),
           group_access_rating: response.access_rating,

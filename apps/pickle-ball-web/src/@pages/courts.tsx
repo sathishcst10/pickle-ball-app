@@ -5,13 +5,15 @@ import { Button } from 'primereact/button';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { CreateCourtV2 } from '../@components/widgets/CreateCourtOffCanvas';
 import * as bootstrap from 'bootstrap';
-import { ViewIcon, EditIcon, AddPlayersIcon, ScheduleIcon, PlayersListsIcon, DeleteIcon, ViewImagesIcon } from '../@components/_icons/menu_icons';
+import { ViewIcon, EditIcon, AddPlayersIcon, ScheduleIcon, PlayersListsIcon, DeleteIcon, ViewImagesIcon, ProfileIcon } from '../@components/_icons/menu_icons';
+import Swal from 'sweetalert2';
 
 export default function AceCourts() {
   const stepperRef = useRef(null);
   const [courtLists, setCourtLists] = React.useState([]);
   const [isAddCourt, setIsAddCourt] = React.useState(false);
   const [fnType, setFnType] = React.useState('Create');
+  const [selectedCourt, setSelectedCourt] = React.useState(null);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -43,7 +45,61 @@ export default function AceCourts() {
         console.error('Error:', error);
       });
   };
+  const showFileUpload = (args: any) => {
+    setSelectedCourt(args);
+    const groupPhotoModal = new bootstrap.Modal(
+      document.getElementById('courtPhotoModal') as HTMLElement
+    );
+    groupPhotoModal.show();
+  }
+  const uploadCourtImage = () => {
+    const groupImage = document.getElementById('groupImage') as HTMLInputElement;
+    const formData = new FormData();
+    //formData.append('group_id', groupDetails.group_id);
+    //formData.append('image_code', '1');
+    formData.append('file', groupImage.files[0]);
+    fetch(
+      `https://acepicklapi.raganindustries.com/api_file_upload.php?image_parameter=${selectedCourt}&image_code=2`,
+      {
+        method: 'post',
+        headers: {
+          Authorization:
+            'Bearer ' +
+            JSON.parse(localStorage.getItem('user') as string).access_token,
+        },
+        body: formData,
+      }
+    )
+      .then((res) => res.json())
+      .then((response) => {
+        if (response === 'ACCESS TOKEN ERROR') {
+          console.log('Unauthorized');
+          localStorage.clear();
+          navigate('/login');
+        } else if(response === 'STATUS OK'){
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Court image uploaded successfully',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          });
+          console.log(response);
+        }else{
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: response,
+          })
+        }
 
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 const showCreateCourt = (type : string, courtId : any) => {
   if(type === 'Edit'){
     location.state = { court_id: courtId };
@@ -93,18 +149,32 @@ const showCreateCourt = (type : string, courtId : any) => {
                 <div className="card mb-3">
                   <div className="row g-0">
                     <div className="col-md-4">
-                      <img
-                        src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
-                        className="img-fluid h-100"
-                        alt="..."
-                        style={{ backgroundColor: '#d1d5db' }}
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.onerror = null;
-                          target.src =
-                            'https://fisnikde.com/wp-content/uploads/2019/01/broken-image.png';
-                        }}
-                      />
+                      <div className="position-relative h-100">
+                        <img
+                          src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
+                          className="img-fluid h-100"
+                          alt="..."
+                          style={{ backgroundColor: '#d1d5db' }}
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.onerror = null;
+                            target.src =
+                              'https://fisnikde.com/wp-content/uploads/2019/01/broken-image.png';
+                          }}
+                        />
+                          <button
+                      className="btn btn-sm btn-primary"
+                      style={{
+                        position: 'absolute',
+                        bottom: '5px',
+                        right: '5px',
+                      }}
+                      onClick={() => showFileUpload(court.court_id)}                      
+                      title='Change Group Image'
+                    >
+                      <ProfileIcon />
+                    </button>
+                      </div>
                     </div>
                     <div className="col-md-8">
                       <div className="card-body">
@@ -218,6 +288,51 @@ const showCreateCourt = (type : string, courtId : any) => {
       </div>
 
      {isAddCourt && <CreateCourtV2 type={fnType}/>}
+
+     <div
+        className="modal fade"
+        id="courtPhotoModal"
+        tabIndex={-1}
+        aria-labelledby="courtPhotoModalLabel"
+        aria-hidden="true"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+      >
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h1 className="modal-title fs-5" id="courtPhotoModalLabel">
+                Court Image Upload
+              </h1>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              <form>
+                <div className="mb-3">
+                  <label htmlFor="groupImage" className="col-form-label">
+                    Select image
+                  </label>
+                  <input type="file" className="form-control" id="groupImage" />
+                </div>
+                <div>
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={uploadCourtImage}
+                  >
+                    Upload
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 }

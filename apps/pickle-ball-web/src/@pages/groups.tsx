@@ -22,6 +22,7 @@ import {
   ViewIcon,
 } from '../@components/_icons/menu_icons';
 import { TeamDetailsV2 } from '../@components/widgets/teamDetails';
+import { AddAdminToGroup } from '../@components/widgets/AddAdminToGroup';
 
 export const Groups: React.FC = () => {
   const [groupLists, setGroupLists] = useState([]);
@@ -29,6 +30,7 @@ export const Groups: React.FC = () => {
   const [isPlayerLists, setIsPlayerLists] = useState(false);
   const [isAddGroup, setIsAddGroup] = useState(false);
   const [fnType, setFnType] = useState('Create');
+  const [selectedGroup, setSelectedGroup] = useState<any>(null);
   const navigate = useNavigate();
   const location = useLocation();
   const userGroupsByUserId = () => {
@@ -154,6 +156,14 @@ export const Groups: React.FC = () => {
     setIsAddGroup(true);
   };
 
+  const showFileUpdload = (args: any) => {
+    setSelectedGroup(args);
+    const groupPhotoModal = new bootstrap.Modal(
+      document.getElementById('groupPhotoModal') as HTMLElement
+    );
+    groupPhotoModal.show();
+  }
+
   const uploadGroupImage = () => {
     const groupImage = document.getElementById('groupImage') as HTMLInputElement;
     const formData = new FormData();
@@ -161,7 +171,7 @@ export const Groups: React.FC = () => {
     //formData.append('image_code', '1');
     formData.append('file', groupImage.files[0]);
     fetch(
-      'https://acepicklapi.raganindustries.com/api_file_upload.php',
+      `https://acepicklapi.raganindustries.com/api_file_upload.php?image_parameter=${selectedGroup}&image_code=1`,
       {
         method: 'post',
         headers: {
@@ -169,11 +179,7 @@ export const Groups: React.FC = () => {
             'Bearer ' +
             JSON.parse(localStorage.getItem('user') as string).access_token,
         },
-        body: JSON.stringify({
-          "image_code": '1',
-          "image_parameter": '1',
-          ...formData
-        }),
+        body: formData,
       }
     )
       .then((res) => res.json())
@@ -183,7 +189,15 @@ export const Groups: React.FC = () => {
           localStorage.clear();
           navigate('/login');
         } else if(response === 'STATUS OK'){
-
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Group image uploaded successfully',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          });
           console.log(response);
         }else{
           Swal.fire({
@@ -263,8 +277,7 @@ export const Groups: React.FC = () => {
                         bottom: '5px',
                         right: '5px',
                       }}
-                      data-bs-toggle="modal"
-                      data-bs-target="#groupPhotoModal"
+                      onClick={() => showFileUpdload(group.group_id)}                      
                       title='Change Group Image'
                     >
                       <ProfileIcon />
@@ -355,6 +368,8 @@ export const Groups: React.FC = () => {
                             <button
                               title="View Images"
                               className="dropdown-item"
+                              data-bs-toggle="modal"
+                              data-bs-target="#addAdminModal"
                             >
                               <AdminIcon />
                               Add Admin
@@ -386,6 +401,7 @@ export const Groups: React.FC = () => {
       </div>
       {isAddGroup && <CreateGroupModal type={fnType} />}
       <AddPlayerToGroup />
+      <AddAdminToGroup />
       <div
         className="modal fade"
         id="viewGroupModal"
