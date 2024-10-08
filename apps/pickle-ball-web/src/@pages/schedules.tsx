@@ -195,6 +195,36 @@ export function Schedule() {
     // teamDetailsModal.show();
   }
 
+  const getScheduleStatus = async (args: any) => {
+    const response = await fetch(`https://acepicklapi.raganindustries.com/api_get_schedule_status.php`,{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('user') as string).access_token
+      },
+      body: JSON.stringify({
+        schedule_id: args
+      })
+    });
+    const data = await response.json();
+
+    if(data === 'ACCESS TOKEN ERROR'){
+      console.log('Unauthorized');
+      localStorage.clear();
+      navigate('/login');
+    }else if(['Accepted', 'Rejected', 'Not Responded'].includes(data)){
+      return data;
+    }else{
+      Swal.fire({
+        title: 'Error',
+        text: data,
+        icon: 'error'
+      })
+    }
+    console.log(data);
+  }
+
+
   useEffect(() => {
     setSelectedGroup(location.state !== null ? location.state.group_id : 0);
     userGroupsByUserId();
@@ -314,7 +344,7 @@ export function Schedule() {
                   value={selectedGroup}
                   onChange={(e) => changeGroup(e)}
                 >
-                  <option value={0}>--Select group--</option>
+                  <option value={0}>--Select Group--</option>
                   {groupLists.map((item: any, index: number) => {
                     return (
                       <option key={index} value={item.group_id}>
@@ -355,13 +385,12 @@ export function Schedule() {
                   return (
                     <tr key={index}>
                       <td>{data.schedule_group_name || 'NA'}</td>
-
                       <td>{data.court_name}</td>
                       <td>{data.schedule_name || 'NA'}</td>
                       <td>{data.schedule_date}</td>
                       <td>{data.schedule_starttime}</td>
                       <td>{data.schedule_endtime}</td>
-                      <td>
+                      <td>                      
                         <div className="dropdown">
                           <button
                             className="btn btn-outline-dark dropdown-toggle"
@@ -370,6 +399,7 @@ export function Schedule() {
                             aria-expanded="false"
                           >
                             User Status
+                          
                           </button>
                           <ul className="dropdown-menu dropdown-menu-end">
                             <li>
@@ -399,6 +429,8 @@ export function Schedule() {
                               >
                                 Reject
                               </button>
+
+                              
                             </li>
 
                             <li>

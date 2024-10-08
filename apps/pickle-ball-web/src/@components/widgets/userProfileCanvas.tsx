@@ -70,25 +70,25 @@ export const UserProfileCanvas = () => {
             <label htmlFor="inputFirstName" className="form-label">
               First Name
             </label>
-            <input type="text" className="form-control" id="inputFirstName" value={user_fname}/>
+            <input type="text" className="form-control" id="inputFirstName" value={user_fname || ''}/>
           </div>
           <div className="col-md-6">
             <label htmlFor="inputLastName" className="form-label">
               Last Name
             </label>
-            <input type="text" className="form-control" id="inputLastName" value={user_lname}/>
+            <input type="text" className="form-control" id="inputLastName" value={user_lname || ''}/>
           </div>
           <div className="col-md-12">
             <label htmlFor="inputEmail" className="form-label">
               Email
             </label>
-            <input type="email" className="form-control" id="inputEmail" value={user_email}/>
+            <input type="email" className="form-control" id="inputEmail" value={user_email || ''}/>
           </div>
           <div className="col-md-12">
             <label htmlFor="inputPhone" className="form-label">
               Phone
             </label>
-            <input type="text" className="form-control" id="inputPhone" value={user_phone}/>
+            <input type="text" className="form-control" id="inputPhone" value={user_phone || ''}/>
           </div>
           <div className="col-md-6">
             <label htmlFor="selectCountry" className="form-label">
@@ -110,19 +110,19 @@ export const UserProfileCanvas = () => {
             <label htmlFor="inputDOB" className="form-label">
               Date of Birth
             </label>
-            <input type="date" className="form-control" id="inputDOB" value={user_dob}/>
+            <input type="date" className="form-control" id="inputDOB" value={user_dob || ''}/>
           </div>
           <div className="col-md-6">
             <label htmlFor="inputAge" className="form-label">
               Age<small>(Optional)</small>
             </label>
-            <input type="number" className="form-control" id="inputAge" value={user_age}/>
+            <input type="number" className="form-control" id="inputAge" value={user_age || ''}/>
           </div>
           <div className="col-md-12">
             <label htmlFor="inputAddress" className="form-label">
               Address
             </label>
-            <input type="text" className="form-control" id="inputAddress" value={user_address}/>
+            <input type="text" className="form-control" id="inputAddress" value={user_address || ''}/>
           </div>
           <div className="col-md-12">
             <label htmlFor="inputLocation" className="form-label">
