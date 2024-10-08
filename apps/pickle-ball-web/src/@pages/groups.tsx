@@ -15,6 +15,7 @@ import {
   ChatIconV2,
   DeleteIcon,
   EditIcon,
+  ImageIcon,
   MoreIcon,
   PlayersListsIcon,
   ProfileIcon,
@@ -271,7 +272,7 @@ export const Groups: React.FC = () => {
                       }}
                     />
                     <button
-                      className="btn btn-sm btn-primary"
+                      className="btn btn-sm btn-secondary"
                       style={{
                         position: 'absolute',
                         bottom: '5px',
@@ -280,7 +281,7 @@ export const Groups: React.FC = () => {
                       onClick={() => showFileUpdload(group.group_id)}                      
                       title='Change Group Image'
                     >
-                      <ProfileIcon />
+                      <ImageIcon />
                     </button>
                   </div>
                   <div className="card-body position-relative">
@@ -344,6 +345,17 @@ export const Groups: React.FC = () => {
                             </button>
                           </li>
                           <li>
+                            <button
+                              title="View Images"
+                              className="dropdown-item"
+                              data-bs-toggle="modal"
+                              data-bs-target="#addAdminModal"
+                            >
+                              <AdminIcon />
+                              Add Admin
+                            </button>
+                          </li>
+                          <li>
                             <Link
                               className="dropdown-item"
                               title="Schedule"
@@ -364,17 +376,7 @@ export const Groups: React.FC = () => {
                               Player's List
                             </button>
                           </li>
-                          <li>
-                            <button
-                              title="View Images"
-                              className="dropdown-item"
-                              data-bs-toggle="modal"
-                              data-bs-target="#addAdminModal"
-                            >
-                              <AdminIcon />
-                              Add Admin
-                            </button>
-                          </li>
+                          
                           <li>
                             <hr className="dropdown-divider" />
                           </li>

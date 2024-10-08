@@ -5,13 +5,15 @@ import { Button } from 'primereact/button';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { CreateCourtV2 } from '../@components/widgets/CreateCourtOffCanvas';
 import * as bootstrap from 'bootstrap';
-import { ViewIcon, EditIcon, AddPlayersIcon, ScheduleIcon, PlayersListsIcon, DeleteIcon, ViewImagesIcon, ProfileIcon } from '../@components/_icons/menu_icons';
+import { ViewIcon, EditIcon, AddPlayersIcon, ScheduleIcon, PlayersListsIcon, DeleteIcon, ViewImagesIcon, ProfileIcon, ImageIcon } from '../@components/_icons/menu_icons';
 import Swal from 'sweetalert2';
+import { ViewCourt } from '../@components/widgets/viewCourt';
 
 export default function AceCourts() {
   const stepperRef = useRef(null);
   const [courtLists, setCourtLists] = React.useState([]);
   const [isAddCourt, setIsAddCourt] = React.useState(false);
+  const [isViewCourt, setIsViewCourt] = React.useState(false);
   const [fnType, setFnType] = React.useState('Create');
   const [selectedCourt, setSelectedCourt] = React.useState(null);
   const navigate = useNavigate();
@@ -108,6 +110,11 @@ const showCreateCourt = (type : string, courtId : any) => {
   setFnType(type);
 }
 
+const showViewCourt = (courtId : any) => {
+  location.state = { court_id: courtId };
+  setIsViewCourt(true);
+}
+
   useEffect(() => {
     getCourtLists();
 
@@ -117,7 +124,12 @@ const showCreateCourt = (type : string, courtId : any) => {
         setIsAddCourt(false);
       });
     }
-
+    const modalViewElement = document.getElementById('courtViewModal') as HTMLElement;
+    if (modalViewElement) {
+      modalViewElement.addEventListener('hidden.bs.modal', function (event) {
+        setIsViewCourt(false);
+      });
+    }
 
     if(isAddCourt){      
         const createGroupModal = new bootstrap.Modal(
@@ -126,7 +138,14 @@ const showCreateCourt = (type : string, courtId : any) => {
         createGroupModal.show();      
     }
 
-  }, [isAddCourt]);
+    if(isViewCourt){
+      const viewCourtModal = new bootstrap.Modal(
+        document.getElementById('courtViewModal') as HTMLElement
+      );
+      viewCourtModal.show();
+    }
+
+  }, [isAddCourt, isViewCourt]);
 
   return (
     <>
@@ -163,23 +182,23 @@ const showCreateCourt = (type : string, courtId : any) => {
                           }}
                         />
                           <button
-                      className="btn btn-sm btn-primary"
+                      className="btn btn-sm btn-secondary"
                       style={{
                         position: 'absolute',
                         bottom: '5px',
                         right: '5px',
                       }}
                       onClick={() => showFileUpload(court.court_id)}                      
-                      title='Change Group Image'
+                      title='Change Court Image'
                     >
-                      <ProfileIcon />
+                      <ImageIcon />
                     </button>
                       </div>
                     </div>
                     <div className="col-md-8">
                       <div className="card-body">
                         <h5 className="card-title">{court.court_name}</h5>
-                        <p className="card-text">{court.court_description}</p>
+                        <p className="card-text d-none">{court.court_description}</p>
                         <div>
                           <span className="badge bg-secondary me-1">
                             Indoor : {court.court_indoor_count}
@@ -244,6 +263,7 @@ const showCreateCourt = (type : string, courtId : any) => {
                               className="dropdown-item"
                               type="button"
                               title="View Court"
+                              onClick={(e)=>showViewCourt(court.court_id)}
                               
                             >
                               <ViewIcon /> View Court
@@ -288,6 +308,9 @@ const showCreateCourt = (type : string, courtId : any) => {
       </div>
 
      {isAddCourt && <CreateCourtV2 type={fnType}/>}
+     {
+      isViewCourt && <ViewCourt/>
+     }
 
      <div
         className="modal fade"
