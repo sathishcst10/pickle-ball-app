@@ -11,6 +11,7 @@ import { Schedule } from "../@pages/schedules";
 import { DashboardLayout } from "../@layout/dashboardLayout";
 import BasicLogin from "../@pages/_auth_pages/formikLogin";
 import UserRegistration from "../@pages/_auth_pages/register.v2";
+import { ForgotPassword } from "../@pages/_auth_pages/forgotPassword";
 
 export const routes = createBrowserRouter([
     {
@@ -70,6 +71,10 @@ export const routes = createBrowserRouter([
     {
         path : "/basicLogin",
         element : <BasicLogin/> 
+    },
+    {
+        path : '/forgotPassword',
+        element : <ForgotPassword/>
     },
     {
         path : "/register",

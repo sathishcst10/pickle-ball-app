@@ -12,20 +12,20 @@ interface Player {
 
 export function AddAdminToGroup() {
   const [selectedPlayers, setSelectedPlayers] = useState([]);
-  const [players, setPlayers] = useState([]);
+  const [players, setPlayers] : any = useState([]);
 
   const navigate = useNavigate();
   const location = useLocation();
   const [userGroup, setUserGroup] = useState({})  
 
-  const addUserToGroup = (e :any) => {
+  const addAdminToGroup = (e :any) => {
     e.preventDefault();
     console.log(selectedPlayers);
     const user_group = {
       "group_id" : location.state.group_id,
-      "group_users" : {...selectedPlayers.map((item : any)=>item.user_id)}
+      "group_admins" : selectedPlayers.map((item : any)=>{return{id : item.user_id}})
     }
-    fetch('https://acepicklapi.raganindustries.com/api_add_group_users.php', {
+    fetch('https://acepicklapi.raganindustries.com/api_add_admins.php', {
       method: 'post',
       headers: {
         'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('user') as string).access_token,
@@ -40,10 +40,10 @@ export function AddAdminToGroup() {
           localStorage.clear();
           navigate('/login');
         }else if(response === 'STATUS OK'){
-          console.log('User added to group');
+          console.log('Admin added to group');
           Swal.fire({
             title: 'Success',
-            text: 'User added to group',
+            text: 'Admin\'s added to group',
             icon: 'success',
           }).then((result) => {
             if (result.isConfirmed) {
@@ -55,7 +55,7 @@ export function AddAdminToGroup() {
           console.log('Error');
           Swal.fire({
             title: 'Error',
-            text: 'User not logged in',
+            text: response,
             icon: 'error',
           });
         }
@@ -142,7 +142,7 @@ useEffect(() => {
               aria-label="Close"
             ></button>
           </div>
-          <form onSubmit={(e)=>addUserToGroup(e)}>
+          <form onSubmit={(e)=>addAdminToGroup(e)}>
           <div className="modal-body">            
               <div className="mb-3">
                 <label htmlFor="playerName" className="form-label">
@@ -154,7 +154,7 @@ useEffect(() => {
                   options={players}
                   optionLabel="user_fname"
                   display="chip"
-                  placeholder="Select players"
+                  placeholder="Select admins"
                   maxSelectedLabels={4}
                   className="w-100"
                   filter

@@ -390,16 +390,18 @@ export function Schedule() {
                       <td>{data.schedule_date}</td>
                       <td>{data.schedule_starttime}</td>
                       <td>{data.schedule_endtime}</td>
-                      <td>                      
-                        <div className="dropdown">
+                      <td>             
+                        {
+                          data.user_status === 'Accepted' ? <span className="badge bg-success">{data.user_status}</span> :
+                          data.user_status === 'Rejected' ? <span className="badge bg-danger">{data.user_status}</span> :
+                          <div className="dropdown">
                           <button
                             className="btn btn-outline-dark dropdown-toggle"
                             type="button"
                             data-bs-toggle="dropdown"
                             aria-expanded="false"
                           >
-                            User Status
-                          
+                            User Status                          
                           </button>
                           <ul className="dropdown-menu dropdown-menu-end">
                             <li>
@@ -446,6 +448,8 @@ export function Schedule() {
                             </li>
                           </ul>
                         </div>
+                        }         
+                        
                       </td>
                       <td>
                         <button

@@ -70,7 +70,7 @@ export const UserProfileCanvas = () => {
             <label htmlFor="inputFirstName" className="form-label">
               First Name
             </label>
-            <input type="text" className="form-control" id="inputFirstName" value={user_fname || ''}/>
+            <input type="text" className="form-control" id="inputFirstName" value={user_fname ?? ''}/>
           </div>
           <div className="col-md-6">
             <label htmlFor="inputLastName" className="form-label">

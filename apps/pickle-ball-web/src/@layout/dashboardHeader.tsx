@@ -172,13 +172,17 @@ export const DashboardHeader = () => {
                     className="mb-0 fw-bold"
                     style={{ textTransform: 'capitalize' }}
                   >
-                    {JSON.parse(localStorage.getItem('user')!).user_fname +
+                    { 
+                      localStorage.getItem('isLoggedIn') &&
+
+                      JSON.parse(localStorage.getItem('user')!).user_fname +
                       ' ' +
-                      JSON.parse(localStorage.getItem('user')!).user_lname}
+                      JSON.parse(localStorage.getItem('user')!).user_lname
+                    }
                   </p>
                   <small className="text-muted">
                     Last login:{' '}
-                    {JSON.parse(localStorage.getItem('user')!).user_lasllogin}
+                    { localStorage.getItem('isLoggedIn') && JSON.parse(localStorage.getItem('user')!).user_lasllogin}
                   </small>
                 </label>
                 <img

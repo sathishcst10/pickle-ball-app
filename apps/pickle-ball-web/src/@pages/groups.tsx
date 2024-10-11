@@ -350,6 +350,9 @@ export const Groups: React.FC = () => {
                               className="dropdown-item"
                               data-bs-toggle="modal"
                               data-bs-target="#addAdminModal"
+                              onClick={(e) =>
+                                (location.state = { group_id: group.group_id })
+                              }
                             >
                               <AdminIcon />
                               Add Admin

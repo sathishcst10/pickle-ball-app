@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, Navigate, NavigateProps, redirect, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
-export function Login() {
+export function ForgotPassword() {
     const [userRequest, setUserRequest] = useState({        
         "user_authcode" : 1,
         "user_authparameter" : "",
@@ -70,7 +70,7 @@ export function Login() {
         >          
         </Link>
 
-        <form action="#" onSubmit={(e) => { e.preventDefault(); appLogin()}}>
+        <form action="#" onSubmit={(e) => { e.preventDefault();}}>
           <img
             className="mb-4"
             src="./Logo-Green-Trans.png"
@@ -90,7 +90,7 @@ export function Login() {
           </div>
           <div className="form-floating mb-3">
             <input
-              type="text"
+              type="email"
               className="form-control"
               id="floatingInput"
               placeholder="name@example.com/000000000"
@@ -100,44 +100,12 @@ export function Login() {
             <label htmlFor="floatingInput">Email address/Phone number</label>
             {
               userRequest.user_authparameter.length === 0 &&
-              <small className="text-danger" >
-                Please enter a valid email address.
-              </small>
-            }
-          </div>
-          <div className="form-floating">
-            <input
-              type="password"
-              className="form-control"
-              id="floatingPassword"
-              placeholder="Password"
-              value={userRequest.user_password}
-              onChange={(e) => setUserRequest({...userRequest, user_password: e.target.value})}
-            />
-            <label htmlFor="floatingPassword">Password</label>
-            {
-              userRequest.user_password.length > 0 && userRequest.user_password.length < 6 &&
               <div className="text-danger" >
-                Please enter  a valid password.
+                Please enter a valid email address or phone number.
               </div>
             }
           </div>
-          <div className='d-flex justify-content-end'>
-            <div className="form-check text-start my-3 d-none">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                value="remember-me"
-                id="flexCheckDefault"
-              />
-              <label className="form-check-label" htmlFor="flexCheckDefault">
-                Remember me
-              </label>
-            </div>
-            <Link to={'/forgotPassword'} className="my-3 link-primary text-decoration-none">
-              Forgot password?
-            </Link>
-          </div>
+          
           {
             userRequest.user_authparameter.length > 0 && userRequest.user_password.length > 0 ?
             <button className="btn btn-dark w-100 py-2 mb-3" type="submit">
@@ -146,26 +114,25 @@ export function Login() {
 
             :
 
-            <>
-              <div className="alert alert-danger" role='alert'>
-                Please enter valid email address or phone number and password.
-              </div>
+            
+            
               <button className="btn btn-dark w-100 py-2 mb-3 disabled" type="submit">
-                Sign in
+                Send reset link
               </button>
-            </>
+            
           }
           
           {/* <p className="mt-5 mb-3 text-body-secondary">© 2017–2024</p> */}
           <p className="mb-3 text-body-secondary text-center">
-            Don't have an account?
-          </p>
+            Back to 
+          
           <Link
-            to={'/register'}
-            className="btn btn-outline-secondary w-100 py-2"
+            to={'/login'}
+            className="ms-2"
           >
-            Register
+            login
           </Link>
+          </p>
         </form>
       </main>
     </div>
