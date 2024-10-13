@@ -9,6 +9,8 @@ export function Login() {
         "user_password" : ""          
     });
 
+    const [checkEmail, setCheckEmail] = useState(false);
+
     const navigate = useNavigate();
 
     const appLogin = async () => {
@@ -96,10 +98,11 @@ export function Login() {
               placeholder="name@example.com/000000000"
               value={userRequest.user_authparameter}
               onChange={(e) => setUserRequest({...userRequest, user_authparameter: e.target.value})}
+              onBlur={(e) => e.target.value.length === 0 ? setCheckEmail(true) : setCheckEmail(false)}
             />
             <label htmlFor="floatingInput">Email address/Phone number</label>
             {
-              userRequest.user_authparameter.length === 0 &&
+              userRequest.user_authparameter.length === 0 && checkEmail &&
               <small className="text-danger" >
                 Please enter a valid email address.
               </small>

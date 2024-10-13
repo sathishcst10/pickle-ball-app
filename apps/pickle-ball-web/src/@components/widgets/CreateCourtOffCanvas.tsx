@@ -153,8 +153,8 @@ export function CreateCourtV2(props : any) {
     if (
       courtRequest.court_name.length > 0 &&
       courtRequest.court_address.length > 0 &&
-      courtRequest.court_indoor_count !== null &&
-      courtRequest.court_outdoor_count !== null
+      courtRequest.court_indoor_count !== undefined &&
+      courtRequest.court_outdoor_count !== undefined
     ) {
       return true;
     }
@@ -452,7 +452,7 @@ export function CreateCourtV2(props : any) {
                       No. of Indoor Pickle Ball Courts
                     </label>
                     <input
-                      type="number"
+                      type="text"
                       className="form-control"
                       id="formGroupExampleInput4"
                       placeholder="No.of indoor courts"
@@ -460,7 +460,7 @@ export function CreateCourtV2(props : any) {
                       onChange={(e) =>
                         setCourtRequest({
                           ...courtRequest,
-                          court_indoor_count: Number(e.target.value),
+                          court_indoor_count: e.target.value,
                         })
                       }
                     />
@@ -474,7 +474,7 @@ export function CreateCourtV2(props : any) {
                       No. of Outdoor Pickle Ball Courts
                     </label>
                     <input
-                      type="number"
+                      type="text"
                       className="form-control"
                       id="formGroupExampleInput2"
                       placeholder="No.of outdoor courts"
@@ -482,7 +482,7 @@ export function CreateCourtV2(props : any) {
                       onChange={(e) =>
                         setCourtRequest({
                           ...courtRequest,
-                          court_outdoor_count: Number(e.target.value),
+                          court_outdoor_count: e.target.value,
                         })
                       }
                     />

@@ -194,7 +194,18 @@ export function Schedule() {
     // const teamDetailsModal = new bootstrap.Modal(document.getElementById('teamDetailsModal') as HTMLElement);
     // teamDetailsModal.show();
   }
-
+  const filterSchedules = (e: any) => {
+    
+    console.log(e.target[e.target.selectedIndex].getAttribute("data-item"));
+    if(e.target.value === "0"){
+      getScheduleList();
+    }else{
+      //  getScheduleList();
+      setScheduleList(
+        scheduleList.filter((item: any) => item.schedule_group_name === e.target[e.target.selectedIndex].getAttribute("data-item"))
+      );
+    }
+  }
   const getScheduleStatus = async (args: any) => {
     const response = await fetch(`https://acepicklapi.raganindustries.com/api_get_schedule_status.php`,{
       method: 'POST',
@@ -342,12 +353,12 @@ export function Schedule() {
                 <select
                   className="form-select me-2"
                   value={selectedGroup}
-                  onChange={(e) => changeGroup(e)}
+                  onChange={(e) => {changeGroup(e); filterSchedules(e)}}
                 >
-                  <option value={0}>--Select Group--</option>
+                  <option value={0} data-item="0">--Select Group--</option>
                   {groupLists.map((item: any, index: number) => {
                     return (
-                      <option key={index} value={item.group_id}>
+                      <option key={index} value={item.group_id} data-item={item.group_name}>
                         {item.group_name}
                       </option>
                     );

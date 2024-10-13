@@ -379,7 +379,15 @@ export const Groups: React.FC = () => {
                               Player's List
                             </button>
                           </li>
-                          
+                          <li>
+                            <button
+                              title="Player's Lists"
+                              className="dropdown-item"                              
+                            >
+                              <AdminIcon />
+                              Admin Lists
+                            </button>
+                          </li>
                           <li>
                             <hr className="dropdown-divider" />
                           </li>

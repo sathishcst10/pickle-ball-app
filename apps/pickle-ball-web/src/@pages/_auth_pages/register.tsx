@@ -231,7 +231,7 @@ export function Register() {
                 ))}
               </select>
             </div>
-            <div className="col-12">
+            <div className="col-12 d-none">
               <label htmlFor="inputRating" className="form-label">
                 Player rating(Self rating)
               </label>
