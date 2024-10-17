@@ -1,3 +1,4 @@
+import { Password } from "primereact/password";
 import { useState } from "react";
 import Swal from "sweetalert2";
 
@@ -66,7 +67,7 @@ export const ChangePasswordCanvas = () => {
       id="changePasswordCanvas"
       data-bs-backdrop="static"
       aria-labelledby="changePasswordCanvasLabel"
-      style={{ width: '520px' }}
+      style={{ width: '420px' }}
     >
       <div className="offcanvas-header">
         <h5 className="offcanvas-title" id="changePasswordCanvasLabel">
@@ -84,45 +85,44 @@ export const ChangePasswordCanvas = () => {
           <div className="col-md-12">
             <label htmlFor="inputOldPassword" className="form-label">
               Old Password
-            </label>
-            <input
-              type="password"
-              className="form-control form-control-lg"
-              id="inputOldPassword"
-              value={passwordRequest.old_password}
+            </label><br/>
+            <Password 
+              inputClassName = "form-control"
+              panelClassName = "flex-column"
+              value={passwordRequest.old_password} 
               onChange={(e) =>
                 setPasswordRequest({
                   ...passwordRequest,
                   old_password: e.target.value,
                 })
               }
+              toggleMask
             />
           </div>
           <div className="col-md-12">
             <label htmlFor="inputNewPassword" className="form-label">
               New Password
             </label>
-            <input
-              type="password"
-              className="form-control form-control-lg"
-              id="inputNewPassword"
+            <br/>
+            <Password
               value={passwordRequest.new_password}
+              inputClassName = "form-control"
               onChange={(e) =>
                 setPasswordRequest({
                   ...passwordRequest,
                   new_password: e.target.value,
                 })
               }
+              promptLabel="Choose a password" weakLabel="Too simple" mediumLabel="Average complexity" strongLabel="Complex password" 
+              toggleMask
             />
           </div>
           <div className="col-md-12">
             <label htmlFor="inputConfirmPassword" className="form-label">
               Confirm Password
-            </label>
-            <input
-              type="password"
-              className="form-control form-control-lg"
-              id="inputConfirmPassword"
+            </label><br/>
+            <Password 
+              inputClassName = "form-control"
               value={passwordRequest.confirm_password}
               onChange={(e) =>
                 setPasswordRequest({
@@ -130,6 +130,8 @@ export const ChangePasswordCanvas = () => {
                   confirm_password: e.target.value,
                 })
               }
+              promptLabel="Choose a password" weakLabel="Too simple" mediumLabel="Average complexity" strongLabel="Complex password"
+              toggleMask
             />
           </div>
           <div>

@@ -191,7 +191,7 @@ const UserRegistration = () => {
                 <Field
                   type="text"
                   name="user_rating"
-                  className="form-select"
+                  className="form-control"
                 />
                     
                 <ErrorMessage
