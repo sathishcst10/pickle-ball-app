@@ -1,6 +1,9 @@
 import { Link, NavLink } from 'react-router-dom';
 
 export const DashboardHeader = () => {
+
+  const { user_image } = JSON.parse(localStorage.getItem('user') || '{}');
+
   const doLogout = (e: any) => {
     e.preventDefault();
     fetch('https://acepicklapi.raganindustries.com/api_user_logout.php', {
@@ -186,13 +189,18 @@ export const DashboardHeader = () => {
                   </small>
                 </label>
                 <img
-                  src="avatar.svg"
+                  src={`https://acepicklapi.raganindustries.com${user_image}`}
                   alt="userAvatar"
                   className="ms-2"
                   style={{
                     width: '48px',
-                    height: '48',
+                    height: '48px',
                     verticalAlign: 'bottom',
+                  }}
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.onerror = null;
+                    target.src = 'avatar.svg';
                   }}
                 />
               </Link>

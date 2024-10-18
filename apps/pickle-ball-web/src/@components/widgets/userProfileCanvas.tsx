@@ -11,6 +11,7 @@ export const UserProfileCanvas = () => {
     user_dob,
     user_age,
     user_address,
+    user_image
   } = JSON.parse(localStorage.getItem('user') || '{}');
 
   const [userProfile, setUserProfile] = useState({
@@ -27,6 +28,7 @@ export const UserProfileCanvas = () => {
     user_map_longitude: '',
     user_rating: '',
     user_country: '',
+
   });
   const showFileUpdload = (args: any) => {
     //setSelectedGroup(args);
@@ -149,7 +151,7 @@ export const UserProfileCanvas = () => {
           <div className="d-flex text-center">
             <div className="profileWrap">
               <img
-                src=""
+                src={`https://acepicklapi.raganindustries.com${user_image}`}
                 alt="profile"
                 className="rounded-4"
                 width={72}
