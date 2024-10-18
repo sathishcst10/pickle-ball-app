@@ -1,3 +1,4 @@
+import { Password } from 'primereact/password';
 import { useEffect, useState } from 'react';
 import { Link, Navigate, NavigateProps, redirect, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -116,9 +117,23 @@ export function Login() {
           <div className="form-floating">
             <input
               type="password"
-              className="form-control"
-              id="floatingPassword"
+              className="form-control d-none"
+             
               placeholder="Password"
+              value={userRequest.user_password}
+              onChange={(e) => setUserRequest({...userRequest, user_password: e.target.value})}
+              onBlur={(e) => e.target.value.length === 0 ? setCheckPassword(true) : setCheckPassword(false)}
+            />
+
+            <Password 
+              promptLabel="Please enter a password"
+              weakLabel="Weak"
+              mediumLabel="Medium"
+              strongLabel="Strong"
+              inputId="floatingPassword"
+              inputClassName='form-control form-control-lg p-3'
+              feedback={true}
+              toggleMask={true}
               value={userRequest.user_password}
               onChange={(e) => setUserRequest({...userRequest, user_password: e.target.value})}
               onBlur={(e) => e.target.value.length === 0 ? setCheckPassword(true) : setCheckPassword(false)}

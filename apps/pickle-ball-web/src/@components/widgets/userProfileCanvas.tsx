@@ -72,7 +72,7 @@ export const UserProfileCanvas = () => {
     //formData.append('image_code', '1');
     formData.append('file', profileImage.files[0]);
     fetch(
-      `https://acepicklapi.raganindustries.com/api_file_upload.php?image_parameter=${0}&image_code=0`,
+      `https://acepicklapi.raganindustries.com/api_file_upload.php?image_parameter=${''}&image_code=0`,
       {
         method: 'post',
         headers: {

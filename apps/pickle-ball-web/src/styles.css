@@ -170,3 +170,10 @@ div#pills-tabContent {
   text-align: center;
   vertical-align: bottom;
 }
+
+.p-password {
+  position: relative;
+  display: inline-flex;
+  width: 100%;
+  flex-direction: column;
+}

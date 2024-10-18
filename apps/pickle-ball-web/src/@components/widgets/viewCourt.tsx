@@ -57,6 +57,37 @@ export const ViewCourt = (props : any) => {
               ></button>
             </div>
             <div className="modal-body">
+                <div className="mb-0">
+                    <div id="carouselExample" className="carousel slide">
+                        <div className="carousel-inner">
+                            {
+                                courtDetails.court_photos.map((photo: any, index: number) => (
+                                    <div className={`carousel-item ${index === 0 ? 'active' : ''}`} key={index}>
+                                        <img
+                                        src={`https://acepicklapi.raganindustries.com${photo}`}
+                                        className="d-block w-100"
+                                        alt={`Slide ${index + 1}`}
+                                        onError={(e) => {
+                                            const target = e.target as HTMLImageElement;
+                                            target.onerror = null;
+                                            target.src =
+                                              'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png';
+                                          }}
+                                        />
+                                    </div>
+                            ))}
+                        </div>
+                        <button className="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span className="visually-hidden">Previous</span>
+                        </button>
+                        <button className="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                            <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span className="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+
                 <table className="table table-striped table-bordered">
                     <tbody>
                         <tr>
@@ -109,22 +140,6 @@ export const ViewCourt = (props : any) => {
                         </tr>
                     </tbody>
                 </table>
-
-                <div className="row">
-                    {
-                        courtDetails.court_photos.map((photo: any, index : number) => {
-                            return (
-                                <div key={index} className="col-md-2">
-                                    <div className="card mb-3">
-                                    <div className="card-body p-1">
-                                        <img  src={'https://acepicklapi.raganindustries.com'+ photo} alt="Court Photo" className="img-fluid"/>
-                                    </div>
-                                    </div>
-                                </div>
-                            )
-                        })
-                    }
-                </div>
             </div>
           </div>
         </div>
