@@ -170,17 +170,17 @@ const showViewCourt = (courtId : any) => {
                 <div className="card mb-3">
                   <div className="row g-0">
                     <div className="col-md-4">
-                      <div className="position-relative h-100">
+                      <div className="position-relative">
                         <img
-                          src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
-                          className="img-fluid h-100"
+                          src={`https://acepicklapi.raganindustries.com${court.court_image}`}
+                          className="img-fluid"
                           alt="..."
-                          style={{ backgroundColor: '#d1d5db' }}
+                          style={{ backgroundColor: '#d1d5db', height: '160px', aspectRatio: '16/9' }}
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;
                             target.onerror = null;
                             target.src =
-                              'https://fisnikde.com/wp-content/uploads/2019/01/broken-image.png';
+                              'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png';
                           }}
                         />
                           <button
@@ -277,7 +277,7 @@ const showViewCourt = (courtId : any) => {
                             </button>
                           </li>
                           
-                          <li>
+                          <li className='d-none'>
                             <button title="View Images"  className="dropdown-item">
                               <ViewImagesIcon />
                               View Images

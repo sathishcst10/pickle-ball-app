@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const UserRegistration = () => {
   const [userRequest, setUserRequest] = useState({
@@ -51,8 +52,18 @@ const UserRegistration = () => {
     );
     const data = await response.json();
     if (data === 'STATUS OK') {
-      console.log('Register Successful');
-      navigate('/login');
+      Swal.fire({
+        title: 'Registered Successfully',
+        text: 'Please login to continue',
+        icon: 'success',
+        confirmButtonText: 'Ok',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate('/login');
+        }
+      });
+      //console.log('Register Successful');
+      //navigate('/login');
     } else {
       alert('Error : ' + data);
     }
