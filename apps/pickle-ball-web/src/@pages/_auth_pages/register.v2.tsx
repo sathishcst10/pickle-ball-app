@@ -50,11 +50,11 @@ const UserRegistration = () => {
       }
     );
     const data = await response.json();
-    if (data.status === 'STATUS OK') {
+    if (data === 'STATUS OK') {
       console.log('Register Successful');
       navigate('/login');
     } else {
-      alert(data.status + ' : ' + data.description);
+      alert('Error : ' + data);
     }
     console.log(data);
   };
@@ -163,6 +163,19 @@ const UserRegistration = () => {
                 />
                 <ErrorMessage
                   name="user_password"
+                  component="div"
+                  className="text-danger"
+                />
+              </div>
+              <div className="mb-0">
+                <label>Confirm Password:</label>
+                <Field
+                  type="password"
+                  name="user_confirm_password"
+                  className="form-control"
+                />
+                <ErrorMessage
+                  name="user_confirm_password"
                   component="div"
                   className="text-danger"
                 />
