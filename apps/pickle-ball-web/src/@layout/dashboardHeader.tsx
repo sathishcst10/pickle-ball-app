@@ -1,4 +1,5 @@
 import { Link, NavLink } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 export const DashboardHeader = () => {
 
@@ -6,23 +7,39 @@ export const DashboardHeader = () => {
 
   const doLogout = (e: any) => {
     e.preventDefault();
-    fetch('https://acepicklapi.raganindustries.com/api_user_logout.php', {
-      method: 'get',
-      headers: {
-        Authorization:
-          'Bearer ' +
-          JSON.parse(localStorage.getItem('user') as string).access_token,
-      },
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          localStorage.clear();
-          window.location.href = '/';
-        }
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+
+    Swal.fire({
+      title: "Do you want to logout?",
+      showDenyButton: false,
+      showCancelButton: true,
+      confirmButtonText: "Yes, Logout",
+      denyButtonText: `No`
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        //Swal.fire("L!", "", "success");
+        fetch('https://acepicklapi.raganindustries.com/api_user_logout.php', {
+          method: 'get',
+          headers: {
+            Authorization:
+              'Bearer ' +
+              JSON.parse(localStorage.getItem('user') as string).access_token,
+          },
+        })
+          .then((response) => {
+            if (response.status === 200) {
+              localStorage.clear();
+              window.location.href = '/';
+            }
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+      } else if (result.isDenied) {
+        //Swal.fire("Changes are not saved", "", "info");
+      }
+    });
+    
   };
   return (
     // <header className="navbar sticky-top bg-light flex-md-nowrap p-0 shadow">

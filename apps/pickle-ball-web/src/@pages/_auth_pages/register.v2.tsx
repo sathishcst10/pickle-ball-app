@@ -3,6 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { Password } from 'primereact/password';
 
 const UserRegistration = () => {
   const [userRequest, setUserRequest] = useState({
@@ -167,10 +168,20 @@ const UserRegistration = () => {
             
               <div className="mb-0">
                 <label>Password:</label>
-                <Field
+                {/* <Field
                   type="password"
                   name="user_password"
                   className="form-control"
+                /> */}
+                <Password 
+                  name="user_password"
+                  promptLabel="Enter a password"
+                  weakLabel="Weak"
+                  mediumLabel="Medium"
+                  strongLabel="Strong"
+                  feedback={true}
+                  toggleMask={true}
+                  inputClassName='form-control'
                 />
                 <ErrorMessage
                   name="user_password"
@@ -180,10 +191,20 @@ const UserRegistration = () => {
               </div>
               <div className="mb-0">
                 <label>Confirm Password:</label>
-                <Field
+                {/* <Field
                   type="password"
                   name="user_confirm_password"
                   className="form-control"
+                /> */}
+                <Password
+                  name="user_confirm_password"
+                  promptLabel="Confirm password"
+                  weakLabel="Weak"
+                  mediumLabel="Medium"
+                  strongLabel="Strong"
+                  feedback={true}
+                  toggleMask={true}
+                  inputClassName='form-control'
                 />
                 <ErrorMessage
                   name="user_confirm_password"
