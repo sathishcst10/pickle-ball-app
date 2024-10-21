@@ -1,4 +1,5 @@
 import { Password } from 'primereact/password';
+import { FloatLabel } from 'primereact/floatlabel'
 import { useEffect, useState } from 'react';
 import {
   Link,
@@ -145,7 +146,7 @@ export function ForgotPassword() {
           </div>
           {stepOne && (
             <>
-              <div className="form-floating mb-3">
+              <div className="form-floating mb-4">
                 <input
                   type="text"
                   className="form-control"
@@ -163,33 +164,29 @@ export function ForgotPassword() {
                 />
                 <label htmlFor="floatingOTP">OTP</label>
               </div>
-              <div className="form-floating mb-3">
-                {/* <input
-                  type="password"
-                  className="form-control"
-                  id="floatingPassword"
-                  placeholder="Password"
-                  
-                /> */}
-                <Password 
-                  promptLabel="Please enter a password"
-                  weakLabel="Weak"
-                  mediumLabel="Medium"
-                  strongLabel="Strong"
-                  inputId="floatingPassword"
-                  inputClassName='form-control form-control-lg p-3'
-                  feedback={true}
-                  toggleMask={true}
-                  value={resetPwd.user_password}
-                  onChange={(e:any) =>
-                    setResetPwd({
-                      ...resetPwd,
-                      user_password: e.target.value,
-                    })
-                  }
-                  
-                />
-                <label htmlFor="floatingPassword">New Password</label>
+              <div className="mb-4">
+                  <FloatLabel>
+                    <Password 
+                      promptLabel="Please enter a password"
+                      weakLabel="Weak"
+                      mediumLabel="Medium"
+                      strongLabel="Strong"
+                      inputId="floatingPassword"
+                      inputClassName='form-control form-control-lg p-3'
+                      feedback={true}
+                      toggleMask={true}
+                      value={resetPwd.user_password}
+                      onChange={(e:any) =>
+                        setResetPwd({
+                          ...resetPwd,
+                          user_password: e.target.value,
+                        })
+                      }
+                      
+                    />
+                    <label htmlFor="floatingPassword">Password</label>
+                </FloatLabel>
+                {/* <label htmlFor="floatingPassword">New Password</label> */}
                 {resetPwd.user_password.length > 0 &&
                   resetPwd.user_password.length < 6 && (
                     <div className="text-danger">
@@ -197,14 +194,8 @@ export function ForgotPassword() {
                     </div>
                   )}
               </div>
-              <div className="form-floating mb-3">
-                {/* <input
-                  type="password"
-                  className="form-control"
-                  id="floatingConfirmPassword"
-                  placeholder="Password"
-                 
-                /> */}
+              <div className="mb-4">
+                <FloatLabel>
                 <Password 
                   promptLabel="Please enter a password"
                   weakLabel="Weak"
@@ -226,6 +217,7 @@ export function ForgotPassword() {
                 <label htmlFor="floatingConfirmPassword">
                   Confirm Password
                 </label>
+                </FloatLabel>
                 {resetPwd.user_new_password.length > 0 &&
                   resetPwd.user_new_password.length < 6 && (
                     <div className="text-danger">
