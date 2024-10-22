@@ -35,10 +35,10 @@ export function ForgotPassword() {
     e.preventDefault();
 
     if (e.nativeEvent.submitter.name === 'sendOtp') {
-      setResetPwd({
-        ...resetPwd,
-        user_email : userRequest.user_authparameter
-      })
+      // setResetPwd({
+      //   ...resetPwd,
+      //   user_email : userRequest.user_authparameter
+      // })
       setStepOne(true);
     } else {
       fetch('https://acepicklapi.raganindustries.com/api_check_otp.php', {
@@ -126,19 +126,20 @@ export function ForgotPassword() {
               className="form-control"
               id="floatingInput"
               placeholder="name@example.com/000000000"
-              value={userRequest.user_authparameter}
+              value={resetPwd.user_email}
               onChange={(e) =>
-                setUserRequest({
-                  ...userRequest,
-                  user_authparameter: e.target.value,
+                setResetPwd({
+                  ...resetPwd,
+                  user_email: e.target.value,
                 })
               }
+              readOnly = {stepOne}
               onBlur={(e) =>
                 setCheckEmail(e.target.value.length === 0 ? true : false)
               }
             />
             <label htmlFor="floatingInput">Email address/Phone number</label>
-            {userRequest.user_authparameter.length === 0 && checkEmail && (
+            {resetPwd.user_email.length === 0 && checkEmail && (
               <div className="text-danger">
                 Please enter a valid email address or phone number.
               </div>
@@ -232,12 +233,16 @@ export function ForgotPassword() {
               <button
                 name="resetPassword"
                 type="submit"
-                className="btn btn-dark"
+                className={"btn btn-dark"}
               >
                 Reset Password
               </button>
             ) : (
-              <button name="sendOtp" type="submit" className="btn btn-dark">
+              <button 
+                name="sendOtp" 
+                type="submit" 
+                className={"btn btn-dark" + (resetPwd.user_email.length === 0 ? ' disabled' : '')}
+              >
                 Send OTP
               </button>
             )}

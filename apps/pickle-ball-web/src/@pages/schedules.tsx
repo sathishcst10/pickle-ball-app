@@ -187,21 +187,21 @@ export function Schedule() {
   };
   const showUpdateScore = (args: any) => {
     setIsUpdateScore(true);
-    location.state = { schedule_id: args };
+    location.state = { schedule_id: args !== undefined ? args : selectedSchedule };
     // const updateScoreModal = new bootstrap.Modal(document.getElementById('updateScoreModal') as HTMLElement);
     // updateScoreModal.show();
   };
 
   const showMatchDetails = (args: any) => {
     setIsMatchDetails(true);
-    location.state = { schedule_id: args };
+    location.state = { schedule_id: selectedSchedule, shoot_out_id: args };
     // const matchDetailsModal = new bootstrap.Modal(document.getElementById('matchDetailsModal') as HTMLElement);
     // matchDetailsModal.show();
   };
 
   const showPlayerLists = (args: any) => {
     setIsPlayerLists(true);
-    location.state = { schedule_id: args };
+    location.state = { schedule_id: args !== undefined ? args : selectedSchedule };
     // const teamDetailsModal = new bootstrap.Modal(document.getElementById('teamDetailsModal') as HTMLElement);
     // teamDetailsModal.show();
   };
@@ -257,6 +257,8 @@ export function Schedule() {
     setIsShootOut(true);
   }
   const getShootOutDetails = (args: any) => {
+    setSelectedSchedule(args);
+    location.state = { schedule_id: args };
     fetch('https://acepicklapi.raganindustries.com/api_get_shoot_outs.php', {
       method: 'POST',
       headers: {
@@ -673,7 +675,7 @@ export function Schedule() {
                           <td>
                             <button
                               className="btn btn-outline-dark"
-                              onClick={() => showMatchDetails(data.schedule_id)}
+                              onClick={() => showMatchDetails(data.shoot_out_id)}
                             >
                               Match Details
                             </button>

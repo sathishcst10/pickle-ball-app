@@ -2,7 +2,6 @@ import { match } from 'assert';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { isArray } from 'util';
 
 export const MatchDetails = () => {
   const [matchDetails, setMatchDetails]: any = useState({});
@@ -10,7 +9,7 @@ export const MatchDetails = () => {
   const location = useLocation();
   const getMatchDetails = () => {
     fetch(
-      'https://acepicklapi.raganindustries.com/api_get_schedule_matches.php',
+      'https://acepicklapi.raganindustries.com/api_schedule_matches.php',
       {
         method: 'post',
         headers: {
@@ -21,6 +20,7 @@ export const MatchDetails = () => {
         },
         body: JSON.stringify({
           schedule_id: location.state.schedule_id,
+          shoot_out_id : location.state.shoot_out_id
         }),
       }
     )
