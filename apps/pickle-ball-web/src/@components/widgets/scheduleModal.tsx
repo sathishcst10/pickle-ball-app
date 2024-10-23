@@ -87,7 +87,6 @@ export const ScheduleModal = () => {
     if (
       scheduleRequest.schedule_format !== '' &&
       scheduleRequest.schedule_cost !== '' &&
-      scheduleRequest.schedule_courts.length !== 0 &&
       scheduleRequest.schedule_note_player !== '' &&
       scheduleRequest.schedule_note_reviewer !== ''
     ) {
@@ -563,7 +562,7 @@ export const ScheduleModal = () => {
                                 <option value="3">Custom</option>
                               </select>
                             </div>
-                            <div className="col-6 mb-3">
+                            <div className="col-6 mb-3 d-none">
                               <label
                                 htmlFor="inputCourt"
                                 className="form-label"

@@ -208,7 +208,7 @@ export const DashboardHeader = () => {
                 <img
                   src={`https://acepicklapi.raganindustries.com${user_image}`}
                   alt="userAvatar"
-                  className="ms-2"
+                  className="ms-2 rounded-circle border border-2 border-dark"
                   style={{
                     width: '48px',
                     height: '48px',

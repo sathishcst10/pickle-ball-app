@@ -132,7 +132,7 @@ export function Login() {
               strongLabel="Strong"
               inputId="floatingPassword"
               inputClassName='form-control form-control-lg p-3'
-              feedback={true}
+              feedback={false}
               toggleMask={true}
               value={userRequest.user_password}
               onChange={(e) => setUserRequest({...userRequest, user_password: e.target.value})}

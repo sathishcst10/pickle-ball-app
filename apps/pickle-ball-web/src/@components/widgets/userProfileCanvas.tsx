@@ -148,12 +148,12 @@ export const UserProfileCanvas = () => {
           ></button>
         </div>
         <div className="offcanvas-body">
-          <div className="d-flex text-center">
+          <div className="d-flex justify-content-center">
             <div className="profileWrap">
               <img
                 src={`https://acepicklapi.raganindustries.com${user_image}`}
                 alt="profile"
-                className="rounded-4"
+                className="rounded-circle border border-2 border-dark"
                 width={72}
                 height={72}
                 onClick={(e) => showFileUpdload(e)}

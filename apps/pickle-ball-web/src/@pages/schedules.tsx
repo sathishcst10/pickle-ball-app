@@ -465,7 +465,7 @@ export function Schedule() {
                   <th scope="col">End Date Time</th>
                   {/* <th scope="col">User Status</th>
                   <th scope="col">Match Details</th> */}
-                  <th scope="col">Shootout Details</th>
+                  <th scope="col">Action's</th>
                 </tr>
               </thead>
               <tbody>
@@ -478,13 +478,45 @@ export function Schedule() {
                       <td>{data.schedule_date}</td>
                       <td>{data.schedule_starttime}</td>
                       <td>{data.schedule_endtime}</td>
-                      <td>
-                        <button
-                          className="btn btn-dark"
-                          onClick={(e) => getShootOutDetails(data.schedule_id)}
-                        >
-                          Show Shootout
-                        </button>
+                      <td >
+                        <div className='d-flex justify-content-end'>
+                          <button
+                            className="btn btn-dark me-2"
+                            onClick={(e) => getShootOutDetails(data.schedule_id)}
+                          >
+                            Show Shootout
+                          </button>
+                          <div className="dropdown">
+                              <button
+                                className="btn btn-outline-dark dropdown-toggle"
+                                type="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                              >
+                                Action
+                              </button>
+                              <ul className="dropdown-menu dropdown-menu-end">
+                                <li>
+                                  <button className="dropdown-item" type="button">
+                                    <EditIcon/>
+                                    Edit
+                                  </button>
+                                </li>
+                                <li>
+                                  <hr className="dropdown-divider" />
+                                </li>
+                                <li>
+                                  <button
+                                    className="dropdown-item text-danger"
+                                    type="button"
+                                  >
+                                    <DeleteIcon/>
+                                    Delete
+                                  </button>
+                                </li>
+                              </ul>
+                            </div>
+                        </div>
                       </td>
                       {/* <td>             
                         {

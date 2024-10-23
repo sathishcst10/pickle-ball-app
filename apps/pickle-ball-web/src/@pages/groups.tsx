@@ -241,7 +241,7 @@ export const Groups: React.FC = () => {
               <h4>Groups</h4>
 
               <button
-                className="btn btn-primary ml-auto"
+                className="btn btn-dark ml-auto"
                 onClick={() => changeFnType('Create', null)}
               >
                 Create Group
